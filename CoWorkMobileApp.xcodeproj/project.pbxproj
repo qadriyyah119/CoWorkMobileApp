@@ -16,6 +16,9 @@
 		2D0E53BD289ACF0800D77978 /* CoWorkMobileAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53BC289ACF0800D77978 /* CoWorkMobileAppTests.swift */; };
 		2D0E53C7289ACF0800D77978 /* CoWorkMobileAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53C6289ACF0800D77978 /* CoWorkMobileAppUITests.swift */; };
 		2D0E53C9289ACF0800D77978 /* CoWorkMobileAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53C8289ACF0800D77978 /* CoWorkMobileAppUITestsLaunchTests.swift */; };
+		639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */; };
+		BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
+		E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		024C897EA738E62BE0363691 /* Pods-CoWorkMobileApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp/Pods-CoWorkMobileApp.release.xcconfig"; sourceTree = "<group>"; };
+		0385559F0F690E587BDD3B37 /* Pods-CoWorkMobileApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp/Pods-CoWorkMobileApp.debug.xcconfig"; sourceTree = "<group>"; };
+		0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E7B69F43B7643FA2D0171B2 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2D0E53A2289ACF0700D77978 /* CoWorkMobileApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoWorkMobileApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0E53A5289ACF0700D77978 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D0E53A7289ACF0700D77978 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +56,11 @@
 		2D0E53C2289ACF0800D77978 /* CoWorkMobileAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoWorkMobileAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0E53C6289ACF0800D77978 /* CoWorkMobileAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoWorkMobileAppUITests.swift; sourceTree = "<group>"; };
 		2D0E53C8289ACF0800D77978 /* CoWorkMobileAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoWorkMobileAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0CEB6EFC6598A6E3B6DA8F2 /* Pods-CoWorkMobileAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +98,8 @@
 				2D0E53BB289ACF0800D77978 /* CoWorkMobileAppTests */,
 				2D0E53C5289ACF0800D77978 /* CoWorkMobileAppUITests */,
 				2D0E53A3289ACF0700D77978 /* Products */,
+				DA727AE6E4BEE3F4E4D63831 /* Pods */,
+				902A4675AAEA21EB4F4C8913 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -127,6 +144,30 @@
 			path = CoWorkMobileAppUITests;
 			sourceTree = "<group>";
 		};
+		902A4675AAEA21EB4F4C8913 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */,
+				0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */,
+				CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA727AE6E4BEE3F4E4D63831 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0385559F0F690E587BDD3B37 /* Pods-CoWorkMobileApp.debug.xcconfig */,
+				024C897EA738E62BE0363691 /* Pods-CoWorkMobileApp.release.xcconfig */,
+				C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */,
+				1E7B69F43B7643FA2D0171B2 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.release.xcconfig */,
+				F0CEB6EFC6598A6E3B6DA8F2 /* Pods-CoWorkMobileAppTests.debug.xcconfig */,
+				7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -134,9 +175,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D0E53CC289ACF0800D77978 /* Build configuration list for PBXNativeTarget "CoWorkMobileApp" */;
 			buildPhases = (
+				6505E73416BAB1A9A97CEB92 /* [CP] Check Pods Manifest.lock */,
 				2D0E539E289ACF0700D77978 /* Sources */,
 				2D0E539F289ACF0700D77978 /* Frameworks */,
 				2D0E53A0289ACF0700D77978 /* Resources */,
+				7915FF12B61E19965A53703B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -151,6 +194,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D0E53CF289ACF0800D77978 /* Build configuration list for PBXNativeTarget "CoWorkMobileAppTests" */;
 			buildPhases = (
+				4DCFB09A7DF45A45379B55E8 /* [CP] Check Pods Manifest.lock */,
 				2D0E53B4289ACF0800D77978 /* Sources */,
 				2D0E53B5289ACF0800D77978 /* Frameworks */,
 				2D0E53B6289ACF0800D77978 /* Resources */,
@@ -169,9 +213,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D0E53D2289ACF0800D77978 /* Build configuration list for PBXNativeTarget "CoWorkMobileAppUITests" */;
 			buildPhases = (
+				5D9E6B409D4E4B8A3448099C /* [CP] Check Pods Manifest.lock */,
 				2D0E53BE289ACF0800D77978 /* Sources */,
 				2D0E53BF289ACF0800D77978 /* Frameworks */,
 				2D0E53C0289ACF0800D77978 /* Resources */,
+				6DCBC6FFD02FAE9EC1D4CFC0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -252,6 +298,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4DCFB09A7DF45A45379B55E8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CoWorkMobileAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5D9E6B409D4E4B8A3448099C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CoWorkMobileApp-CoWorkMobileAppUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6505E73416BAB1A9A97CEB92 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CoWorkMobileApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6DCBC6FFD02FAE9EC1D4CFC0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7915FF12B61E19965A53703B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CoWorkMobileApp/Pods-CoWorkMobileApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CoWorkMobileApp/Pods-CoWorkMobileApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoWorkMobileApp/Pods-CoWorkMobileApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2D0E539E289ACF0700D77978 /* Sources */ = {
@@ -434,6 +583,7 @@
 		};
 		2D0E53CD289ACF0800D77978 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0385559F0F690E587BDD3B37 /* Pods-CoWorkMobileApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -462,6 +612,7 @@
 		};
 		2D0E53CE289ACF0800D77978 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 024C897EA738E62BE0363691 /* Pods-CoWorkMobileApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -490,6 +641,7 @@
 		};
 		2D0E53D0289ACF0800D77978 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F0CEB6EFC6598A6E3B6DA8F2 /* Pods-CoWorkMobileAppTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -510,6 +662,7 @@
 		};
 		2D0E53D1289ACF0800D77978 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -530,6 +683,7 @@
 		};
 		2D0E53D3289ACF0800D77978 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -548,6 +702,7 @@
 		};
 		2D0E53D4289ACF0800D77978 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1E7B69F43B7643FA2D0171B2 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
