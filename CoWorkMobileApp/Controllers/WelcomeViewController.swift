@@ -10,54 +10,48 @@ import Cartography
 
 class WelcomeViewController: UIViewController {
 
-    enum LoginStrings {
-        static let signinText = "Sign In"
-        static let signingInText = "Signing In..."
-        static let usernameText = "Username"
-        static let passwordText = "Password"
-        static let loginText = "LOG IN"
-        static let registerText = "REGISTER"
-        static let skipText = "SKIP"
-    }
-
-    private(set) lazy var logInButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.title = LoginStrings.loginText
-        config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
-
-        let button = OutlinedButton(configuration: config, primaryAction: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self,
-//                         action: #selector(login),
-//                         for: .primaryActionTriggered)
-
-        return button
-      }()
-    
     private(set) lazy var logoImageView: UIImageView = {
         let imageView = UIImageView(image: viewModel.logo)
         return imageView
     }()
-    
-    private(set) lazy var registerButton: UIButton = {
+
+    private(set) lazy var logInButton: UIButton = {
         var config = UIButton.Configuration.filled()
-        config.title = LoginStrings.registerText
+        config.title = viewModel.loginButtonText
         config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
 
         let button = OutlinedButton(configuration: config, primaryAction: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self,
-//                         action: #selector(login),
-//                         for: .primaryActionTriggered)
+        button.addTarget(self,
+                         action: #selector(loginButtonSelected),
+                         for: .primaryActionTriggered)
+
+        return button
+      }()
+    
+    private(set) lazy var registerButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.title = viewModel.registerButtonText
+        config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
+
+        let button = OutlinedButton(configuration: config, primaryAction: nil)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self,
+                         action: #selector(registerButtonSelected),
+                         for: .primaryActionTriggered)
 
         return button
       }()
     
     private(set) lazy var skipButton: UIButton = {
         var config = UIButton.Configuration.plain()
-        config.title = LoginStrings.skipText
+        config.title = viewModel.skipButtonText
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration = config
+        button.addTarget(self,
+                         action: #selector(skipButtonSelected),
+                         for: .primaryActionTriggered)
         return button
     }()
     
@@ -110,44 +104,17 @@ class WelcomeViewController: UIViewController {
             contentStackView.bottom == contentStackView.superview!.bottom - 40
         }
     }
-
-}
-
-class OutlinedButton: UIButton {
-    override func updateConfiguration() {
-        guard let configuration = configuration else { return }
-        
-        var updatedConfiguration = configuration
-        var background = UIButton.Configuration.plain().background
-        background.cornerRadius = 8
-        background.strokeWidth = 1
-        
-        let strokeColor: UIColor
-        let foregroundColor: UIColor
-        let backgroundColor: UIColor
-        
-        switch self.configuration?.title {
-        case WelcomeViewController.LoginStrings.loginText:
-            strokeColor = ThemeColors.secondaryColor ?? .black
-            foregroundColor = ThemeColors.secondaryColor ?? .black
-            backgroundColor = ThemeColors.mainBackgroundColor ?? .white
-        case WelcomeViewController.LoginStrings.registerText:
-            strokeColor = ThemeColors.secondaryColor ?? .black
-            foregroundColor = .white
-            backgroundColor = ThemeColors.secondaryColor ?? .black
-        default:
-            strokeColor = .black
-            foregroundColor = .black
-            backgroundColor = .white
-        }
-        
-        background.strokeColor = strokeColor
-        background.backgroundColor = backgroundColor
-        
-        updatedConfiguration.baseForegroundColor = foregroundColor
-        updatedConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30)
-        updatedConfiguration.background = background
-        
-        self.configuration = updatedConfiguration
+    
+    @objc func registerButtonSelected() {
+        let registerViewController = AccountRegistrationViewController()
+        navigationController?.pushViewController(registerViewController, animated: true)
+    }
+    
+    @objc func loginButtonSelected() {
+        print("Login button seleced")
+    }
+    
+    @objc func skipButtonSelected() {
+        print("Skip button selected")
     }
 }
