@@ -22,6 +22,7 @@
 		2D4207BC289AF52000F82B1F /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B6289AF49C00F82B1F /* Roboto-Medium.ttf */; };
 		2D4207BD289AF52300F82B1F /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B8289AF49C00F82B1F /* Roboto-Regular.ttf */; };
 		2D4207BE289AF52600F82B1F /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B9289AF49C00F82B1F /* Roboto-Thin.ttf */; };
+		2D4207C0289AFEF100F82B1F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207BF289AFEF100F82B1F /* Theme.swift */; };
 		639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */; };
 		BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */; };
@@ -68,6 +69,7 @@
 		2D4207B7289AF49C00F82B1F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Bold.ttf"; sourceTree = SOURCE_ROOT; };
 		2D4207B8289AF49C00F82B1F /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		2D4207B9289AF49C00F82B1F /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Thin.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Thin.ttf"; sourceTree = SOURCE_ROOT; };
+		2D4207BF289AFEF100F82B1F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				2D4207B4289AF40D00F82B1F /* Fonts */,
+				2D4207BF289AFEF100F82B1F /* Theme.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 			files = (
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
 				2D0E53AA289ACF0700D77978 /* ViewController.swift in Sources */,
+				2D4207C0289AFEF100F82B1F /* Theme.swift in Sources */,
 				2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */,
 				2D0E53A8289ACF0700D77978 /* SceneDelegate.swift in Sources */,
 			);
