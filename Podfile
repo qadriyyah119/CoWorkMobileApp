@@ -7,6 +7,9 @@ target 'CoWorkMobileApp' do
 
   # Pods for CoWorkMobileApp
   pod 'RealmSwift', '~>10'
+  pod 'Cartography'
+  pod 'Alamofire'
+  
 
   target 'CoWorkMobileAppTests' do
     inherit! :search_paths

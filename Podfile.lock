@@ -1,4 +1,6 @@
 PODS:
+  - Alamofire (5.6.2)
+  - Cartography (4.0.0)
   - Realm (10.28.3):
     - Realm/Headers (= 10.28.3)
   - Realm/Headers (10.28.3)
@@ -6,17 +8,23 @@ PODS:
     - Realm (= 10.28.3)
 
 DEPENDENCIES:
+  - Alamofire
+  - Cartography
   - RealmSwift (~> 10)
 
 SPEC REPOS:
   trunk:
+    - Alamofire
+    - Cartography
     - Realm
     - RealmSwift
 
 SPEC CHECKSUMS:
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
   Realm: 64e66568d981de2496f81ecab2e1372b27dc7d58
   RealmSwift: 29bcda3a1fa5613b358bd7ec638f5e12afc89c3a
 
-PODFILE CHECKSUM: 6e7eef1b280d5d606ac16a105eed3f51b4f30fa4
+PODFILE CHECKSUM: 9c30042186e7b7c16909e517646fcd258a74e36c
 
 COCOAPODS: 1.11.3
