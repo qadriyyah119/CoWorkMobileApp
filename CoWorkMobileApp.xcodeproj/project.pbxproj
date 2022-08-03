@@ -116,6 +116,9 @@
 		2D0E53A4289ACF0700D77978 /* CoWorkMobileApp */ = {
 			isa = PBXGroup;
 			children = (
+				2D0E53D7289ADA9600D77978 /* ViewModels */,
+				2D0E53D6289ADA8600D77978 /* Controllers */,
+				2D0E53D5289ADA7A00D77978 /* Models */,
 				2D0E53A5289ACF0700D77978 /* AppDelegate.swift */,
 				2D0E53A7289ACF0700D77978 /* SceneDelegate.swift */,
 				2D0E53A9289ACF0700D77978 /* ViewController.swift */,
@@ -144,6 +147,27 @@
 			path = CoWorkMobileAppUITests;
 			sourceTree = "<group>";
 		};
+		2D0E53D5289ADA7A00D77978 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2D0E53D6289ADA8600D77978 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2D0E53D7289ADA9600D77978 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		902A4675AAEA21EB4F4C8913 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,7 +188,6 @@
 				F0CEB6EFC6598A6E3B6DA8F2 /* Pods-CoWorkMobileAppTests.debug.xcconfig */,
 				7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
