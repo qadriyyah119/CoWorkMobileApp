@@ -6,10 +6,10 @@ target 'CoWorkMobileApp' do
   use_frameworks!
 
   # Pods for CoWorkMobileApp
-  pod 'RealmSwift', '~>10'
+  pod 'RealmSwift'
   pod 'Cartography'
   pod 'Alamofire'
-  
+  pod 'NotificationBannerSwift'
 
   target 'CoWorkMobileAppTests' do
     inherit! :search_paths
