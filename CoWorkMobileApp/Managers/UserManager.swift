@@ -21,6 +21,7 @@ class UserManager {
         
         do {
             let user = User()
+            user.id = UUID().uuidString
             user.email = email
             user.username = username
             user.password = password
@@ -28,6 +29,7 @@ class UserManager {
             try realm?.write {
                 realm?.add(user)
             }
+            print("USER: \(user), \(user.id)")
         } catch let error {
             completion(.failure(error))
         }

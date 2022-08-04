@@ -197,10 +197,8 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
     }
     
     @objc func createAccount() {
-        guard self.validateForm() else {
-            Banner.showBanner(withTitle: "Error", subtitle: "Make sure all fields are complete", style: .danger)
-            return
-        }
+        guard self.validateForm() else { return }
+        
         self.creatingAccount = true
 
         UserManager.shared.createUser(with: emailTextField.text ?? "", username: usernameTextField.text ?? "", password: passwordTextField.text ?? "") { result in
