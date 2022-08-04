@@ -7,6 +7,7 @@
 
 import UIKit
 import Cartography
+import NotificationBannerSwift
 
 class AccountRegistrationViewController: UIViewController, AlertingViewController {
     
@@ -178,17 +179,17 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
     
     private func validateForm() -> Bool {
         guard let email = emailTextField.text, !email.isEmpty, let username = usernameTextField.text, !username.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
-            print("Please fill out all fields!")
+            Banner.showBanner(withTitle: "Error!", subtitle: "Please complete all fields", style: .danger)
             return false
         }
         
         guard emailTextField.isEmailValid else {
-            print("Please enter a valid email")
+            Banner.showBanner(withTitle: "Email Error", subtitle: "Please enter a valid email", style: .danger)
             return false
         }
         
         guard passwordTextField.isPasswordValid else {
-            print("Enter valid password")
+            Banner.showBanner(withTitle: "Password Error", subtitle: "Please enter a valid password", style: .danger)
             return false
         }
         
@@ -197,7 +198,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
     
     @objc func createAccount() {
         guard self.validateForm() else {
-            print("Make sure all fields are complete.")
+            Banner.showBanner(withTitle: "Error", subtitle: "Make sure all fields are complete", style: .danger)
             return
         }
         self.creatingAccount = true
@@ -206,8 +207,9 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
             switch result {
             case .failure(let error):
                 print(error)
+                Banner.showBanner(withTitle: "Error!", subtitle: "Unable to create account. Please try again.", style: .warning)
             case .success:
-                print("User account created!")
+                Banner.showBanner(withTitle: "Success!", subtitle: "You have successfull registered with CoWork!", style: .success)
             }
         }
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
