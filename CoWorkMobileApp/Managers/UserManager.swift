@@ -21,7 +21,6 @@ class UserManager {
         
         do {
             let user = User()
-            user.id = UUID().uuidString
             user.email = email
             user.username = username
             user.password = password

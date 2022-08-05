@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 class User: Object {
-    @Persisted(primaryKey: true) var id: String = ""
+    @Persisted(primaryKey: true) var id: String = UUID().uuidString
     @Persisted var name: String?
     @Persisted var email: String
     @Persisted var username: String
