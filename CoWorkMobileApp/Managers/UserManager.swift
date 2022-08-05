@@ -28,6 +28,7 @@ class UserManager {
             try realm?.write {
                 realm?.add(user)
             }
+            print("USER: \(user), \(user.id)")
         } catch let error {
             completion(.failure(error))
         }
