@@ -111,7 +111,8 @@ class WelcomeViewController: UIViewController {
     }
     
     @objc func loginButtonSelected() {
-        print("Login button seleced")
+        let loginViewController = LoginViewController()
+        navigationController?.pushViewController(loginViewController, animated: true)
     }
     
     @objc func skipButtonSelected() {
