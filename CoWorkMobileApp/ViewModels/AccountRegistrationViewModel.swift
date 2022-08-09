@@ -19,9 +19,6 @@ class AccountRegistrationViewModel {
     }
     
     let titleText: String = RegisterStrings.titleText
-    var emailText: String = ""
-    var passwordText: String = ""
-    var usernameText: String = ""
     let emailPlaceholderText: String = RegisterStrings.emailTextfieldText
     let usernamePlaceholderText: String = RegisterStrings.usernameTextfieldText
     let passwordPlaceholderText: String = RegisterStrings.passwordTextfieldText
