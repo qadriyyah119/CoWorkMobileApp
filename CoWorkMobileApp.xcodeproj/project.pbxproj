@@ -31,6 +31,8 @@
 		2D4207CF289B17B300F82B1F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207CE289B17B300F82B1F /* UITextFieldExtension.swift */; };
 		2D4207D1289B181200F82B1F /* AccountRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D0289B181100F82B1F /* AccountRegistrationViewController.swift */; };
 		2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D4289B41A100F82B1F /* NotificationBanner.swift */; };
+		2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D628A1726100F82B1F /* LoginViewController.swift */; };
+		2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D828A172E500F82B1F /* LoginViewModel.swift */; };
 		639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */; };
 		BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */; };
@@ -86,6 +88,8 @@
 		2D4207CE289B17B300F82B1F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		2D4207D0289B181100F82B1F /* AccountRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewController.swift; sourceTree = "<group>"; };
 		2D4207D4289B41A100F82B1F /* NotificationBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBanner.swift; sourceTree = "<group>"; };
+		2D4207D628A1726100F82B1F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		2D4207D828A172E500F82B1F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			children = (
 				2D0E53A9289ACF0700D77978 /* WelcomeViewController.swift */,
 				2D4207D0289B181100F82B1F /* AccountRegistrationViewController.swift */,
+				2D4207D628A1726100F82B1F /* LoginViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			children = (
 				2D4207C1289B05E800F82B1F /* WelcomeViewModel.swift */,
 				2D4207C3289B146700F82B1F /* AccountRegistrationViewModel.swift */,
+				2D4207D828A172E500F82B1F /* LoginViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -506,6 +512,8 @@
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
 				2D4207D1289B181200F82B1F /* AccountRegistrationViewController.swift in Sources */,
 				2D4207CF289B17B300F82B1F /* UITextFieldExtension.swift in Sources */,
+				2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */,
+				2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */,
 				2D4207C9289B168100F82B1F /* AuthManager.swift in Sources */,
 				2D4207C2289B05E800F82B1F /* WelcomeViewModel.swift in Sources */,
 				2D0E53AA289ACF0700D77978 /* WelcomeViewController.swift in Sources */,

@@ -25,7 +25,7 @@ class OutlinedButton: UIButton {
             strokeColor = ThemeColors.secondaryColor ?? .black
             foregroundColor = ThemeColors.secondaryColor ?? .black
             backgroundColor = ThemeColors.mainBackgroundColor ?? .white
-        case WelcomeViewModel.LoginStrings.registerText, AccountRegistrationViewModel.RegisterStrings.signUpText:
+        case WelcomeViewModel.LoginStrings.registerText, AccountRegistrationViewModel.RegisterStrings.signUpText, LoginViewModel.LoginStrings.signInText:
             strokeColor = ThemeColors.secondaryColor ?? .black
             foregroundColor = .white
             backgroundColor = ThemeColors.secondaryColor ?? .black

@@ -14,16 +14,27 @@ let passwordPattern = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z])(?=.*[
 class AuthManager {
     
     enum AuthError: Error {
-        case invalidPassword
-        case invalidEmail
-        case emailAlreadyInUse
-        case usernameAlreadyInUse
+        case invalidRequest
+        case invalidData
         case unknownError
     }
     
     static let shared = AuthManager()
     
     var currentUser: User?
-
+    
+    func login(withEmail email: String, password: String, completion: @escaping(Result<String, AuthError>) -> Void) {
+        let realm = try? Realm()
+        let users = realm?.objects(User.self)
+        
+        guard let isValidUser = users?.first(where: {
+            $0.email == email && $0.password == password
+        }) else {
+            completion(.failure(.invalidRequest))
+            return
+        }
+        completion(.success(isValidUser.id))
+    }
+    
 }
 
