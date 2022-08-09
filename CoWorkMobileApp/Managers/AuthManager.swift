@@ -22,11 +22,9 @@ class AuthManager {
     static let shared = AuthManager()
     
     var currentUser: User?
-
+    
     func login(withEmail email: String, password: String, completion: @escaping(Result<String, AuthError>) -> Void) {
-        
         let realm = try? Realm()
-        
         let users = realm?.objects(User.self)
         
         guard let isValidUser = users?.first(where: {
@@ -35,20 +33,7 @@ class AuthManager {
             completion(.failure(.invalidRequest))
             return
         }
-        print("USER: \(isValidUser.id)")
         completion(.success(isValidUser.id))
-    }
-    
-    private func validateCredentials(email: String, password: String) -> Bool {
-        let realm = try? Realm()
-        
-        let users = realm?.objects(User.self)
-        
-        let isValidUser = users?.first(where: {
-            $0.email == email && $0.password == password
-        })
-        
-        return isValidUser != nil
     }
     
 }

@@ -11,8 +11,6 @@ target 'CoWorkMobileApp' do
   pod 'Alamofire'
   pod 'NotificationBannerSwift'
   
-  
-
   target 'CoWorkMobileAppTests' do
     inherit! :search_paths
     # Pods for testing

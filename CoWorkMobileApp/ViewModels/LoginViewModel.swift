@@ -22,8 +22,6 @@ class LoginViewModel {
     let passwordPlaceholderText: String = LoginStrings.passwordTextfieldText
     let signInButtonText: String = LoginStrings.signInText
     let sigingInText: String = LoginStrings.signingInText
-    let emailText: String = ""
-    let passwordText: String = ""
     
     func login(withEmail email: String, password: String) {
         AuthManager.shared.login(withEmail: email, password: password) { result in
@@ -35,4 +33,5 @@ class LoginViewModel {
             }
         }
     }
+
 }

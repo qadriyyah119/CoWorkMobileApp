@@ -18,7 +18,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         label.textAlignment = .left
         label.font = UIFont(name: ThemeFonts.headerFont, size: 37)
         return label
-      }()
+    }()
     
     private lazy var emailTextField: TextFieldWithPadding = {
         let textField = makeStyledInputField()
@@ -27,7 +27,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         return textField
-      }()
+    }()
     
     private lazy var usernameTextField: TextFieldWithPadding = {
         let textField = makeStyledInputField()
@@ -36,7 +36,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         return textField
-      }()
+    }()
     
     private lazy var passwordTextField: TextFieldWithPadding = {
         let textfield = makeStyledInputField()
@@ -50,7 +50,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
                             action: #selector(textFieldDidChange(_:)),
                             for: .editingChanged)
         return textfield
-      }()
+    }()
     
     private lazy var passwordValidationLabel: UILabel = {
         let label = UILabel()
@@ -65,55 +65,49 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         var config = UIButton.Configuration.filled()
         config.title = viewModel.completeButtonText
         config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
-
+        
         let button = OutlinedButton(configuration: config, primaryAction: nil)
-
         button.configurationUpdateHandler = { [weak self] button in
-          guard let self = self else { return }
-          var config = button.configuration
-
+            guard let self = self else { return }
+            var config = button.configuration
+            
             config?.showsActivityIndicator = self.creatingAccount
             config?.imagePlacement = self.creatingAccount ? .leading : .trailing
-
             config?.title = self.creatingAccount ? self.viewModel.registeringText : self.viewModel.completeButtonText
-          button.isEnabled = !self.creatingAccount
-
-          button.configuration = config
+            button.isEnabled = !self.creatingAccount
+            button.configuration = config
         }
-
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self,
                          action: #selector(createAccount),
                          for: .primaryActionTriggered)
-
         return button
-      }()
+    }()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-          titleLabel,
-          emailTextField,
-          usernameTextField,
-          passwordTextField,
-          passwordValidationLabel,
-          completeButton
+            titleLabel,
+            emailTextField,
+            usernameTextField,
+            passwordTextField,
+            passwordValidationLabel,
+            completeButton
         ])
-
+        
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.insetsLayoutMarginsFromSafeArea = true
         stackView.setCustomSpacing(25, after: titleLabel)
         stackView.setCustomSpacing(10, after: passwordTextField)
-
         return stackView
-      }()
+    }()
     
     private var creatingAccount = false {
         didSet {
-          completeButton.setNeedsUpdateConfiguration()
+            completeButton.setNeedsUpdateConfiguration()
         }
-      }
+    }
     
     let viewModel = AccountRegistrationViewModel()
     var isPasswordValid = false
@@ -126,15 +120,13 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
     private func setupView() {
         self.view.backgroundColor = ThemeColors.mainBackgroundColor
         self.view.addSubview(contentStackView)
-
+        
         constrain(contentStackView) { contentStackView in
-            
             contentStackView.top == contentStackView.superview!.top + 120
             contentStackView.leading == contentStackView.superview!.leading + 16
             contentStackView.trailing == contentStackView.superview!.trailing - 16
         }
-
-      }
+    }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         let specialCharacters = CharacterSet(charactersIn: "$@#!%*?&")
@@ -200,7 +192,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         guard self.validateForm() else { return }
         
         self.creatingAccount = true
-
+        
         UserManager.shared.createUser(with: emailTextField.text ?? "", username: usernameTextField.text ?? "", password: passwordTextField.text ?? "") { result in
             switch result {
             case .failure(let error):
@@ -211,9 +203,9 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
             }
         }
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-          self.creatingAccount = false
+            self.creatingAccount = false
         }
-      }
+    }
     
     private func makeStyledInputField() -> TextFieldWithPadding {
         let textField = TextFieldWithPadding(frame: .zero)
@@ -225,7 +217,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         return textField
-      }
+    }
 }
 
 class TextFieldWithPadding: UITextField {
