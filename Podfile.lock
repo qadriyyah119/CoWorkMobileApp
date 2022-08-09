@@ -16,7 +16,7 @@ DEPENDENCIES:
   - Alamofire
   - Cartography
   - NotificationBannerSwift
-  - RealmSwift
+  - RealmSwift (~> 10.28)
 
 SPEC REPOS:
   trunk:
@@ -37,6 +37,6 @@ SPEC CHECKSUMS:
   RealmSwift: 29bcda3a1fa5613b358bd7ec638f5e12afc89c3a
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: db305546d6b084fe4d67da87717cad6473d4cef3
+PODFILE CHECKSUM: 509ca6ab6b37b7740056f52f2f4f7cc0129e91b3
 
 COCOAPODS: 1.11.3

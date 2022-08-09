@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class User: Object {
+class User: Object, Codable {
     @Persisted(primaryKey: true) var id: String = UUID().uuidString
     @Persisted var name: String?
     @Persisted var email: String

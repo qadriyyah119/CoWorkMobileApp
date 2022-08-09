@@ -43,7 +43,7 @@ class LoginViewController: UIViewController {
         return textfield
       }()
     
-    private(set) lazy var loginButton: UIButton = {
+    private(set) lazy var signInButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = viewModel.signInButtonText
         config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
@@ -54,19 +54,19 @@ class LoginViewController: UIViewController {
           guard let self = self else { return }
           var config = button.configuration
 
-            config?.showsActivityIndicator = self.logingIn
-            config?.imagePlacement = self.logingIn ? .leading : .trailing
+            config?.showsActivityIndicator = self.signingIn
+            config?.imagePlacement = self.signingIn ? .leading : .trailing
 
-            config?.title = self.logingIn ? self.viewModel.sigingInText : self.viewModel.signInButtonText
-          button.isEnabled = !self.logingIn
+            config?.title = self.signingIn ? self.viewModel.sigingInText : self.viewModel.signInButtonText
+          button.isEnabled = !self.signingIn
 
           button.configuration = config
         }
 
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self,
-//                         action: #selector(createAccount),
-//                         for: .primaryActionTriggered)
+        button.addTarget(self,
+                         action: #selector(login),
+                         for: .primaryActionTriggered)
 
         return button
       }()
@@ -76,7 +76,7 @@ class LoginViewController: UIViewController {
           titleLabel,
           emailTextField,
           passwordTextField,
-          loginButton
+          signInButton
         ])
 
         stackView.axis = .vertical
@@ -92,9 +92,9 @@ class LoginViewController: UIViewController {
     
     let viewModel = LoginViewModel()
     
-    private var logingIn = false {
+    private var signingIn = false {
         didSet {
-          loginButton.setNeedsUpdateConfiguration()
+          signInButton.setNeedsUpdateConfiguration()
         }
       }
     
@@ -115,6 +115,25 @@ class LoginViewController: UIViewController {
         }
 
       }
+    
+    @objc func login() {
+        guard self.validateForm() else { return }
+        self.signingIn = true
+        
+        viewModel.login(withEmail: emailTextField.text ?? "", password: passwordTextField.text ?? "")
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+          self.signingIn = false
+        }
+    }
+    
+    private func validateForm() -> Bool {
+        guard let email = emailTextField.text, !email.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
+            Banner.showBanner(withTitle: "Error!", subtitle: "Please complete all fields", style: .danger)
+            return false
+        }
+
+        return true
+    }
     
     private func makeStyledInputField() -> TextFieldWithPadding {
         let textField = TextFieldWithPadding(frame: .zero)
