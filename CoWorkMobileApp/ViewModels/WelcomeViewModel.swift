@@ -10,8 +10,6 @@ import UIKit
 class WelcomeViewModel {
     
     enum LoginStrings {
-        static let signinText = "Sign In"
-        static let signingInText = "Signing In..."
         static let loginText = "LOG IN"
         static let registerText = "REGISTER"
         static let skipText = "SKIP"
