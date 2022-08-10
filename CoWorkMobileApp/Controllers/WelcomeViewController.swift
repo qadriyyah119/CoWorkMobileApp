@@ -114,5 +114,7 @@ class WelcomeViewController: UIViewController {
     
     @objc func skipButtonSelected() {
         print("Skip button selected")
+        let tabBarViewController = RootTabBarController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: tabBarViewController)
     }
 }
