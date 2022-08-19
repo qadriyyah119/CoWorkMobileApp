@@ -18,9 +18,17 @@ class Workspace: Object, Decodable {
     @Persisted var reviewCount: Int?
     @Persisted var categories: List<Category>
     @Persisted var rating: Double?
-    @Persisted var coordinates: Coordinates
+    @Persisted var coordinates: Coordinates?
     @Persisted var transactions: List<String>
-    @Persisted var location: Location
+    @Persisted var address: String?
+    @Persisted var address2: String?
+    @Persisted var address3: String?
+    @Persisted var city: String?
+    @Persisted var zipCode: String?
+    @Persisted var country: String?
+    @Persisted var state: String?
+    @Persisted var displayAddress = List<String>()
+    @Persisted var crossStreets: String?
     @Persisted var phone: String?
     @Persisted var displayPhone: String?
     @Persisted var distance: Double?
@@ -41,6 +49,15 @@ class Workspace: Object, Decodable {
         case coordinates = "coordinates"
         case transactions = "transactions"
         case location = "location"
+        case address = "address1"
+        case address2 = "address2"
+        case address3 = "address3"
+        case city = "city"
+        case zipCode = "zip_code"
+        case country = "country"
+        case state = "state"
+        case displayAddress = "display_address"
+        case crossStreets = "cross_streets"
         case phone = "phone"
         case displayPhone = "display_phone"
         case distance = "distance"
@@ -49,10 +66,11 @@ class Workspace: Object, Decodable {
         case hours = "hours"
     }
     
-    required init(from decoder: Decoder) throws {
-        super.init()
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let locationContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .location)
         
         id = try container.decode(String.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
@@ -63,9 +81,19 @@ class Workspace: Object, Decodable {
         reviewCount = try container.decodeIfPresent(Int.self, forKey: .reviewCount)
         categories = try container.decodeIfPresent(List<Category>.self, forKey: .categories) ?? List<Category>()
         rating = try container.decodeIfPresent(Double.self, forKey: .rating)
-        coordinates = try container.decode(Coordinates.self, forKey: .coordinates)
+        coordinates = try container.decodeIfPresent(Coordinates.self, forKey: .coordinates)
         transactions = try container.decodeIfPresent(List<String>.self, forKey: .transactions) ?? List<String>()
-        location = try container.decode(Location.self, forKey: .location)
+
+        address = try locationContainer.decodeIfPresent(String.self, forKey: .address)
+        address2 = try locationContainer.decodeIfPresent(String.self, forKey: .address2)
+        address3 = try locationContainer.decodeIfPresent(String.self, forKey: .address3)
+        city = try locationContainer.decodeIfPresent(String.self, forKey: .city)
+        zipCode = try locationContainer.decodeIfPresent(String.self, forKey: .zipCode)
+        country = try locationContainer.decodeIfPresent(String.self, forKey: .country)
+        state = try locationContainer.decodeIfPresent(String.self, forKey: .state)
+        displayAddress = try locationContainer.decodeIfPresent(List<String>.self, forKey: .displayAddress) ?? List<String>()
+        crossStreets = try locationContainer.decodeIfPresent(String.self, forKey: .crossStreets)
+        
         phone = try container.decodeIfPresent(String.self, forKey: .phone)
         displayPhone = try container.decodeIfPresent(String.self, forKey: .displayPhone)
         distance = try container.decodeIfPresent(Double.self, forKey: .distance)
@@ -85,18 +113,6 @@ class Coordinates: Object, Decodable {
     @Persisted var longitude: Double?
 }
 
-class Location: Object, Decodable {
-    @Persisted var address: String?
-    @Persisted var address2: String?
-    @Persisted var address3: String?
-    @Persisted var city: String?
-    @Persisted var zipCode: String?
-    @Persisted var country: String?
-    @Persisted var state: String?
-    @Persisted var displayAddress = List<String>()
-    @Persisted var crossStreets: String?
-}
-
 class WorkspaceHours: Object, Decodable {
     @Persisted var hours = List<Open>()
     @Persisted var isOpenNow: Bool = false
@@ -107,4 +123,22 @@ class Open: Object, Decodable {
     @Persisted var start: String?
     @Persisted var end: String?
     @Persisted var day: Int?
+}
+
+class WorkspaceListResults: Object, Decodable {
+    @Persisted var total: Int?
+    @Persisted var businesses: List<Workspace>
+    
+    enum CodingKeys: String, CodingKey {
+        case total = "total"
+        case businesses = "businesses"
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        total = try container.decodeIfPresent(Int.self, forKey: .total)
+        businesses = try container.decodeIfPresent(List<Workspace>.self, forKey: .businesses) ?? List<Workspace>()
+    }
 }
