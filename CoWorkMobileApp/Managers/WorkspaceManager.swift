@@ -15,16 +15,22 @@ class WorkspaceManager {
         case invalidRequest
         case invalidData
         case networkError
+        case invalidAPIKey
         case unknownError
     }
-    
-    let apiKey = "KZeMZbxJ_GU-GtyZ_AppdK82oo6k5K5hyTP5pEs4XYoP7YuZS_8N8XYlLLFq_KzXe-QYrCO9l-Fub3RkuOb0InM-Bm1259Wqc3BLpZfa5awdSFJ4Hfu0XnJd5wnXYnYx"
-    
+        
+    let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
     let url = "https://api.yelp.com/v3"
     
     static let shared = WorkspaceManager()
     
     func getWorkspaces(completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
+        
+        guard let key = apiKey, !key.isEmpty else {
+            print("API key does not exist")
+            completion(.failure(.invalidAPIKey))
+            return
+        }
         
         var urlComponents = URLComponents(string: "\(url)/businesses/search")
         urlComponents?.queryItems = [
@@ -38,7 +44,7 @@ class WorkspaceManager {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
         
         AF.request(request)
             .responseDecodable(of: WorkspaceListResults.self, decoder: JSONDecoder()) { response in

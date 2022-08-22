@@ -124,6 +124,7 @@
 		2D66088628AAB3D700C76819 /* SectionHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderSupplementaryView.swift; sourceTree = "<group>"; };
 		2D66088828AAB54C00C76819 /* WorkspaceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceManager.swift; sourceTree = "<group>"; };
 		2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListCell.swift; sourceTree = "<group>"; };
+		2D66088E28B42AE200C76819 /* APIKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKeys.xcconfig; sourceTree = "<group>"; };
 		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -162,6 +163,7 @@
 		2D0E5399289ACF0600D77978 = {
 			isa = PBXGroup;
 			children = (
+				2D66088E28B42AE200C76819 /* APIKeys.xcconfig */,
 				2D0E53A4289ACF0700D77978 /* CoWorkMobileApp */,
 				2D0E53BB289ACF0800D77978 /* CoWorkMobileAppTests */,
 				2D0E53C5289ACF0800D77978 /* CoWorkMobileAppUITests */,
@@ -674,6 +676,7 @@
 /* Begin XCBuildConfiguration section */
 		2D0E53CA289ACF0800D77978 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D66088E28B42AE200C76819 /* APIKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -735,6 +738,7 @@
 		};
 		2D0E53CB289ACF0800D77978 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D66088E28B42AE200C76819 /* APIKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
