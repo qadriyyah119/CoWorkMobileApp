@@ -12,12 +12,12 @@ import RealmSwift
 class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
-        case featured
+//        case featured
         case allResults
         
         var description: String {
             switch self {
-            case .featured: return "Featured"
+//            case .featured: return "Featured"
             case .allResults: return "All Results"
             }
         }
@@ -41,14 +41,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         setupView()
         configureDataSource()
         
-        WorkspaceManager.shared.getWorkspaces { result in
-            switch result {
-            case .success:
-                print("WORKSPACE SUCCESS")
-            case .failure:
-                print("WORKSPACE ERROR")
-            }
-        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getWorkspaceList()
+        self.setupRealmDataSource()
     }
     
     private func setupView() {
@@ -68,7 +66,24 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupRealmDataSource() {
+        let realm = try? Realm()
+        self.workspaceResults = realm?.objects(Workspace.self)
         
+        workspaceNotificationToken = workspaceResults?.observe { [weak self] changes in
+            guard let self = self else { return }
+            switch changes {
+            case .initial(let workspaces):
+                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
+                self.workspaceListItems = Array(workspaceListItems)
+                self.applySectionSnapshot(items: self.workspaceListItems, section: .allResults, animate: true)
+            case .update(let workspaces, _, _, _):
+                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
+                self.workspaceListItems = Array(workspaceListItems)
+                self.applySectionSnapshot(items: self.workspaceListItems, section: .allResults, animate: true)
+            case .error(let error):
+                print(error)
+            }
+        }
     }
     
     private func configureLayout() -> UICollectionViewLayout {
@@ -79,32 +94,33 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             guard let section = Section(rawValue: sectionIndex) else { return nil }
             
             switch section {
-            case .featured:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-                
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalWidth(0.5))
-                
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 5)
-                
-                let headerLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0))
-                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize, elementKind: SectionHeaderSupplementaryView.identifier, alignment: .topLeading)
-                
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .groupPaging
-                section.boundarySupplementaryItems = [sectionHeader]
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-                
-                return section
+//            case .featured:
+//                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+//                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+//
+//                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalWidth(0.5))
+//
+//                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 5)
+//
+//                let headerLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0))
+//                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize, elementKind: SectionHeaderSupplementaryView.identifier, alignment: .topLeading)
+//
+//                let section = NSCollectionLayoutSection(group: group)
+//                section.orthogonalScrollingBehavior = .groupPaging
+//                section.boundarySupplementaryItems = [sectionHeader]
+//                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+//
+//                return section
             case .allResults:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalWidth(0.35))
+                let groupHeight = NSCollectionLayoutDimension.estimated(275)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 5)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 
                 let headerLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0))
                 let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize, elementKind: SectionHeaderSupplementaryView.identifier, alignment: .topLeading)
@@ -124,7 +140,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             cell.workspaceId = item.workspaceId
         }
         
-        let sectionHeaderRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderSupplementaryView>(elementKind: "Header") { supplementaryView, elementKind, indexPath in
+        let sectionHeaderRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderSupplementaryView>(elementKind: SectionHeaderSupplementaryView.identifier) { supplementaryView, elementKind, indexPath in
             let section = Section(rawValue: indexPath.section)
             supplementaryView.updateLabel(withText: section?.description ?? "")
         }
@@ -134,8 +150,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             
             switch section {
-            case .featured:
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+//            case .featured:
+//                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
             case .allResults:
                 return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
             }
@@ -153,6 +169,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         snapshot.append(items)
         diffableDataSource.apply(snapshot, to: section, animatingDifferences: animate)
     }
+
 }
 
 extension SearchViewController {

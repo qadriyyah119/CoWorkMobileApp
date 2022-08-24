@@ -24,7 +24,9 @@ class WorkspaceManager {
     
     static let shared = WorkspaceManager()
     
-    func getWorkspaces(completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
+    func getWorkspaces(forSearchTerm term: String = "coffee+shop",
+                       location: String = "20774",
+                       completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
         
         guard let key = apiKey, !key.isEmpty else {
             print("API key does not exist")
@@ -34,8 +36,8 @@ class WorkspaceManager {
         
         var urlComponents = URLComponents(string: "\(url)/businesses/search")
         urlComponents?.queryItems = [
-            URLQueryItem(name: "term", value: "coffee+shop"),
-            URLQueryItem(name: "location", value: "20774")
+            URLQueryItem(name: "term", value: term),
+            URLQueryItem(name: "location", value: location)
         ]
         
         guard let url = urlComponents?.url else {

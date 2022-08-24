@@ -17,7 +17,7 @@ class SearchContentView: UIView, UIContentView {
                 nameLabel.text = workspace.name
                 distanceLabel.text = "\(workspace.distance ?? 100)"
                 ratingLabel.text = "\(workspace.rating ?? 4.0)"
-                reviewCountLabel.text = "\((workspace.reviewCount) ?? 105)"
+                reviewCountLabel.text = "(\((workspace.reviewCount) ?? 105))"
             }
         }
     }
@@ -56,7 +56,7 @@ class SearchContentView: UIView, UIContentView {
     
     private let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        button.setImage(UIImage(systemName: "bookmark.circle"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.sizeToFit()
         return button
@@ -66,7 +66,8 @@ class SearchContentView: UIView, UIContentView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.numberOfLines = 1
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 16)
         return label
     }()
@@ -87,10 +88,20 @@ class SearchContentView: UIView, UIContentView {
         ])
         
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.insetsLayoutMarginsFromSafeArea = true
         return stackView
+    }()
+    
+    private lazy var ratingStar: UIImageView = {
+        let imageSize = UIFont.systemFont(ofSize: 14)
+        let config = UIImage.SymbolConfiguration(font: imageSize)
+        let image = UIImage(systemName: "star.fill", withConfiguration: config)
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = .white
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     private lazy var ratingLabel: UILabel = {
@@ -107,18 +118,19 @@ class SearchContentView: UIView, UIContentView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
         label.numberOfLines = 1
-        label.font = UIFont(name: ThemeFonts.bodyFontThin, size: 14)
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
         return label
     }()
     
     private lazy var ratingStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
+            ratingStar,
             ratingLabel,
             reviewCountLabel
         ])
         
         stackView.axis = .horizontal
-        stackView.spacing = 8
+        stackView.spacing = 4
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.insetsLayoutMarginsFromSafeArea = true
@@ -173,13 +185,14 @@ class SearchContentView: UIView, UIContentView {
         constrain(contentView, spaceImageView, nameStackView, ratingStackView) { contentView, spaceImageView, nameStackView, ratingStackView in
             contentView.edges == contentView.superview!.edges
             spaceImageView.top == spaceImageView.superview!.top
-            spaceImageView.leading == spaceImageView.superview!.leading
-            spaceImageView.trailing == spaceImageView.superview!.trailing
+            spaceImageView.leading == spaceImageView.superview!.leading + 4
+            spaceImageView.trailing == spaceImageView.superview!.trailing - 4
             spaceImageView.bottom == nameStackView.top - 16
-            nameStackView.leading == nameStackView.superview!.leading
+            nameStackView.leading == nameStackView.superview!.leading + 8
             nameStackView.bottom == nameStackView.superview!.bottom
-            ratingStackView.trailing == ratingStackView.superview!.trailing
+            ratingStackView.trailing == ratingStackView.superview!.trailing - 8
+            ratingStackView.top == nameStackView.top
+            
         }
-        
     }
 }

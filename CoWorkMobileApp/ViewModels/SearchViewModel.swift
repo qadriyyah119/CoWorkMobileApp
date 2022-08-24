@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class SearchViewModel {
     enum SearchStrings {
         static let titleText = "Explore"
-        
     }
+    
+    var workspaces: [Workspace] = []
     
     let titleText: String = SearchStrings.titleText
     
@@ -23,4 +25,18 @@ class SearchViewModel {
         label.font = UIFont(name: ThemeFonts.headerFont, size: 37)
         return label
     }()
+    
+    func getWorkspaceList() {
+        WorkspaceManager.shared.getWorkspaces { result in
+            switch result {
+            case .success(let workspaces):
+                let realm = try? Realm()
+                try? realm?.write({
+                    realm?.add(workspaces, update: .modified)
+                })
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }

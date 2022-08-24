@@ -35,6 +35,7 @@ class SectionHeaderSupplementaryView: UICollectionReusableView {
         constrain(titleLabel) {titleLabel in
             titleLabel.leading == titleLabel.superview!.leading + 16
             titleLabel.trailing == titleLabel.superview!.trailing - 16
+            titleLabel.bottom == titleLabel.superview!.bottom
         }
     }
     
