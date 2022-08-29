@@ -12,12 +12,10 @@ import RealmSwift
 class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
-//        case featured
         case allResults
         
         var description: String {
             switch self {
-//            case .featured: return "Featured"
             case .allResults: return "All Results"
             }
         }
@@ -36,6 +34,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     let viewModel = SearchViewModel()
     
+    let searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search for Workspaces"
+        searchController.searchBar.searchBarStyle = .default
+        searchController.searchBar.searchTextField.backgroundColor = .white
+        searchController.obscuresBackgroundDuringPresentation = false
+        return searchController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -50,8 +57,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     private func setupView() {
         setupGradient()
-//        setupClearNavBar()
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: viewModel.titleLabel)
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        self.setNavigationTitle()
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = .clear
         self.collectionView = collectionView
@@ -62,6 +71,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         constrain(collectionView) { collectionView in
             collectionView.edges == collectionView.superview!.edges
         }
+        
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.searchBar.delegate = self
+    }
+    
+    private func setNavigationTitle() {
+      // Will set title based on current location or searched location here
+      self.navigationItem.title = "Washington, DC"
     }
     
     private let cellRegistration = UICollectionView.CellRegistration<WorkspaceListCell, WorkspaceItem> { cell, indexPath, item in
@@ -80,8 +98,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             
             switch section {
-//            case .featured:
-//                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+
             case .allResults:
                 return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: itemIdentifier)
             }
@@ -123,24 +140,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             guard let section = Section(rawValue: sectionIndex) else { return nil }
             
             switch section {
-//            case .featured:
-//                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-//                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-//
-//                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalWidth(0.5))
-//
-//                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 5)
-//
-//                let headerLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0))
-//                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize, elementKind: SectionHeaderSupplementaryView.identifier, alignment: .topLeading)
-//
-//                let section = NSCollectionLayoutSection(group: group)
-//                section.orthogonalScrollingBehavior = .groupPaging
-//                section.boundarySupplementaryItems = [sectionHeader]
-//                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-//
-//                return section
+
             case .allResults:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -173,12 +173,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
 }
 
 extension SearchViewController {
-    func setupClearNavBar() {
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.barTintColor = .clear
-        navigationController?.navigationBar.isTranslucent = true
-    }
     
     func setupGradient() {
         lazy var gradient: CAGradientLayer = {
@@ -196,4 +190,8 @@ extension SearchViewController {
         gradient.frame = view.bounds
         self.view.layer.addSublayer(gradient)
     }
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    
 }
