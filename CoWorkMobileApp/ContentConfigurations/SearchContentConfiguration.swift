@@ -7,14 +7,14 @@
 
 import UIKit
 
-struct SearchContentConfiguration: UIContentConfiguration, Hashable {
+public struct SearchContentConfiguration: UIContentConfiguration {
     var workspaceId: String?
     
-    func makeContentView() -> UIView & UIContentView {
+    public func makeContentView() -> UIView & UIContentView {
         return SearchContentView(configuration: self)
     }
     
-    func updated(for state: UIConfigurationState) -> SearchContentConfiguration {
+    public func updated(for state: UIConfigurationState) -> SearchContentConfiguration {
         return self
     }
 

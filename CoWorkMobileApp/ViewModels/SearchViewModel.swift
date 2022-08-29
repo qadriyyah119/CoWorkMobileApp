@@ -13,6 +13,18 @@ class SearchViewModel {
         static let titleText = "Explore"
     }
     
+    enum Section: Int, CaseIterable, CustomStringConvertible {
+//        case featured
+        case allResults
+        
+        var description: String {
+            switch self {
+//            case .featured: return "Featured"
+            case .allResults: return "All Results"
+            }
+        }
+    }
+    
     var workspaces: [Workspace] = []
     
     let titleText: String = SearchStrings.titleText
@@ -30,10 +42,12 @@ class SearchViewModel {
         WorkspaceManager.shared.getWorkspaces { result in
             switch result {
             case .success(let workspaces):
-                let realm = try? Realm()
-                try? realm?.write({
-                    realm?.add(workspaces, update: .modified)
-                })
+                print("Success!")
+                self.workspaces = Array(workspaces)
+//                let realm = try? Realm()
+//                try? realm?.write({
+//                    realm?.add(workspaces, update: .modified)
+//                })
             case .failure(let error):
                 print(error)
             }

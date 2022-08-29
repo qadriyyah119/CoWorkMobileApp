@@ -53,10 +53,37 @@ class WorkspaceManager {
                 switch response.result {
                 case .success(let workspace):
                     let spaces = workspace.businesses
+                    print(spaces[0])
+                    let realm = try? Realm()
+                    try? realm?.write({
+                        realm?.add(spaces, update: .modified)
+                    })
                     completion(.success(spaces))
                 case .failure:
                     completion(.failure(.invalidData))
                 }
             }
     }
+    
+    func fetchImage(from urlString: String, completion: @escaping(Result<UIImage?, AuthError>) -> Void) {
+        let session = URLSession(configuration: .default)
+        
+        guard let imageUrl = URL(string: urlString) else {
+            return completion(.failure(.invalidRequest))
+        }
+        
+        let dataTask = session.dataTask(with: imageUrl) { data, response, error in
+            guard error == nil else {
+                print("Image Network Error!")
+                return completion(.failure(.networkError))
+            }
+            
+            guard let data = data else {
+                return completion(.failure(.invalidData))
+            }
+            completion(.success(UIImage(data: data)))
+        }
+        dataTask.resume()
+    }
+    
 }

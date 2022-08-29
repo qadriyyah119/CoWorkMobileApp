@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RootTabBarController: RoundedUITabBarViewController, UITabBarControllerDelegate {
+class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     let viewModel = RootTabBarViewModel()
     
@@ -17,6 +17,9 @@ class RootTabBarController: RoundedUITabBarViewController, UITabBarControllerDel
     }
     
     private func setupView() {
+        let appearance = UITabBarAppearance()
+        self.tabBar.standardAppearance = appearance
+        self.tabBar.tintColor = ThemeColors.tintColor
         self.setViewControllers([searchVC, collectionsVC, profileVC], animated: false)
         self.delegate = self
     }

@@ -11,16 +11,7 @@ import RealmSwift
 
 class SearchContentView: UIView, UIContentView {
     
-    private(set) var workspace: Workspace? {
-        didSet {
-            if let workspace = workspace {
-                nameLabel.text = workspace.name
-                distanceLabel.text = "\(workspace.distance ?? 100)"
-                ratingLabel.text = "\(workspace.rating ?? 4.0)"
-                reviewCountLabel.text = "(\((workspace.reviewCount) ?? 105))"
-            }
-        }
-    }
+    var viewModel = SearchVModel()
     
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
@@ -39,7 +30,8 @@ class SearchContentView: UIView, UIContentView {
     }()
     
     private(set) lazy var spaceImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: .zero)
+        imageView.image = viewModel.workspaceImage
         imageView.backgroundColor = .blue
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
@@ -57,6 +49,7 @@ class SearchContentView: UIView, UIContentView {
     private let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "bookmark.circle"), for: .normal)
+        button.tintColor = UIColor.white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.sizeToFit()
         return button
@@ -65,6 +58,7 @@ class SearchContentView: UIView, UIContentView {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.nameText
         label.textAlignment = .left
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
@@ -75,6 +69,7 @@ class SearchContentView: UIView, UIContentView {
     private lazy var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.distanceText
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
@@ -107,6 +102,7 @@ class SearchContentView: UIView, UIContentView {
     private lazy var ratingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.ratingText
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 14)
@@ -116,6 +112,7 @@ class SearchContentView: UIView, UIContentView {
     private lazy var reviewCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = viewModel.reviewCountText
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
@@ -146,7 +143,7 @@ class SearchContentView: UIView, UIContentView {
     private var currentConfiguration: SearchContentConfiguration!
     var configuration: UIContentConfiguration {
         get {
-            currentConfiguration
+            return currentConfiguration
         } set {
             guard let newConfiguration = newValue as? SearchContentConfiguration else {
                 return
@@ -158,7 +155,6 @@ class SearchContentView: UIView, UIContentView {
     init(configuration: SearchContentConfiguration) {
         super.init(frame: .zero)
         self.configuration = configuration
-        setupView()
     }
 
     required init?(coder: NSCoder) {
@@ -170,12 +166,12 @@ class SearchContentView: UIView, UIContentView {
         self.currentConfiguration = configuration
         
         guard let workspaceId = currentConfiguration.workspaceId else { return }
-        self.fill(withWorkspaceId: workspaceId)
-    }
-    
-    private func fill(withWorkspaceId id: String) {
-        let realm = try? Realm()
-        self.workspace = realm?.object(ofType: Workspace.self, forPrimaryKey: id)
+        viewModel.workspaceImageCompletion = { image in
+            self.spaceImageView.image = image
+        }
+        viewModel.fill(withWorkspaceId: workspaceId) {
+            self.setupView()
+        }
     }
     
     private func setupView() {

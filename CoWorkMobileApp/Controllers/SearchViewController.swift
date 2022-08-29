@@ -40,7 +40,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         setupView()
         configureDataSource()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,8 +50,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     private func setupView() {
         setupGradient()
-        setupClearNavBar()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: viewModel.titleLabel)
+//        setupClearNavBar()
+//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: viewModel.titleLabel)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = .clear
         self.collectionView = collectionView
@@ -65,21 +64,51 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         }
     }
     
+    private let cellRegistration = UICollectionView.CellRegistration<WorkspaceListCell, WorkspaceItem> { cell, indexPath, item in
+        cell.workspaceId = item.workspaceId
+    }
+    
+    private let sectionHeaderRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderSupplementaryView>(elementKind: SectionHeaderSupplementaryView.identifier) { supplementaryView, elementKind, indexPath in
+        let section = Section(rawValue: indexPath.section)
+        supplementaryView.updateLabel(withText: section?.description ?? "")
+    }
+    
+    private func configureDataSource() {
+        
+        self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
+    
+            guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
+            
+            switch section {
+//            case .featured:
+//                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+            case .allResults:
+                return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: itemIdentifier)
+            }
+        }
+        
+        diffableDataSource.supplementaryViewProvider = { [weak self] view, kind, indexPath in
+            guard let strongSelf = self else { return UICollectionViewCell() }
+            
+            return strongSelf.collectionView.dequeueConfiguredReusableSupplementary(using: strongSelf.sectionHeaderRegistration, for: indexPath)
+        }
+    }
+    
     private func setupRealmDataSource() {
         let realm = try? Realm()
         self.workspaceResults = realm?.objects(Workspace.self)
-        
-        workspaceNotificationToken = workspaceResults?.observe { [weak self] changes in
-            guard let self = self else { return }
+            
+        self.workspaceNotificationToken = self.workspaceResults?.observe { [weak self] changes in
+            guard let strongSelf = self else { return }
             switch changes {
             case .initial(let workspaces):
                 let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
-                self.workspaceListItems = Array(workspaceListItems)
-                self.applySectionSnapshot(items: self.workspaceListItems, section: .allResults, animate: true)
+                strongSelf.workspaceListItems = Array(workspaceListItems)
+                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
             case .update(let workspaces, _, _, _):
                 let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
-                self.workspaceListItems = Array(workspaceListItems)
-                self.applySectionSnapshot(items: self.workspaceListItems, section: .allResults, animate: true)
+                strongSelf.workspaceListItems = Array(workspaceListItems)
+                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
             case .error(let error):
                 print(error)
             }
@@ -133,35 +162,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             }
         }, configuration: configuration)
         return layout
-    }
-    
-    private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<WorkspaceListCell, WorkspaceItem> { cell, indexPath, item in
-            cell.workspaceId = item.workspaceId
-        }
-        
-        let sectionHeaderRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderSupplementaryView>(elementKind: SectionHeaderSupplementaryView.identifier) { supplementaryView, elementKind, indexPath in
-            let section = Section(rawValue: indexPath.section)
-            supplementaryView.updateLabel(withText: section?.description ?? "")
-        }
-        
-        self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
-    
-            guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
-            
-            switch section {
-//            case .featured:
-//                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
-            case .allResults:
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
-            }
-        }
-        
-        diffableDataSource.supplementaryViewProvider = { [weak self] view, kind, indexPath in
-            guard let strongSelf = self else { return UICollectionViewCell() }
-            
-            return strongSelf.collectionView.dequeueConfiguredReusableSupplementary(using: sectionHeaderRegistration, for: indexPath)
-        }
     }
     
     private func applySectionSnapshot(items: [WorkspaceItem] = [], section: Section, animate: Bool = false) {
