@@ -33,7 +33,6 @@ class HeaderView: UICollectionReusableView {
         self.addSubview(titleLabel)
         
         constrain(titleLabel) {titleLabel in
-//            titleLabel.top == titleLabel.superview!.top + 120
             titleLabel.leading == titleLabel.superview!.leading + 16
             titleLabel.trailing == titleLabel.superview!.trailing - 16
         }
