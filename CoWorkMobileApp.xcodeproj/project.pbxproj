@@ -36,6 +36,12 @@
 		2D66086828A2D3F800C76819 /* WelcomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */; };
 		2D66086A28A2DAC200C76819 /* AccountRegistrationViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086928A2DAC200C76819 /* AccountRegistrationViewModelTest.swift */; };
 		2D66086C28A2E07700C76819 /* LoginViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086B28A2E07700C76819 /* LoginViewModelTest.swift */; };
+		2D66086E28A40C6E00C76819 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086D28A40C6E00C76819 /* SearchViewController.swift */; };
+		2D66087028A40D1100C76819 /* CollectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086F28A40D1100C76819 /* CollectionsViewController.swift */; };
+		2D66087228A40D9800C76819 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66087128A40D9800C76819 /* UserProfileViewController.swift */; };
+		2D66087428A4107600C76819 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66087328A4107600C76819 /* RootTabBarController.swift */; };
+		2D66087628A4186B00C76819 /* RootTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66087528A4186B00C76819 /* RootTabBarViewModel.swift */; };
+		2D66087828A44FD200C76819 /* RoundedUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66087728A44FD200C76819 /* RoundedUITabBarController.swift */; };
 		639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */; };
 		BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */; };
@@ -96,6 +102,12 @@
 		2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModelTest.swift; sourceTree = "<group>"; };
 		2D66086928A2DAC200C76819 /* AccountRegistrationViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewModelTest.swift; sourceTree = "<group>"; };
 		2D66086B28A2E07700C76819 /* LoginViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTest.swift; sourceTree = "<group>"; };
+		2D66086D28A40C6E00C76819 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		2D66086F28A40D1100C76819 /* CollectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsViewController.swift; sourceTree = "<group>"; };
+		2D66087128A40D9800C76819 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		2D66087328A4107600C76819 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
+		2D66087528A4186B00C76819 /* RootTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarViewModel.swift; sourceTree = "<group>"; };
+		2D66087728A44FD200C76819 /* RoundedUITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedUITabBarController.swift; sourceTree = "<group>"; };
 		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -202,6 +214,10 @@
 				2D0E53A9289ACF0700D77978 /* WelcomeViewController.swift */,
 				2D4207D0289B181100F82B1F /* AccountRegistrationViewController.swift */,
 				2D4207D628A1726100F82B1F /* LoginViewController.swift */,
+				2D66086D28A40C6E00C76819 /* SearchViewController.swift */,
+				2D66086F28A40D1100C76819 /* CollectionsViewController.swift */,
+				2D66087128A40D9800C76819 /* UserProfileViewController.swift */,
+				2D66087328A4107600C76819 /* RootTabBarController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -212,6 +228,7 @@
 				2D4207C1289B05E800F82B1F /* WelcomeViewModel.swift */,
 				2D4207C3289B146700F82B1F /* AccountRegistrationViewModel.swift */,
 				2D4207D828A172E500F82B1F /* LoginViewModel.swift */,
+				2D66087528A4186B00C76819 /* RootTabBarViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -225,6 +242,7 @@
 				2D4207CC289B178C00F82B1F /* AlertingViewController.swift */,
 				2D4207CE289B17B300F82B1F /* UITextFieldExtension.swift */,
 				2D4207D4289B41A100F82B1F /* NotificationBanner.swift */,
+				2D66087728A44FD200C76819 /* RoundedUITabBarController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -527,10 +545,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
+				2D66087428A4107600C76819 /* RootTabBarController.swift in Sources */,
 				2D4207D1289B181200F82B1F /* AccountRegistrationViewController.swift in Sources */,
+				2D66087228A40D9800C76819 /* UserProfileViewController.swift in Sources */,
 				2D4207CF289B17B300F82B1F /* UITextFieldExtension.swift in Sources */,
+				2D66086E28A40C6E00C76819 /* SearchViewController.swift in Sources */,
+				2D66087628A4186B00C76819 /* RootTabBarViewModel.swift in Sources */,
 				2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */,
 				2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */,
+				2D66087828A44FD200C76819 /* RoundedUITabBarController.swift in Sources */,
 				2D4207C9289B168100F82B1F /* AuthManager.swift in Sources */,
 				2D4207C2289B05E800F82B1F /* WelcomeViewModel.swift in Sources */,
 				2D0E53AA289ACF0700D77978 /* WelcomeViewController.swift in Sources */,
@@ -541,6 +564,7 @@
 				2D0E53A8289ACF0700D77978 /* SceneDelegate.swift in Sources */,
 				2D4207CD289B178C00F82B1F /* AlertingViewController.swift in Sources */,
 				2D4207CB289B16EC00F82B1F /* UserManager.swift in Sources */,
+				2D66087028A40D1100C76819 /* CollectionsViewController.swift in Sources */,
 				2D4207C4289B146700F82B1F /* AccountRegistrationViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
