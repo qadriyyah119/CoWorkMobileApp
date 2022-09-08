@@ -10,13 +10,43 @@ import XCTest
 
 class LoginViewModelTest: XCTestCase {
     
-    func testLoginViewText() {
-        let viewModel = LoginViewModel()
-        
-        XCTAssertEqual(viewModel.titleText, "Log In")
-        XCTAssertEqual(viewModel.emailPlaceholderText, "email")
-        XCTAssertEqual(viewModel.passwordPlaceholderText, "password")
-        XCTAssertEqual(viewModel.signInButtonText, "SIGN IN")
-        XCTAssertEqual(viewModel.sigingInText, "SIGNING IN...")
+    var viewModel: LoginViewModel!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        viewModel = LoginViewModel()
     }
+    
+    override func tearDownWithError() throws {
+        viewModel = nil
+        try super.tearDownWithError()
+    }
+    
+    // MARK: Initial State
+    
+    func testLoginView_whenCreated_titleLabelText() {
+        let text = viewModel.titleText
+        XCTAssertEqual(text, "Log In")
+    }
+    
+    func testLoginView_whenCreated_emailPlaceholderText() {
+        let text = viewModel.emailPlaceholderText
+        XCTAssertEqual(text, "email")
+    }
+    
+    func testLoginView_whenCreated_passwordPlaceholderText() {
+        let text = viewModel.passwordPlaceholderText
+        XCTAssertEqual(text, "password")
+    }
+    
+    func testLoginView_whenCreated_signInButtonText() {
+        let text = viewModel.signInButtonText
+        XCTAssertEqual(text, "SIGN IN")
+    }
+    
+    func testLoginView_whenCreated_sigingInText() {
+        let text = viewModel.sigingInText
+        XCTAssertEqual(text, "SIGNING IN...")
+    }
+
 }

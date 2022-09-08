@@ -81,7 +81,7 @@ class LoginViewController: UIViewController {
     
     let viewModel = LoginViewModel()
     
-    private var signingIn = false {
+    var signingIn = false {
         didSet {
             signInButton.setNeedsUpdateConfiguration()
         }

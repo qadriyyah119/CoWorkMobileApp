@@ -158,7 +158,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         }
     }
     
-    func findRange(in baseString: String, for subString: String) -> NSRange {
+    private func findRange(in baseString: String, for subString: String) -> NSRange {
         if let range = baseString.localizedStandardRange(of: subString) {
             let startIndex = baseString.distance(from: baseString.startIndex, to: range.lowerBound)
             let length = subString.count
