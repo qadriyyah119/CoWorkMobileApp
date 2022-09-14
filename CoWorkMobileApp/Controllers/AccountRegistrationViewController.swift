@@ -103,7 +103,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         return stackView
     }()
     
-    private var creatingAccount = false {
+    var creatingAccount = false {
         didSet {
             completeButton.setNeedsUpdateConfiguration()
         }

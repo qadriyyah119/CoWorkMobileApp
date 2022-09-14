@@ -22,6 +22,9 @@ class AccountRegistrationViewControllerTest: XCTestCase {
         try super.tearDownWithError()
     }
     
+    // MARK: Given
+
+    
     // MARK: Initial
     
     func testAccountRegistrationViewController_whenLaunched_passwordShouldBeInvalid() {
@@ -30,16 +33,6 @@ class AccountRegistrationViewControllerTest: XCTestCase {
     
     // MARK: Form Validation
     
-//    func testAccountRegistrationViewController_whenCompleteButtonTapped_buttonTextIsUpdated() {
-//        let exp = expectation(description: "button title changed")
-//        let observer = ButtonObserver()
-//        observer.observe(viewController.completeButton, expectation: exp)
-//        
-//        viewController.createAccount()
-//        
-//        waitForExpectations(timeout: 1)
-//        let text = viewController.completeButton.configuration?.title
-//        XCTAssertEqual(text, AccountRegistrationViewModel.RegisterStrings.registeringText)
-//    }
 
 }
+

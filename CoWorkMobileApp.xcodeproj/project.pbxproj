@@ -35,7 +35,6 @@
 		2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D828A172E500F82B1F /* LoginViewModel.swift */; };
 		2D64F90B28CA4AF00092C479 /* LoginViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90A28CA4AF00092C479 /* LoginViewControllerTest.swift */; };
 		2D64F90D28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90C28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift */; };
-		2D64F91028CA59C20092C479 /* ButtonObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90F28CA59C20092C479 /* ButtonObserver.swift */; };
 		2D66086828A2D3F800C76819 /* WelcomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */; };
 		2D66086A28A2DAC200C76819 /* AccountRegistrationViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086928A2DAC200C76819 /* AccountRegistrationViewModelTest.swift */; };
 		2D66086C28A2E07700C76819 /* LoginViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086B28A2E07700C76819 /* LoginViewModelTest.swift */; };
@@ -114,7 +113,6 @@
 		2D4207D828A172E500F82B1F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		2D64F90A28CA4AF00092C479 /* LoginViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTest.swift; sourceTree = "<group>"; };
 		2D64F90C28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewControllerTest.swift; sourceTree = "<group>"; };
-		2D64F90F28CA59C20092C479 /* ButtonObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonObserver.swift; sourceTree = "<group>"; };
 		2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModelTest.swift; sourceTree = "<group>"; };
 		2D66086928A2DAC200C76819 /* AccountRegistrationViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewModelTest.swift; sourceTree = "<group>"; };
 		2D66086B28A2E07700C76819 /* LoginViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTest.swift; sourceTree = "<group>"; };
@@ -316,7 +314,6 @@
 		2D64F90E28CA59A90092C479 /* Test Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2D64F90F28CA59C20092C479 /* ButtonObserver.swift */,
 			);
 			path = "Test Classes";
 			sourceTree = "<group>";
@@ -666,7 +663,6 @@
 				2D64F90B28CA4AF00092C479 /* LoginViewControllerTest.swift in Sources */,
 				2D66086C28A2E07700C76819 /* LoginViewModelTest.swift in Sources */,
 				2D0E53BD289ACF0800D77978 /* CoWorkMobileAppTests.swift in Sources */,
-				2D64F91028CA59C20092C479 /* ButtonObserver.swift in Sources */,
 				2D66086828A2D3F800C76819 /* WelcomeViewModelTest.swift in Sources */,
 				2D66089228BE9DE400C76819 /* RootTabBarViewModelTest.swift in Sources */,
 				2D64F90D28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift in Sources */,
