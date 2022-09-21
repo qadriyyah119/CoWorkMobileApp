@@ -10,7 +10,7 @@ import XCTest
 
 class AccountRegistrationViewControllerTest: XCTestCase {
     
-    var viewController: AccountRegistrationViewController!
+    private var viewController: AccountRegistrationViewController!
 
     override func setUpWithError() throws {
        try super.setUpWithError()

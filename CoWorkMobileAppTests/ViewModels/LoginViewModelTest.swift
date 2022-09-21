@@ -10,7 +10,7 @@ import XCTest
 
 class LoginViewModelTest: XCTestCase {
     
-    var viewModel: LoginViewModel!
+    private var viewModel: LoginViewModel!
     
     override func setUpWithError() throws {
         try super.setUpWithError()

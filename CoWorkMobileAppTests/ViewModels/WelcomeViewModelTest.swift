@@ -10,7 +10,7 @@ import XCTest
 
 class WelcomeViewModelTest: XCTestCase {
     
-    var viewModel: WelcomeViewModel!
+    private var viewModel: WelcomeViewModel!
     
     override func setUpWithError() throws {
         try super.setUpWithError()

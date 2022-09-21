@@ -10,7 +10,7 @@ import XCTest
 
 class RootTabBarViewModelTest: XCTestCase {
     
-    var viewModel: RootTabBarViewModel!
+    private var viewModel: RootTabBarViewModel!
     
     override func setUpWithError() throws {
         try super.setUpWithError()

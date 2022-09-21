@@ -10,7 +10,7 @@ import XCTest
 
 class AccountRegistrationViewModelTest: XCTestCase {
     
-    var viewModel: AccountRegistrationViewModel!
+    private var viewModel: AccountRegistrationViewModel!
     
     override func setUpWithError() throws {
         try super.setUpWithError()

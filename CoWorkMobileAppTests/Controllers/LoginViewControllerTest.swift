@@ -10,7 +10,7 @@ import XCTest
 
 class LoginViewControllerTest: XCTestCase {
     
-    var viewController: LoginViewController!
+    private var viewController: LoginViewController!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
