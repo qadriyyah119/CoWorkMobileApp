@@ -41,16 +41,16 @@ class RoundedUITabBarViewController: UITabBarController {
         self.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         self.tabBar.tintColor = ThemeColors.tintColor
         self.tabBar.unselectedItemTintColor = UIColor.white
+//        let appearance = self.tabBar.standardAppearance
+//        appearance.shadowImage = nil
+//        appearance.shadowColor = nil
         
-        if #available(iOS 13.0, *) {
-            let appearance = self.tabBar.standardAppearance
-            appearance.shadowImage = nil
-            appearance.shadowColor = nil
-            self.tabBar.standardAppearance = appearance
-        } else {
-            self.tabBar.shadowImage = UIImage()
-            self.tabBar.backgroundImage = UIImage()
-        }
+        let tabAppearance = UITabBarAppearance()
+        tabAppearance.configureWithDefaultBackground()
+        tabAppearance.backgroundColor = ThemeColors.secondaryColor
+
+        self.tabBar.standardAppearance = tabAppearance
+        self.tabBar.scrollEdgeAppearance = tabAppearance
     }
     
     private func addCustomTabBarView() {
