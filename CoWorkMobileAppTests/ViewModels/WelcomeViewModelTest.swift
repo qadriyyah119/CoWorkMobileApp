@@ -10,12 +10,38 @@ import XCTest
 
 class WelcomeViewModelTest: XCTestCase {
     
-    func testWelcomeViewText() {
-        let viewModel = WelcomeViewModel()
-        
-        XCTAssertEqual(viewModel.loginButtonText, "LOG IN")
-        XCTAssertEqual(viewModel.registerButtonText, "REGISTER")
-        XCTAssertEqual(viewModel.skipButtonText, "SKIP")
-        XCTAssertEqual(viewModel.logo, UIImage(imageLiteralResourceName: "Logo"))
+    private var viewModel: WelcomeViewModel!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        viewModel = WelcomeViewModel()
     }
+    
+    override func tearDownWithError() throws {
+        viewModel = nil
+        try super.tearDownWithError()
+    }
+    
+    // MARK: - Initial State
+    
+    func testWelcomeView_whenCreated_loginButtonLabelText() {
+        let text = viewModel.loginButtonText
+        XCTAssertEqual(text, "LOG IN")
+    }
+    
+    func testWelcomeView_whenCreated_registerButtonLabelText() {
+        let text = viewModel.registerButtonText
+        XCTAssertEqual(text, "REGISTER")
+    }
+    
+    func testWelcomeView_whenCreated_skipButtonLabelText() {
+        let text = viewModel.skipButtonText
+        XCTAssertEqual(text, "SKIP")
+    }
+    
+    func testWelcomeView_whenCreated_logoImage() {
+        let logo = viewModel.logo
+        XCTAssertEqual(logo, UIImage(imageLiteralResourceName: "Logo"))
+    }
+
 }

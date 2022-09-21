@@ -25,16 +25,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         var workspaceId: String?
     }
     
-    private var collectionView: UICollectionView!
+    private(set) var collectionView: UICollectionView!
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
     
     private var workspaceListItems: [WorkspaceItem] = []
     private var workspaceNotificationToken: NotificationToken?
     private var workspaceResults: Results<Workspace>?
     
-    let viewModel = SearchViewModel()
+    lazy var viewModel = SearchViewModel()
     
-    let searchController: UISearchController = {
+    lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "Search for Workspaces"
         searchController.searchBar.searchBarStyle = .default
@@ -51,8 +51,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getWorkspaceList()
         self.setupRealmDataSource()
+        viewModel.getWorkspaceList()
     }
     
     private func setupView() {
@@ -61,7 +61,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         self.setNavigationTitle()
         
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
+        lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = .clear
         self.collectionView = collectionView
         self.collectionView.delegate = self
@@ -92,13 +92,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func configureDataSource() {
-        
         self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
-    
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
-            
             switch section {
-
             case .allResults:
                 return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: itemIdentifier)
             }

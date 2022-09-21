@@ -11,7 +11,7 @@ import RealmSwift
 
 class SearchContentView: UIView, UIContentView {
     
-    var viewModel = SearchVModel()
+    private var viewModel = SearchVModel()
     
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
