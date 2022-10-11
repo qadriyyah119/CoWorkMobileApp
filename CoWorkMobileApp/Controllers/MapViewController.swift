@@ -18,14 +18,17 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
     }
     
     private func setupView() {
         self.view.addSubview(mapView)
         
         constrain(mapView) { mapView in
-            mapView.edges == mapView.superView!.edges
+            mapView.edges == mapView.superview!.edges
         }
+        
+//        mapView.delegate = self 
     }
     
     
