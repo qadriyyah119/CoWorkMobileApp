@@ -32,8 +32,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     private var workspaceNotificationToken: NotificationToken?
     private var workspaceResults: Results<Workspace>?
     
-    lazy var viewModel = SearchViewModel()
-    
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "Search for Workspaces"
@@ -42,6 +40,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         searchController.obscuresBackgroundDuringPresentation = false
         return searchController
     }()
+    
+    let viewModel: SearchViewModel
+    
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,9 +66,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     private func setupView() {
         setupGradient()
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        self.setNavigationTitle()
+//        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+//        navigationController?.navigationBar.titleTextAttributes = textAttributes
+//        self.setNavigationTitle()
         
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = .clear
@@ -72,9 +81,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             collectionView.edges == collectionView.superview!.edges
         }
         
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        self.searchController.searchBar.delegate = self
+//        self.navigationItem.searchController = searchController
+//        self.navigationItem.hidesSearchBarWhenScrolling = false
+//        self.searchController.searchBar.delegate = self
     }
     
     private func setNavigationTitle() {

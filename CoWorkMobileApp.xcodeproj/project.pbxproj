@@ -56,9 +56,9 @@
 		2D66089228BE9DE400C76819 /* RootTabBarViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */; };
 		2DABF5B528DBB4C0007D660E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DABF5B428DBB4C0007D660E /* MapViewController.swift */; };
 		2DABF5B728DBF573007D660E /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DABF5B628DBF573007D660E /* MapViewModel.swift */; };
-		2DC2CFC028F5C95800FB7ACE /* NavigationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFBF28F5C95800FB7ACE /* NavigationAction.swift */; };
-		2DC2CFC328F5D59800FB7ACE /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC228F5D59800FB7ACE /* NavigationRouter.swift */; };
 		2DC2CFC528F600B500FB7ACE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC428F600B500FB7ACE /* Coordinator.swift */; };
+		2DC2CFC728F63C9700FB7ACE /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC628F63C9700FB7ACE /* AppCoordinator.swift */; };
+		2DC2CFC928F752A200FB7ACE /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC828F752A200FB7ACE /* SearchCoordinator.swift */; };
 		639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */; };
 		BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */; };
@@ -140,9 +140,9 @@
 		2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarViewModelTest.swift; sourceTree = "<group>"; };
 		2DABF5B428DBB4C0007D660E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		2DABF5B628DBF573007D660E /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
-		2DC2CFBF28F5C95800FB7ACE /* NavigationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAction.swift; sourceTree = "<group>"; };
-		2DC2CFC228F5D59800FB7ACE /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
 		2DC2CFC428F600B500FB7ACE /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		2DC2CFC628F63C9700FB7ACE /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		2DC2CFC828F752A200FB7ACE /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -374,6 +374,8 @@
 		2D959E8A28E5C54300027BA5 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				2DC2CFC628F63C9700FB7ACE /* AppCoordinator.swift */,
+				2DC2CFC828F752A200FB7ACE /* SearchCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -381,7 +383,6 @@
 		2DC2CFBE28F5C93100FB7ACE /* Enumerations */ = {
 			isa = PBXGroup;
 			children = (
-				2DC2CFBF28F5C95800FB7ACE /* NavigationAction.swift */,
 			);
 			path = Enumerations;
 			sourceTree = "<group>";
@@ -389,7 +390,6 @@
 		2DC2CFC128F5CFEE00FB7ACE /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				2DC2CFC228F5D59800FB7ACE /* NavigationRouter.swift */,
 				2DC2CFC428F600B500FB7ACE /* Coordinator.swift */,
 			);
 			path = Protocols;
@@ -662,15 +662,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
+				2DC2CFC728F63C9700FB7ACE /* AppCoordinator.swift in Sources */,
 				2D66087428A4107600C76819 /* RootTabBarController.swift in Sources */,
 				2D4207D1289B181200F82B1F /* AccountRegistrationViewController.swift in Sources */,
 				2D66087228A40D9800C76819 /* UserProfileViewController.swift in Sources */,
 				2D4207CF289B17B300F82B1F /* UITextFieldExtension.swift in Sources */,
 				2D66088128A5F3E300C76819 /* SearchContentView.swift in Sources */,
 				2D66086E28A40C6E00C76819 /* SearchViewController.swift in Sources */,
+				2DC2CFC928F752A200FB7ACE /* SearchCoordinator.swift in Sources */,
 				2D66087628A4186B00C76819 /* RootTabBarViewModel.swift in Sources */,
 				2DC2CFC528F600B500FB7ACE /* Coordinator.swift in Sources */,
-				2DC2CFC328F5D59800FB7ACE /* NavigationRouter.swift in Sources */,
 				2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */,
 				2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */,
 				2D66087828A44FD200C76819 /* RoundedUITabBarController.swift in Sources */,
@@ -678,7 +679,6 @@
 				2D4207C2289B05E800F82B1F /* WelcomeViewModel.swift in Sources */,
 				2D0E53AA289ACF0700D77978 /* WelcomeViewController.swift in Sources */,
 				2D4207C0289AFEF100F82B1F /* Theme.swift in Sources */,
-				2DC2CFC028F5C95800FB7ACE /* NavigationAction.swift in Sources */,
 				2DABF5B528DBB4C0007D660E /* MapViewController.swift in Sources */,
 				2D66087A28A5CCA300C76819 /* SearchViewModel.swift in Sources */,
 				2DABF5B728DBF573007D660E /* MapViewModel.swift in Sources */,

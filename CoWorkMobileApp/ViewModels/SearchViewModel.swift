@@ -12,6 +12,9 @@ class SearchViewModel {
     
     var workspaces: [Workspace] = []
     
+    let searchTabTitle: String = "Search"
+    let searchTabIcon = UIImage(systemName: "location.magnifyingglass")
+    
     func getWorkspaceList() {
         WorkspaceManager.shared.getWorkspaces { result in
             switch result {

@@ -8,6 +8,7 @@
 import UIKit
 import Cartography
 import MapKit
+import CoreLocation
 
 class MapViewController: UIViewController {
     

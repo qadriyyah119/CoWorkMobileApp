@@ -5,14 +5,19 @@
 //  Created by Qadriyyah Thomas on 10/11/22.
 //
 
-import Foundation
+import UIKit
 
-protocol Coordinator {
-    var navigationController: UINavigationController
-    
-    func start()
+// MARK: - Coordinator Output
+/// Delegate protocol helping parent Coordinator to know when it's child is ready to be finished/deallocated
+protocol CoordinatorFinishDelegate: AnyObject {
+    func coordinatorDidFinish(childCoordinator: Coordinator)
 }
 
-extension Coordinator: NavigationRouter {
-    
+// MARK: Coordinator
+
+protocol Coordinator: AnyObject {
+    var childCoordinators: [Coordinator] { get set }
+    var navigationController: UINavigationController { get set }
+    func start() 
 }
+
