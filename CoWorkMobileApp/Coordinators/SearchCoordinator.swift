@@ -29,7 +29,7 @@ class SearchCoordinator: Coordinator {
     
     func start() {
         print("Search Coordinator Start")
-        self.navigationController.pushViewController(searchVC, animated: true)
+        self.navigationController.pushViewController(mapViewController, animated: true)
     }
     
 }
