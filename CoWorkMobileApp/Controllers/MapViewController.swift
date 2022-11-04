@@ -28,15 +28,30 @@ class MapViewController: UIViewController {
         return map
     }()
     
+    let viewModel: MapViewModel
+    
+    init(viewModel: MapViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         self.locationManager.requestWhenInUseAuthorization()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         getCurrentLocation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        viewModel.getWorkspaces()
     }
     
     private func setupView() {
@@ -51,28 +66,47 @@ class MapViewController: UIViewController {
     }
     
     func getCurrentLocation() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            if CLLocationManager.locationServicesEnabled() {
-                let authStatus: CLAuthorizationStatus
-                
-                authStatus = self.locationManager.authorizationStatus
-                switch authStatus {
-                case .authorizedAlways, .authorizedWhenInUse:
-                    DispatchQueue.main.async {
-                        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                        self.locationManager.startUpdatingLocation()
-                    }
-                default:
-                    break
-                    
-                }
-            }
-        }
+        locationManagerDidChangeAuthorization(locationManager)
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            if CLLocationManager.locationServicesEnabled() {
+//                let authStatus: CLAuthorizationStatus
+//
+//                authStatus = self.locationManager.authorizationStatus
+//                switch authStatus {
+//                case .authorizedAlways, .authorizedWhenInUse:
+//                    DispatchQueue.main.async {
+//                        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//                        self.locationManager.startUpdatingLocation()
+//                    }
+//                default:
+//                    break
+//
+//                }
+//            }
+//        }
     }
     
 }
 
 extension MapViewController: CLLocationManagerDelegate {
+    
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let authStatus = manager.authorizationStatus
+        
+        switch authStatus {
+        case .authorizedAlways , .authorizedWhenInUse:
+            break
+        case .notDetermined , .denied , .restricted:
+            break
+        default:
+            break
+        }
+        
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         print("locations = \(locationValue.latitude) \(locationValue.longitude)")

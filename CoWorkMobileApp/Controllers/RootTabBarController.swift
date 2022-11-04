@@ -30,7 +30,10 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     private func setupView() {
         let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = ThemeColors.mainBackgroundColor
         self.tabBar.standardAppearance = appearance
+        self.tabBar.scrollEdgeAppearance = appearance
         self.tabBar.tintColor = ThemeColors.tintColor
         self.setViewControllers([searchCoordinator.navigationController, collectionsVC, profileVC], animated: false)
         self.delegate = self

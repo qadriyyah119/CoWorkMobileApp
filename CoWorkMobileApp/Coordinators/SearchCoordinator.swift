@@ -14,12 +14,14 @@ class SearchCoordinator: Coordinator {
     private lazy var searchVC: SearchViewController = {
         let searchViewModel = SearchViewModel()
         let viewController = SearchViewController(viewModel: searchViewModel)
-        viewController.tabBarItem = UITabBarItem(title: searchViewModel.searchTabTitle, image: searchViewModel.searchTabIcon, tag: 0)
+//        viewController.tabBarItem = UITabBarItem(title: searchViewModel.searchTabTitle, image: searchViewModel.searchTabIcon, tag: 0)
         return viewController
     }()
     
     private lazy var mapViewController: MapViewController = {
-        let viewController = MapViewController()
+        let mapViewModel = MapViewModel()
+        let viewController = MapViewController(viewModel: mapViewModel)
+        viewController.tabBarItem = UITabBarItem(title: mapViewModel.searchTabTitle, image: mapViewModel.searchTabIcon, tag: 0)
         return viewController
     }()
     

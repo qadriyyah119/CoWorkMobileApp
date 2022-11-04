@@ -125,13 +125,36 @@ class Open: Object, Decodable {
     @Persisted var day: Int?
 }
 
+class Region: Object, Decodable {
+    @Persisted var latitude: Double?
+    @Persisted var longitude: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case center = "center"
+        case latitude = "latitude"
+        case longitude = "longitude"
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let centerContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .center)
+        
+        latitude = try centerContainer.decodeIfPresent(Double.self, forKey: .latitude)
+        longitude = try centerContainer.decodeIfPresent(Double.self, forKey: .longitude)
+    }
+}
+
 class WorkspaceListResults: Object, Decodable {
     @Persisted var total: Int?
     @Persisted var businesses: List<Workspace>
+    @Persisted var region: Region?
     
     enum CodingKeys: String, CodingKey {
         case total = "total"
         case businesses = "businesses"
+        case region = "region"
     }
     
     convenience required init(from decoder: Decoder) throws {
@@ -140,5 +163,6 @@ class WorkspaceListResults: Object, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         total = try container.decodeIfPresent(Int.self, forKey: .total)
         businesses = try container.decodeIfPresent(List<Workspace>.self, forKey: .businesses) ?? List<Workspace>()
+        region = try container.decodeIfPresent(Region.self, forKey: .region)
     }
 }
