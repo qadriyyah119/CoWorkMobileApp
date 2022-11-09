@@ -28,6 +28,10 @@ class MapViewController: UIViewController {
         return map
     }()
     
+    var isAuthorized: Bool {
+        return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
+    }
+    
     let viewModel: MapViewModel
     
     init(viewModel: MapViewModel) {
@@ -46,7 +50,11 @@ class MapViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        getCurrentLocation()
+         
+        if CLLocationManager.locationServicesEnabled(), isAuthorized {
+            getCurrentLocation()
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,26 +74,8 @@ class MapViewController: UIViewController {
     }
     
     func getCurrentLocation() {
-        locationManagerDidChangeAuthorization(locationManager)
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
-//        DispatchQueue.global(qos: .userInitiated).async {
-//            if CLLocationManager.locationServicesEnabled() {
-//                let authStatus: CLAuthorizationStatus
-//
-//                authStatus = self.locationManager.authorizationStatus
-//                switch authStatus {
-//                case .authorizedAlways, .authorizedWhenInUse:
-//                    DispatchQueue.main.async {
-//                        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//                        self.locationManager.startUpdatingLocation()
-//                    }
-//                default:
-//                    break
-//
-//                }
-//            }
-//        }
     }
     
 }
@@ -98,7 +88,7 @@ extension MapViewController: CLLocationManagerDelegate {
         
         switch authStatus {
         case .authorizedAlways , .authorizedWhenInUse:
-            break
+            getCurrentLocation()
         case .notDetermined , .denied , .restricted:
             break
         default:
