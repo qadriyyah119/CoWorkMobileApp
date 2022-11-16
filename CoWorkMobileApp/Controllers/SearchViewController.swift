@@ -65,13 +65,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupView() {
-        setupGradient()
-//        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-//        navigationController?.navigationBar.titleTextAttributes = textAttributes
-//        self.setNavigationTitle()
+//        setupGradient()
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        self.setNavigationTitle()
         
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
-        collectionView.backgroundColor = .clear
+//        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = ThemeColors.mainBackgroundColor
         self.collectionView = collectionView
         self.collectionView.delegate = self
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
