@@ -59,6 +59,7 @@
 		2DC2CFC528F600B500FB7ACE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC428F600B500FB7ACE /* Coordinator.swift */; };
 		2DC2CFC728F63C9700FB7ACE /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC628F63C9700FB7ACE /* AppCoordinator.swift */; };
 		2DC2CFC928F752A200FB7ACE /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC828F752A200FB7ACE /* SearchCoordinator.swift */; };
+		2DC9246729280AF8000DF340 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC9246629280AF8000DF340 /* MapAnnotation.swift */; };
 		639CBA4E7F8A3D26B22820EF /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA119F9BFE7631DFB25E656D /* Pods_CoWorkMobileAppTests.framework */; };
 		BC216DF0D0832A93F229FF36 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A75A12E8521A052833062C7 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		E139CC2E11949C4E107A584A /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */; };
@@ -143,6 +144,7 @@
 		2DC2CFC428F600B500FB7ACE /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		2DC2CFC628F63C9700FB7ACE /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		2DC2CFC828F752A200FB7ACE /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		2DC9246629280AF8000DF340 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		45F612670D2F6866A1E37280 /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A686124F68E62EB62AAB8ED /* Pods-CoWorkMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		C46A0CC86B8EA1DCB0E2EF43 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			children = (
 				2D4207AF289AEED400F82B1F /* User.swift */,
 				2D66088228A6AED200C76819 /* Workspace.swift */,
+				2DC9246629280AF8000DF340 /* MapAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -695,6 +698,7 @@
 				2D66088728AAB3D700C76819 /* SectionHeaderSupplementaryView.swift in Sources */,
 				2D66087028A40D1100C76819 /* CollectionsViewController.swift in Sources */,
 				2D4207C4289B146700F82B1F /* AccountRegistrationViewModel.swift in Sources */,
+				2DC9246729280AF8000DF340 /* MapAnnotation.swift in Sources */,
 				2D66088328A6AED200C76819 /* Workspace.swift in Sources */,
 				2D66089028B5B4FB00C76819 /* SearchContentView-ViewModel.swift in Sources */,
 			);
