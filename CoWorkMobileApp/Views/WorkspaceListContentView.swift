@@ -1,5 +1,5 @@
 //
-//  SearchContentView.swift
+//  WorkspaceListContentView.swift
 //  CoWorkMobileApp
 //
 //  Created by Qadriyyah Thomas on 8/11/22.
@@ -9,9 +9,9 @@ import UIKit
 import Cartography
 import RealmSwift
 
-class SearchContentView: UIView, UIContentView {
+class WorkspaceListContentView: UIView, UIContentView {
     
-    private var viewModel = SearchVModel()
+    private var viewModel = WorkspaceListContentView_VModel()
     
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
@@ -140,19 +140,19 @@ class SearchContentView: UIView, UIContentView {
         return view
     }()
     
-    private var currentConfiguration: SearchContentConfiguration!
+    private var currentConfiguration: WorkspaceListContentConfiguration!
     var configuration: UIContentConfiguration {
         get {
             return currentConfiguration
         } set {
-            guard let newConfiguration = newValue as? SearchContentConfiguration else {
+            guard let newConfiguration = newValue as? WorkspaceListContentConfiguration else {
                 return
             }
             apply(configuration: newConfiguration)
         }
     }
     
-    init(configuration: SearchContentConfiguration) {
+    init(configuration: WorkspaceListContentConfiguration) {
         super.init(frame: .zero)
         self.configuration = configuration
     }
@@ -161,7 +161,7 @@ class SearchContentView: UIView, UIContentView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func apply(configuration: SearchContentConfiguration) {
+    private func apply(configuration: WorkspaceListContentConfiguration) {
         guard configuration != currentConfiguration else { return }
         self.currentConfiguration = configuration
         

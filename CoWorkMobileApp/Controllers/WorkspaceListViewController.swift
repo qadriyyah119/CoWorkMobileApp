@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  WorkspaceListViewController.swift
 //  CoWorkMobileApp
 //
 //  Created by Qadriyyah Thomas on 8/10/22.
@@ -8,8 +8,10 @@
 import UIKit
 import Cartography
 import RealmSwift
+import CoreLocation
 
-class SearchViewController: UIViewController, UICollectionViewDelegate {
+
+class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
         case allResults
@@ -28,22 +30,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     private(set) var collectionView: UICollectionView!
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
     
-    private var workspaceListItems: [WorkspaceItem] = []
-    private var workspaceNotificationToken: NotificationToken?
-    private var workspaceResults: Results<Workspace>?
+    let viewModel: WorkspaceListViewModel
+    weak var datasource: WorkspaceDataSource?
     
-    lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search for Workspaces"
-        searchController.searchBar.searchBarStyle = .default
-        searchController.searchBar.searchTextField.backgroundColor = .white
-        searchController.obscuresBackgroundDuringPresentation = false
-        return searchController
-    }()
-    
-    let viewModel: SearchViewModel
-    
-    init(viewModel: SearchViewModel) {
+    init(viewModel: WorkspaceListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,18 +50,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.setupRealmDataSource()
-        viewModel.getWorkspaceList()
+        self.applySnapshot()
     }
     
     private func setupView() {
-//        setupGradient()
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        self.setNavigationTitle()
         
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
-//        collectionView.backgroundColor = .clear
         collectionView.backgroundColor = ThemeColors.mainBackgroundColor
         self.collectionView = collectionView
         self.collectionView.delegate = self
@@ -81,15 +67,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         constrain(collectionView) { collectionView in
             collectionView.edges == collectionView.superview!.edges
         }
-        
-//        self.navigationItem.searchController = searchController
-//        self.navigationItem.hidesSearchBarWhenScrolling = false
-//        self.searchController.searchBar.delegate = self
-    }
     
-    private func setNavigationTitle() {
-      // Will set title based on current location or searched location here
-      self.navigationItem.title = "Washington, DC"
     }
     
     private let cellRegistration = UICollectionView.CellRegistration<WorkspaceListCell, WorkspaceItem> { cell, indexPath, item in
@@ -117,26 +95,35 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         }
     }
     
-    private func setupRealmDataSource() {
-        let realm = try? Realm()
-        self.workspaceResults = realm?.objects(Workspace.self)
-            
-        self.workspaceNotificationToken = self.workspaceResults?.observe { [weak self] changes in
-            guard let strongSelf = self else { return }
-            switch changes {
-            case .initial(let workspaces):
-                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
-                strongSelf.workspaceListItems = Array(workspaceListItems)
-                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
-            case .update(let workspaces, _, _, _):
-                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
-                strongSelf.workspaceListItems = Array(workspaceListItems)
-                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
-            case .error(let error):
-                print(error)
-            }
-        }
-    }
+//    private func setupRealmDataSource() {
+//        let userLocation: CLLocation = LocationHelper.currentLocation
+//
+//        let realm = try? Realm()
+//        self.workspaceResults = realm?.objects(Workspace.self)
+////            .sorted(by: { $0.coordinate.distance(from: userLocation) < $1.coordinate.distance(from: userLocation)})
+//
+//        self.workspaceNotificationToken = self.workspaceResults?.observe { [weak self] changes in
+//            guard let strongSelf = self else { return }
+//            switch changes {
+//            case .initial(let workspaces):
+//                let sortedItems = workspaces.sorted(by: { $0.coordinate.distance(from: userLocation) < $1.coordinate.distance(from: userLocation)})
+//                let workspaceListItems = sortedItems.compactMap { WorkspaceItem(workspaceId: $0.id) }
+////                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
+//                strongSelf.workspaceListItems = Array(workspaceListItems)
+//                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
+//            case .update(let workspaces, _, _, _):
+//                let sortedItems = workspaces.sorted(by: { $0.coordinate.distance(from: userLocation) < $1.coordinate.distance(from: userLocation)})
+//                let workspaceListItems = sortedItems.compactMap { WorkspaceItem(workspaceId: $0.id) }
+//                strongSelf.workspaceListItems = Array(workspaceListItems)
+//                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
+////                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
+////                strongSelf.workspaceListItems = Array(workspaceListItems)
+////                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
+//            case .error(let error):
+//                print(error)
+//            }
+//        }
+//    }
     
     private func configureLayout() -> UICollectionViewLayout {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
@@ -170,15 +157,23 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         return layout
     }
     
-    private func applySectionSnapshot(items: [WorkspaceItem] = [], section: Section, animate: Bool = false) {
+//    private func applySectionSnapshot(items: [WorkspaceItem] = [], section: Section, animate: Bool = false) {
+//        var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
+//        snapshot.append(items)
+//        diffableDataSource.apply(snapshot, to: section, animatingDifferences: animate)
+//    }
+    
+    private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
-        snapshot.append(items)
-        diffableDataSource.apply(snapshot, to: section, animatingDifferences: animate)
+        let workspaceItems = viewModel.workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
+        snapshot.append(workspaceItems)
+        diffableDataSource.apply(snapshot, to: .allResults, animatingDifferences: true)
+
     }
 
 }
 
-extension SearchViewController {
+extension WorkspaceListViewController {
     
     func setupGradient() {
         lazy var gradient: CAGradientLayer = {
@@ -198,6 +193,3 @@ extension SearchViewController {
     }
 }
 
-extension SearchViewController: UISearchBarDelegate {
-    
-}

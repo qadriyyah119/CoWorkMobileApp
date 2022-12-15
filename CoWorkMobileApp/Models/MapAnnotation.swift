@@ -7,22 +7,32 @@
 
 import MapKit
 
-class MapAnnotation: NSObject, MKAnnotation {
+class MapAnnotation: NSObject {
     
-    let name: String?
-    let coordinate: CLLocationCoordinate2D
+    let name: String
+    let location: CLLocation
     let rating: Double?
     let ratingDescription: String?
     
     init(name: String,
-         coordinate: CLLocationCoordinate2D,
+         location: CLLocation,
          rating: Double) {
         self.name = name
-        self.coordinate = coordinate
+        self.location = location
         self.rating = rating
         self.ratingDescription = "\(rating) stars"
         
         super.init()
+    }
+    
+}
+
+extension MapAnnotation: MKAnnotation {
+    
+    var coordinate: CLLocationCoordinate2D {
+        get {
+            return location.coordinate
+        }
     }
     
     var title: String? {

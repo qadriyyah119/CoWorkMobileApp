@@ -24,7 +24,7 @@ class WorkspaceManager {
     
     static let shared = WorkspaceManager()
     
-    func getWorkspaces(forSearchTerm term: String = "coffee+shop",
+    func getWorkspaces(forSearchTerm term: String = "burgers",
                        location: String = "20774",
                        completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
         

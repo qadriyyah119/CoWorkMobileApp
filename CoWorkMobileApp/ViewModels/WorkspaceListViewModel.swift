@@ -1,13 +1,14 @@
 //
-//  MapViewModel.swift
+//  WorkspaceListViewModel.swift
 //  CoWorkMobileApp
 //
-//  Created by Qadriyyah Thomas on 9/21/22.
+//  Created by Qadriyyah Thomas on 8/11/22.
 //
 
 import UIKit
+import RealmSwift
 
-class MapViewModel {
+class WorkspaceListViewModel {
     
     var workspaces: [Workspace] = []
     weak var datasource: WorkspaceDataSource?
