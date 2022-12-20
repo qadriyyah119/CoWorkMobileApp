@@ -38,7 +38,7 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
     }
     
     func start() {
-        LocationHelper.shared.startLocationService()
+//        LocationHelper.shared.startLocationService()
         self.getWorkspaces {
             self.navigationController.pushViewController(self.mapViewController, animated: true)
         }

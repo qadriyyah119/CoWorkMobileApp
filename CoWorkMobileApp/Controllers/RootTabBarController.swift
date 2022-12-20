@@ -9,7 +9,7 @@ import UIKit
 
 class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    let searchCoordinator = SearchCoordinator(navigationController: UINavigationController())
+    
 
     let viewModel: RootTabBarViewModel
     
@@ -38,6 +38,8 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.setViewControllers([searchCoordinator.navigationController, collectionsVC, profileVC], animated: false)
         self.delegate = self
     }
+    
+    let searchCoordinator = SearchCoordinator(navigationController: UINavigationController())
     
     private lazy var collectionsVC: UINavigationController = {
         let viewController = CollectionsViewController()

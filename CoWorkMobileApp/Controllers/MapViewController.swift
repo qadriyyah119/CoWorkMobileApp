@@ -18,11 +18,11 @@ class MapViewController: UIViewController {
     
     private lazy var currentLocationString: String = "Current Location"
     
-//    private lazy var locationManager: CLLocationManager = {
-//        let locationManager = CLLocationManager()
-//        locationManager.delegate = self
-//        return locationManager
-//    }()
+    private lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        return locationManager
+    }()
     
     private lazy var mapView: MKMapView = {
         let map = MKMapView()
@@ -52,9 +52,9 @@ class MapViewController: UIViewController {
     lazy var geocoder = CLGeocoder()
     private var previousLocation: CLLocation?
     
-//    var isAuthorized: Bool {
-//        return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
-//    }
+    var isAuthorized: Bool {
+        return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
+    }
     
     init(viewModel: MapViewModel) {
         self.viewModel = viewModel
@@ -69,10 +69,10 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setRegion()
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.allowsBackgroundLocationUpdates = true
-//        startLocationService()
-//        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        startLocationService()
+        locationManager.requestWhenInUseAuthorization()
         loadAnnotations()
     }
     
@@ -109,21 +109,21 @@ class MapViewController: UIViewController {
         
     }
     
-//    private func startLocationService() {
-//        let authStatus = locationManager.authorizationStatus
-//
-//        if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
-//            activateLocationServices()
-//        } else {
-//            locationManager.requestWhenInUseAuthorization()
-//            locationManager.requestAlwaysAuthorization()
-//        }
-//    }
+    private func startLocationService() {
+        let authStatus = locationManager.authorizationStatus
+
+        if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
+            activateLocationServices()
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
+        }
+    }
     
-//    private func activateLocationServices() {
+    private func activateLocationServices() {
 //        locationManager.requestLocation()
-//        locationManager.startUpdatingLocation()
-//    }
+        locationManager.startUpdatingLocation()
+    }
     
 //    func getLocation() -> CLLocation {
 //        return LocationHelper.currentLocation
@@ -135,26 +135,24 @@ class MapViewController: UIViewController {
 //    }
 
     private func setRegion() {
-//        guard let location: CLLocation = locationManager.location else { return }
-        guard let location: CLLocation = LocationHelper.currentLocation else { return }
-        let span = MKCoordinateSpan(latitudeDelta: 0.40, longitudeDelta: 0.40)
-        let region = MKCoordinateRegion(center: location.coordinate, span: span)
+        guard let location: CLLocation = locationManager.location else { return }
+//        guard let location: CLLocation = LocationHelper.currentLocation else { return }
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
         mapView.setRegion(region, animated: true)
     }
     
     private func printCurrentLocation() {
-//        guard let location: CLLocation = locationManager.location else { return }
-        guard let location: CLLocation = LocationHelper.currentLocation else { return }
+        guard let location: CLLocation = locationManager.location else { return }
+//        guard let location: CLLocation = LocationHelper.currentLocation else { return }
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print(error.localizedDescription)
                 return
             }
             guard let placemark = placemarks?.first else { return }
-            if let street = placemark.thoroughfare,
-               let city = placemark.locality,
+            if let city = placemark.locality,
                let state = placemark.administrativeArea {
-                let currentLocationString = "\(street) \(city), \(state)"
+                let currentLocationString = "\(city), \(state)"
                 self?.currentLocationString = currentLocationString
                 self?.navigationItem.title = currentLocationString
                 
@@ -183,26 +181,26 @@ class MapViewController: UIViewController {
     
 }
 
-//extension MapViewController: CLLocationManagerDelegate {
-//
-//
-//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-//        let authStatus = manager.authorizationStatus
-//
-//        switch authStatus {
-//        case .authorizedAlways , .authorizedWhenInUse:
-//            activateLocationServices()
-////            getCurrentLocation()
-//        case .notDetermined , .denied , .restricted:
-//            break
-//        default:
-//            break
-//        }
-//
-//    }
-//
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//
+extension MapViewController: CLLocationManagerDelegate {
+
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let authStatus = manager.authorizationStatus
+
+        switch authStatus {
+        case .authorizedAlways , .authorizedWhenInUse:
+            activateLocationServices()
+//            getCurrentLocation()
+        case .notDetermined , .denied , .restricted:
+            break
+        default:
+            break
+        }
+
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
 //        guard let currentLocation = locations.first else { return }
 //
 //        if previousLocation == nil {
@@ -222,13 +220,13 @@ class MapViewController: UIViewController {
 //        let region = MKCoordinateRegion(center: locationValue, span: span)
 //        mapView.setRegion(region, animated: true)
 
-//    }
+    }
 
-//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//        print("Error - locationManager: \(error.localizedDescription)")
-//    }
-//
-//}
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error - locationManager: \(error.localizedDescription)")
+    }
+
+}
 
 extension MapViewController: MKMapViewDelegate {
     

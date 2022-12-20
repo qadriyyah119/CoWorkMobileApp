@@ -12,14 +12,8 @@ class LocationHelper: NSObject, ObservableObject {
     
     static let shared = LocationHelper()
     static var currentLocation = shared.locationManager.location
+    static var lastLocation: CLLocation?
     var locationManager = CLLocationManager()
-//    static let defaultLocation = CLLocation(latitude: 37.0902, longitude: 95.7129)
-//    static var currentLocation: CLLocation {
-//        guard let location = shared.locationManager.location else {
-//           return defaultLocation
-//        }
-//        return location
-//    }
 
     var hasPermission: Bool = false
 
@@ -30,7 +24,7 @@ class LocationHelper: NSObject, ObservableObject {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-//        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingLocation()
     }
     
     func startLocationService() {

@@ -95,36 +95,6 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         }
     }
     
-//    private func setupRealmDataSource() {
-//        let userLocation: CLLocation = LocationHelper.currentLocation
-//
-//        let realm = try? Realm()
-//        self.workspaceResults = realm?.objects(Workspace.self)
-////            .sorted(by: { $0.coordinate.distance(from: userLocation) < $1.coordinate.distance(from: userLocation)})
-//
-//        self.workspaceNotificationToken = self.workspaceResults?.observe { [weak self] changes in
-//            guard let strongSelf = self else { return }
-//            switch changes {
-//            case .initial(let workspaces):
-//                let sortedItems = workspaces.sorted(by: { $0.coordinate.distance(from: userLocation) < $1.coordinate.distance(from: userLocation)})
-//                let workspaceListItems = sortedItems.compactMap { WorkspaceItem(workspaceId: $0.id) }
-////                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
-//                strongSelf.workspaceListItems = Array(workspaceListItems)
-//                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
-//            case .update(let workspaces, _, _, _):
-//                let sortedItems = workspaces.sorted(by: { $0.coordinate.distance(from: userLocation) < $1.coordinate.distance(from: userLocation)})
-//                let workspaceListItems = sortedItems.compactMap { WorkspaceItem(workspaceId: $0.id) }
-//                strongSelf.workspaceListItems = Array(workspaceListItems)
-//                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
-////                let workspaceListItems = workspaces.compactMap { WorkspaceItem(workspaceId: $0.id) }
-////                strongSelf.workspaceListItems = Array(workspaceListItems)
-////                strongSelf.applySectionSnapshot(items: strongSelf.workspaceListItems, section: .allResults, animate: true)
-//            case .error(let error):
-//                print(error)
-//            }
-//        }
-//    }
-    
     private func configureLayout() -> UICollectionViewLayout {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         
@@ -157,15 +127,10 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         return layout
     }
     
-//    private func applySectionSnapshot(items: [WorkspaceItem] = [], section: Section, animate: Bool = false) {
-//        var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
-//        snapshot.append(items)
-//        diffableDataSource.apply(snapshot, to: section, animatingDifferences: animate)
-//    }
-    
     private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
         let workspaceItems = viewModel.workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
+        print("Items: \(workspaceItems)")
         snapshot.append(workspaceItems)
         diffableDataSource.apply(snapshot, to: .allResults, animatingDifferences: true)
 
