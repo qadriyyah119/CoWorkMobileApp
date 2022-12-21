@@ -130,7 +130,6 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
         let workspaceItems = viewModel.workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
-        print("Items: \(workspaceItems)")
         snapshot.append(workspaceItems)
         diffableDataSource.apply(snapshot, to: .allResults, animatingDifferences: true)
 

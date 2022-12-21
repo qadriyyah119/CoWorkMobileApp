@@ -42,7 +42,7 @@ namespace {
     public:
         CocoaNetworkTransport(id<RLMNetworkTransport> transport) : m_transport(transport) {}
 
-        void send_request_to_server(app::Request&& request,
+        void send_request_to_server(const app::Request& request,
                                     util::UniqueFunction<void(const app::Response&)>&& completion) override {
             // Convert the app::Request to an RLMRequest
             auto rlmRequest = [RLMRequest new];
@@ -156,7 +156,7 @@ namespace {
 - (void)setBaseURL:(nullable NSString *)baseURL {
     std::string base_url;
     RLMNSStringToStdString(base_url, baseURL);
-    _config.base_url = base_url.empty() ? util::none : util::Optional(base_url);
+    _config.base_url = base_url.empty() ? util::none : std::optional(base_url);
     return;
 }
 
@@ -182,7 +182,7 @@ namespace {
 - (void)setLocalAppName:(nullable NSString *)localAppName {
     std::string local_app_name;
     RLMNSStringToStdString(local_app_name, localAppName);
-    _config.local_app_name = local_app_name.empty() ? util::none : util::Optional(local_app_name);
+    _config.local_app_name = local_app_name.empty() ? util::none : std::optional(local_app_name);
     return;
 }
 
@@ -197,7 +197,7 @@ namespace {
 - (void)setLocalAppVersion:(nullable NSString *)localAppVersion {
     std::string local_app_version;
     RLMNSStringToStdString(local_app_version, localAppVersion);
-    _config.local_app_version = local_app_version.empty() ? util::none : util::Optional(local_app_version);
+    _config.local_app_version = local_app_version.empty() ? util::none : std::optional(local_app_version);
     return;
 }
 
@@ -210,15 +210,6 @@ namespace {
 }
 
 @end
-
-NSError *RLMAppErrorToNSError(realm::app::AppError const& appError) {
-    return [[NSError alloc] initWithDomain:@(appError.error_code.category().name())
-                                      code:appError.error_code.value()
-                                  userInfo:@{
-                                      @(appError.error_code.category().name()) : @(appError.error_code.message().data()),
-                                      NSLocalizedDescriptionKey : @(appError.message.c_str())
-                                  }];
-}
 
 #pragma mark RLMAppSubscriptionToken
 @implementation RLMAppSubscriptionToken {
@@ -350,7 +341,7 @@ static std::mutex& s_appMutex = *new std::mutex();
 
 - (void)loginWithCredential:(RLMCredentials *)credentials
                  completion:(RLMUserCompletionBlock)completionHandler {
-    auto completion = ^(std::shared_ptr<SyncUser> user, util::Optional<app::AppError> error) {
+    auto completion = ^(std::shared_ptr<SyncUser> user, std::optional<app::AppError> error) {
         if (error && error->error_code) {
             return completionHandler(nil, RLMAppErrorToNSError(*error));
         }
@@ -397,14 +388,14 @@ static std::mutex& s_appMutex = *new std::mutex();
            if (user) {
                [self.authorizationDelegate authenticationDidCompleteWithUser:user];
            } else {
-               [self.authorizationDelegate authenticationDidCompleteWithError:error];
+               [self.authorizationDelegate authenticationDidFailWithError:error];
            }
        }];
 }
 
 - (void)authorizationController:(__unused ASAuthorizationController *)controller
            didCompleteWithError:(NSError *)error API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0)) {
-    [self.authorizationDelegate authenticationDidCompleteWithError:error];
+    [self.authorizationDelegate authenticationDidFailWithError:error];
 }
 
 - (RLMAppSubscriptionToken *)subscribe:(RLMAppNotificationBlock)block {

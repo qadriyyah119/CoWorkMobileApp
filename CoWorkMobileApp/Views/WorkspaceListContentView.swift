@@ -31,7 +31,6 @@ class WorkspaceListContentView: UIView, UIContentView {
     
     private(set) lazy var spaceImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
-        imageView.image = viewModel.workspaceImage
         imageView.backgroundColor = .blue
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
@@ -58,7 +57,6 @@ class WorkspaceListContentView: UIView, UIContentView {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.nameText
         label.textAlignment = .left
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
@@ -69,7 +67,6 @@ class WorkspaceListContentView: UIView, UIContentView {
     private lazy var distanceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.distanceText
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
@@ -102,7 +99,6 @@ class WorkspaceListContentView: UIView, UIContentView {
     private lazy var ratingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.ratingText
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 14)
@@ -112,7 +108,6 @@ class WorkspaceListContentView: UIView, UIContentView {
     private lazy var reviewCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.reviewCountText
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
@@ -155,6 +150,7 @@ class WorkspaceListContentView: UIView, UIContentView {
     init(configuration: WorkspaceListContentConfiguration) {
         super.init(frame: .zero)
         self.configuration = configuration
+        self.setupView()
     }
 
     required init?(coder: NSCoder) {
@@ -170,8 +166,16 @@ class WorkspaceListContentView: UIView, UIContentView {
             self.spaceImageView.image = image
         }
         viewModel.fill(withWorkspaceId: workspaceId) {
-            self.setupView()
+            self.populateView()
         }
+    }
+    
+    private func populateView() {
+        spaceImageView.image = viewModel.workspaceImage
+        nameLabel.text = viewModel.nameText
+        distanceLabel.text = viewModel.distanceText
+        ratingLabel.text = viewModel.ratingText
+        reviewCountLabel.text = viewModel.reviewCountText
     }
     
     private func setupView() {

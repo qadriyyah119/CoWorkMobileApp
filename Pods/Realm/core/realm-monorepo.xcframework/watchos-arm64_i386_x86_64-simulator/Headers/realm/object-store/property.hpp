@@ -19,20 +19,16 @@
 #ifndef REALM_PROPERTY_HPP
 #define REALM_PROPERTY_HPP
 
-#include <realm/object-store/util/tagged_bool.hpp>
-
 #include <realm/util/features.h>
 #include <realm/util/assert.hpp>
 // FIXME: keys.hpp is currently pretty heavyweight
 #include <realm/keys.hpp>
+#include <realm/util/optional.hpp>
+#include <realm/util/tagged_bool.hpp>
 
 #include <string>
 
 namespace realm {
-namespace util {
-template <typename>
-class Optional;
-}
 class BinaryData;
 class Decimal128;
 class Obj;

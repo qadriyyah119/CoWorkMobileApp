@@ -6,7 +6,7 @@ target 'CoWorkMobileApp' do
   use_frameworks!
 
   # Pods for CoWorkMobileApp
-  pod 'RealmSwift', '~> 10.28'
+  pod 'RealmSwift', '~> 10.33.0'
   pod 'Cartography'
   pod 'Alamofire'
   pod 'NotificationBannerSwift'
