@@ -77,7 +77,6 @@ class MapViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//         getLocation()
 //        if CLLocationManager.locationServicesEnabled(), isAuthorized {
 //            activateLocationServices()
 //        }
@@ -124,26 +123,15 @@ class MapViewController: UIViewController {
 //        locationManager.requestLocation()
         locationManager.startUpdatingLocation()
     }
-    
-//    func getLocation() -> CLLocation {
-//        return LocationHelper.currentLocation
-//    }
-    
-//    func getCurrentLocation() {
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.startUpdatingLocation()
-//    }
 
     private func setRegion() {
         guard let location: CLLocation = locationManager.location else { return }
-//        guard let location: CLLocation = LocationHelper.currentLocation else { return }
         let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
         mapView.setRegion(region, animated: true)
     }
     
     private func printCurrentLocation() {
         guard let location: CLLocation = locationManager.location else { return }
-//        guard let location: CLLocation = LocationHelper.currentLocation else { return }
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -165,18 +153,6 @@ class MapViewController: UIViewController {
         }
         
         mapView.addAnnotations(annotations)
-//        for business in viewModel.workspaces {
-//
-//            let coordinate = CLLocationCoordinate2D(latitude: business.coordinate.coordinate.latitude, longitude: business.coordinate.coordinate.longitude)
-//            let name = business.name
-//            let rating = business.rating ?? 0.0
-//
-//            let annotation = MapAnnotation(name: name,
-//                                           coordinate: coordinate,
-//                                           rating: rating)
-//
-//            mapView.addAnnotation(annotation)
-//        }
     }
     
 }
@@ -190,7 +166,6 @@ extension MapViewController: CLLocationManagerDelegate {
         switch authStatus {
         case .authorizedAlways , .authorizedWhenInUse:
             activateLocationServices()
-//            getCurrentLocation()
         case .notDetermined , .denied , .restricted:
             break
         default:
@@ -240,36 +215,7 @@ extension MapViewController: MKMapViewDelegate {
 //                                                  longitudinalMeters: regionRadius)
 //        mapView.setRegion(coordinateRegion, animated: true)
 //    }
-    
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
-//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "MapAnnotation") as? MKMarkerAnnotationView
-//        if annotationView == nil {
-//            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "MapAnnotation")
-//        } else {
-//            annotationView?.annotation = annotation
-//        }
-//        annotationView?.canShowCallout = true
-//        annotationView?.calloutOffset = CGPoint(x: -5, y: 5)
-//        annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-//        return annotationView
-//        guard let annotation = annotation as? MapAnnotation else { return nil }
-        
-//        let identifier = "workspace"
-//        let annotationView: MKMarkerAnnotationView
-        
-//        if let existingView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView {
-//            existingView.annotation = annotation
-//            annotationView = existingView
-//        } else {
-//            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-//            annotationView.canShowCallout = true
-//            annotationView.calloutOffset = CGPoint(x: -5, y: 5)
-//            annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-//        }
-//        annotationView.canShowCallout = true
-//        return annotationView
-//    }
+
 }
 
 extension MapViewController: UISearchBarDelegate {
