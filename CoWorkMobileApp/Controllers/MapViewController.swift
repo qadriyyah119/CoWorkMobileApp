@@ -9,9 +9,14 @@ import UIKit
 import Cartography
 import MapKit
 import CoreLocation
+import Combine
+
+
+// TODO: Subscribe to ViewModel workspace changes
+//
 
 protocol MapViewControllerDelegate: AnyObject {
-    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation)
+    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String)
 }
 
 class MapViewController: UIViewController {
@@ -44,20 +49,32 @@ class MapViewController: UIViewController {
         return searchController
     }()
     
+    
     weak var delegate: MapViewControllerDelegate?
-    weak var datasource: WorkspaceDataSource?
+    weak var datasource: (any WorkspaceDataSource)?
     let viewModel: MapViewModel
     private var workspaceAnnotations: [MapAnnotation] = []
     var selectedWorkspace: Workspace? = nil
     lazy var geocoder = CLGeocoder()
-    private var previousLocation: CLLocation?
+    private var cancellables: Set<AnyCancellable> = []
+    var currentLocation: CLLocation? {
+        didSet {
+            viewModel.currentLocation = currentLocation
+        }
+    }
+    var searchQuery: String {
+        didSet {
+            viewModel.searchQuery = searchQuery
+        }
+    }
     
     var isAuthorized: Bool {
         return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
     }
     
-    init(viewModel: MapViewModel) {
-        self.viewModel = viewModel
+    init(searchQuery: String) {
+        self.searchQuery = searchQuery
+        self.viewModel = MapViewModel(searchQuery: searchQuery)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,12 +85,15 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setRegion()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.allowsBackgroundLocationUpdates = true
         startLocationService()
         locationManager.requestWhenInUseAuthorization()
         loadAnnotations()
+        
+        viewModel.$workspaces.sink { [weak self] workspaces in
+            self?.loadAnnotations(for: workspaces)
+        }.store(in: &cancellables)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,14 +140,8 @@ class MapViewController: UIViewController {
     }
     
     private func activateLocationServices() {
-//        locationManager.requestLocation()
-        locationManager.startUpdatingLocation()
-    }
-
-    private func setRegion() {
-        guard let location: CLLocation = locationManager.location else { return }
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
-        mapView.setRegion(region, animated: true)
+        locationManager.requestLocation()
+//        locationManager.startUpdatingLocation()
     }
     
     private func printCurrentLocation() {
@@ -143,13 +157,13 @@ class MapViewController: UIViewController {
                 let currentLocationString = "\(city), \(state)"
                 self?.currentLocationString = currentLocationString
                 self?.navigationItem.title = currentLocationString
-                
+
             }
         }
     }
     
-    private func loadAnnotations() {
-        let annotations = viewModel.workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
+    private func loadAnnotations(for workspaces: [Workspace] = []) {
+        let annotations = workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
         }
         
         mapView.addAnnotations(annotations)
@@ -176,25 +190,30 @@ extension MapViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-//        guard let currentLocation = locations.first else { return }
-//
-//        if previousLocation == nil {
-//            previousLocation = locations.first
-//        } else {
-//            guard let latestLocation = locations.first else { return }
-//            let distanceInMeters = previousLocation?.distance(from: latestLocation) ?? 0
-//            print("distance in meters: \(distanceInMeters)")
-//            previousLocation = latestLocation
-//        }
+        guard let currentLocation = locations.first else { return }
         
-        
-//        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-//        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
-//
-//        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-//        let region = MKCoordinateRegion(center: locationValue, span: span)
-//        mapView.setRegion(region, animated: true)
+        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
 
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: locationValue, span: span)
+        mapView.setRegion(region, animated: true)
+        
+        convertCurrentLocationToString(from: currentLocation) { city, zip, error in
+            if let zip = zip {
+                self.searchQuery = zip
+                self.delegate?.mapViewController(self, userDidUpdateLocation: currentLocation, query: self.searchQuery)
+            }
+        }
+    }
+    
+    func convertCurrentLocationToString(from location: CLLocation, completion: @escaping (_ city: String?, _ zip: String?, _ error: Error?) -> ()) {
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+            completion(placemarks?.first?.locality,
+                       placemarks?.first?.postalCode,
+                       error)
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -220,4 +239,18 @@ extension MapViewController: MKMapViewDelegate {
 
 extension MapViewController: UISearchBarDelegate {
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(searchText) { placemark, error in
+            guard let location = placemark?.first?.location else { return }
+            
+            DispatchQueue.main.async {
+                let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                let region = MKCoordinateRegion(center: location.coordinate, span: span)
+                self.mapView.setRegion(region, animated: true)
+            }
+            self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
+        }
+    }
 }

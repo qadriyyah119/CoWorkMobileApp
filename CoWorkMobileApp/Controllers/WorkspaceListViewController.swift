@@ -9,6 +9,7 @@ import UIKit
 import Cartography
 import RealmSwift
 import CoreLocation
+import Combine
 
 
 class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
@@ -31,10 +32,21 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
     
     let viewModel: WorkspaceListViewModel
-    weak var datasource: WorkspaceDataSource?
+    private var cancellables: Set<AnyCancellable> = []
+    var currentLocation: CLLocation? {
+        didSet {
+            viewModel.currentLocation = currentLocation
+        }
+    }
+    var searchQuery: String {
+        didSet {
+            viewModel.searchQuery = searchQuery
+        }
+    }
     
-    init(viewModel: WorkspaceListViewModel) {
-        self.viewModel = viewModel
+    init(searchQuery: String) {
+        self.searchQuery = searchQuery
+        self.viewModel = WorkspaceListViewModel(searchQuery: searchQuery)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,11 +58,14 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         setupView()
         configureDataSource()
+        viewModel.$workspaces.sink { [weak self] workspaces in
+            self?.applySnapshot(for: workspaces)
+        }.store(in: &cancellables)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.applySnapshot()
+//        self.applySnapshot()
     }
     
     private func setupView() {
@@ -127,9 +142,9 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         return layout
     }
     
-    private func applySnapshot() {
+    private func applySnapshot(for workspaces: [Workspace] = []) {
         var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
-        let workspaceItems = viewModel.workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
+        let workspaceItems = workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
         snapshot.append(workspaceItems)
         diffableDataSource.apply(snapshot, to: .allResults, animatingDifferences: true)
 

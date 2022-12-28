@@ -25,7 +25,7 @@ class WorkspaceManager {
     static let shared = WorkspaceManager()
     
     func getWorkspaces(forSearchTerm term: String = "coffee+shop",
-                       location: String = "20009",
+                       location: String = " ",
                        radius: Int = 10000,
                        sortBy: String = "best_match",
                        completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
