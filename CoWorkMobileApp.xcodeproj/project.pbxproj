@@ -52,7 +52,7 @@
 		2D66088728AAB3D700C76819 /* SectionHeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088628AAB3D700C76819 /* SectionHeaderSupplementaryView.swift */; };
 		2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088828AAB54C00C76819 /* WorkspaceManager.swift */; };
 		2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */; };
-		2D66089028B5B4FB00C76819 /* WorkspaceListContentView-VModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088F28B5B4FB00C76819 /* WorkspaceListContentView-VModel.swift */; };
+		2D66089028B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */; };
 		2D66089228BE9DE400C76819 /* RootTabBarViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */; };
 		2DABF5B528DBB4C0007D660E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DABF5B428DBB4C0007D660E /* MapViewController.swift */; };
 		2DABF5B728DBF573007D660E /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DABF5B628DBF573007D660E /* MapViewModel.swift */; };
@@ -139,7 +139,7 @@
 		2D66088828AAB54C00C76819 /* WorkspaceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceManager.swift; sourceTree = "<group>"; };
 		2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListCell.swift; sourceTree = "<group>"; };
 		2D66088E28B42AE200C76819 /* APIKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKeys.xcconfig; sourceTree = "<group>"; };
-		2D66088F28B5B4FB00C76819 /* WorkspaceListContentView-VModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceListContentView-VModel.swift"; sourceTree = "<group>"; };
+		2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListContentViewViewModel.swift; sourceTree = "<group>"; };
 		2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarViewModelTest.swift; sourceTree = "<group>"; };
 		2DABF5B428DBB4C0007D660E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		2DABF5B628DBF573007D660E /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
@@ -282,7 +282,7 @@
 				2D4207D828A172E500F82B1F /* LoginViewModel.swift */,
 				2D66087528A4186B00C76819 /* RootTabBarViewModel.swift */,
 				2D66087928A5CCA300C76819 /* WorkspaceListViewModel.swift */,
-				2D66088F28B5B4FB00C76819 /* WorkspaceListContentView-VModel.swift */,
+				2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */,
 				2DABF5B628DBF573007D660E /* MapViewModel.swift */,
 			);
 			path = ViewModels;
@@ -708,7 +708,7 @@
 				2D4207C4289B146700F82B1F /* AccountRegistrationViewModel.swift in Sources */,
 				2DC9246729280AF8000DF340 /* MapAnnotation.swift in Sources */,
 				2D66088328A6AED200C76819 /* Workspace.swift in Sources */,
-				2D66089028B5B4FB00C76819 /* WorkspaceListContentView-VModel.swift in Sources */,
+				2D66089028B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

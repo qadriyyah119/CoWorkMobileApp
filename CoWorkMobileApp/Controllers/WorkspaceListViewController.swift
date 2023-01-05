@@ -38,15 +38,14 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
             viewModel.currentLocation = currentLocation
         }
     }
-    var searchQuery: String {
+    var searchQuery: String = ""{
         didSet {
             viewModel.searchQuery = searchQuery
         }
     }
     
-    init(searchQuery: String) {
-        self.searchQuery = searchQuery
-        self.viewModel = WorkspaceListViewModel(searchQuery: searchQuery)
+    init() {
+        self.viewModel = WorkspaceListViewModel(searchQuery: self.searchQuery)
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -1,5 +1,5 @@
 //
-//  WorkspaceListContentView_VModel.swift
+//  WorkspaceListContentViewViewModel.swift
 //  CoWorkMobileApp
 //
 //  Created by Qadriyyah Thomas on 8/23/22.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class WorkspaceListContentView_VModel {
+class WorkspaceListContentViewViewModel {
     
     var workspace: Workspace? {
         didSet {

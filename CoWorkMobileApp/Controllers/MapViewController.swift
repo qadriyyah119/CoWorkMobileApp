@@ -62,7 +62,7 @@ class MapViewController: UIViewController {
             viewModel.currentLocation = currentLocation
         }
     }
-    var searchQuery: String {
+    var searchQuery: String = "" {
         didSet {
             viewModel.searchQuery = searchQuery
         }
@@ -72,9 +72,8 @@ class MapViewController: UIViewController {
         return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
     }
     
-    init(searchQuery: String) {
-        self.searchQuery = searchQuery
-        self.viewModel = MapViewModel(searchQuery: searchQuery)
+    init() {
+        self.viewModel = MapViewModel(searchQuery: self.searchQuery)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -202,7 +201,11 @@ extension MapViewController: CLLocationManagerDelegate {
         convertCurrentLocationToString(from: currentLocation) { city, zip, error in
             if let zip = zip {
                 self.searchQuery = zip
-                self.delegate?.mapViewController(self, userDidUpdateLocation: currentLocation, query: self.searchQuery)
+                self.viewModel.getWorkspaces(forLocation: currentLocation, locationQuery: self.searchQuery) {
+                    if !self.viewModel.workspaces.isEmpty {
+                        self.delegate?.mapViewController(self, userDidUpdateLocation: currentLocation, query: self.searchQuery)
+                    }
+                }
             }
         }
     }
@@ -224,6 +227,8 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: MKMapViewDelegate {
     
+// Methods to use later:
+/*
 //    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
 //        centerMap(on: userLocation.coordinate)
 //    }
@@ -234,7 +239,8 @@ extension MapViewController: MKMapViewDelegate {
 //                                                  longitudinalMeters: regionRadius)
 //        mapView.setRegion(coordinateRegion, animated: true)
 //    }
-
+*/
+    
 }
 
 extension MapViewController: UISearchBarDelegate {
@@ -250,7 +256,12 @@ extension MapViewController: UISearchBarDelegate {
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
                 self.mapView.setRegion(region, animated: true)
             }
-            self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
+            self.viewModel.getWorkspaces(forLocation: location, locationQuery: searchText) {
+                if !self.viewModel.workspaces.isEmpty {
+                    self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
+                }
+            }
+//            self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
         }
     }
 }

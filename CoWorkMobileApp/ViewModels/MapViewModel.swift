@@ -12,8 +12,13 @@ import CoreLocation
 class MapViewModel: ObservableObject {
     
     @Published var workspaces: [Workspace] = []
-    var workspaceNotificationToken: NotificationToken?
+    
+    let searchTabTitle: String = "Search"
+    let searchTabIcon = UIImage(systemName: "location.magnifyingglass")
+    
+    private var workspaceNotificationToken: NotificationToken?
     private var workspaceResults: Results<Workspace>?
+    
     var currentLocation: CLLocation? {
         didSet {
             realmQuery()
@@ -26,15 +31,24 @@ class MapViewModel: ObservableObject {
         }
     }
     
-    let searchTabTitle: String = "Search"
-    let searchTabIcon = UIImage(systemName: "location.magnifyingglass")
-    
     init(searchQuery: String) {
         self.searchQuery = searchQuery
         self.realmQuery()
     }
     
-    func realmQuery() {
+    func getWorkspaces(forLocation location: CLLocation, locationQuery: String, completion: @escaping () -> Void) {
+        WorkspaceManager.shared.getWorkspaces(location: locationQuery) { result in
+            switch result {
+            case .success(let workspaces):
+                self.workspaces = Array(workspaces)
+            case .failure(let error):
+                print(error)
+            }
+            completion()
+        }
+    }
+    
+    private func realmQuery() {
         
         let realm = try? Realm()
         if let currentLocation = currentLocation {

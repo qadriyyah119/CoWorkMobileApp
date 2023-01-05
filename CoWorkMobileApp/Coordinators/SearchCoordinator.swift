@@ -19,20 +19,20 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var locationManager = CLLocationManager()
-    var searchQuery: String = "" {
-        didSet {
-            
-        }
-    }
+//    var searchQuery: String = "" {
+//        didSet {
+//
+//        }
+//    }
     
     private lazy var workspaceListVC: WorkspaceListViewController = {
-        let viewController = WorkspaceListViewController(searchQuery: searchQuery)
+        let viewController = WorkspaceListViewController()
 //        viewController.tabBarItem = UITabBarItem(title: workspaceListViewModel.searchTabTitle, image: workspaceListViewModel.searchTabIcon, tag: 0)
         return viewController
     }()
     
     private lazy var mapViewController: MapViewController = {
-        let viewController = MapViewController(searchQuery: searchQuery)
+        let viewController = MapViewController()
         viewController.delegate = self
 //        viewController.tabBarItem = UITabBarItem(title: mapViewModel.searchTabTitle, image: mapViewModel.searchTabIcon, tag: 0)
         return viewController
@@ -86,39 +86,16 @@ func convertCurrentLocationToString(from location: CLLocation, completion: @esca
         self.navigationController.present(navController, animated: true)
     }
 
-    func getWorkspaces(forCurrentLocation location: String, completion: @escaping () -> Void) {
-        WorkspaceManager.shared.getWorkspaces(location: location) { result in
-            switch result {
-            case .success(let workspaces):
-                self.workspaces = Array(workspaces)
-            case .failure(let error):
-                print(error)
-            }
-            completion()
-        }
-    }
 }
 
 extension SearchCoordinator: MapViewControllerDelegate {
     func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String) {
-        self.searchQuery = query
         
         workspaceListVC.currentLocation = location
         workspaceListVC.searchQuery = query
-        mapViewController.currentLocation = location
-        mapViewController.searchQuery = query
         
-        WorkspaceManager.shared.getWorkspaces(location: searchQuery) { result in
-            switch result {
-            case .success(let workspaces):
-                self.workspaces = Array(workspaces)
-                if !self.workspaces.isEmpty {
-                    self.presentModalView()
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
+        self.presentModalView()
+
     }
 
 }
