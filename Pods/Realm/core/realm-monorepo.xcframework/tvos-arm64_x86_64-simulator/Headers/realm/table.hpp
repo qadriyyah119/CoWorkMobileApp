@@ -19,6 +19,7 @@
 #ifndef REALM_TABLE_HPP
 #define REALM_TABLE_HPP
 
+#include "external/mpark/variant.hpp"
 #include <algorithm>
 #include <map>
 #include <utility>
@@ -110,6 +111,9 @@ public:
     /// string.
     StringData get_name() const noexcept;
 
+    // Get table name with class prefix removed
+    StringData get_class_name() const noexcept;
+
     const char* get_state() const noexcept;
 
     /// If this table is a group-level table, the parent group is returned,
@@ -174,8 +178,7 @@ public:
             throw LogicError(LogicError::column_does_not_exist);
     }
     // Change the type of a table. Only allowed to switch to/from TopLevel from/to Embedded.
-    // Called only when updating the schema.
-    void set_table_type(Type table_tpe);
+    void set_table_type(Type new_type, bool handle_backlinks = false);
     //@}
 
     /// True for `col_type_Link` and `col_type_LinkList`.
@@ -215,7 +218,7 @@ public:
     size_t get_num_unique_values(ColKey col_key) const;
 
     template <class T>
-    Columns<T> column(ColKey col_key, ExpressionComparisonType = ExpressionComparisonType::Any) const;
+    Columns<T> column(ColKey col_key, util::Optional<ExpressionComparisonType> = util::none) const;
     template <class T>
     Columns<T> column(const Table& origin, ColKey origin_col_key) const;
 
@@ -381,28 +384,13 @@ public:
     size_t count_double(ColKey col_key, double value) const;
     size_t count_decimal(ColKey col_key, Decimal128 value) const;
 
-    int64_t sum_int(ColKey col_key) const;
-    double sum_float(ColKey col_key) const;
-    double sum_double(ColKey col_key) const;
-    Decimal128 sum_decimal(ColKey col_key) const;
-    Decimal128 sum_mixed(ColKey col_key) const;
-    int64_t maximum_int(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    float maximum_float(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    double maximum_double(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    Decimal128 maximum_decimal(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    Mixed maximum_mixed(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    Timestamp maximum_timestamp(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    int64_t minimum_int(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    float minimum_float(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    double minimum_double(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    Decimal128 minimum_decimal(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    Mixed minimum_mixed(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    Timestamp minimum_timestamp(ColKey col_key, ObjKey* return_ndx = nullptr) const;
-    double average_int(ColKey col_key, size_t* value_count = nullptr) const;
-    double average_float(ColKey col_key, size_t* value_count = nullptr) const;
-    double average_double(ColKey col_key, size_t* value_count = nullptr) const;
-    Decimal128 average_decimal(ColKey col_key, size_t* value_count = nullptr) const;
-    Decimal128 average_mixed(ColKey col_key, size_t* value_count = nullptr) const;
+    // Aggregates return nullopt if the operation is not supported on the given column
+    // Everything but `sum` returns `some(null)` if there are no non-null values
+    // Sum returns `some(0)` if there are no non-null values.
+    std::optional<Mixed> sum(ColKey col_key) const;
+    std::optional<Mixed> min(ColKey col_key, ObjKey* = nullptr) const;
+    std::optional<Mixed> max(ColKey col_key, ObjKey* = nullptr) const;
+    std::optional<Mixed> avg(ColKey col_key, size_t* value_count = nullptr) const;
 
     // Will return pointer to search index accessor. Will return nullptr if no index
     StringIndex* get_search_index(ColKey col) const noexcept
@@ -474,14 +462,14 @@ public:
     ColKey set_nullability(ColKey col_key, bool nullable, bool throw_on_null);
 
     // Iterate through (subset of) columns. The supplied function may abort iteration
-    // by returning 'true' (early out).
+    // by returning 'IteratorControl::Stop' (early out).
     template <typename Func>
     bool for_each_and_every_column(Func func) const
     {
         for (auto col_key : m_leaf_ndx2colkey) {
             if (!col_key)
                 continue;
-            if (func(col_key))
+            if (func(col_key) == IteratorControl::Stop)
                 return true;
         }
         return false;
@@ -494,7 +482,7 @@ public:
                 continue;
             if (col_key.get_type() == col_type_BackLink)
                 continue;
-            if (func(col_key))
+            if (func(col_key) == IteratorControl::Stop)
                 return true;
         }
         return false;
@@ -508,7 +496,7 @@ public:
                 continue;
             if (col_key.get_type() != col_type_BackLink)
                 continue;
-            if (func(col_key))
+            if (func(col_key) == IteratorControl::Stop)
                 return true;
         }
         return false;
@@ -527,7 +515,7 @@ private:
     Obj create_linked_object(GlobalKey = {});
     // Change the embedded property of a table. If switching to being embedded, the table must
     // not have a primary key and all objects must have exactly 1 backlink.
-    void set_embedded(bool embedded);
+    void set_embedded(bool embedded, bool handle_backlinks);
     /// Changes type unconditionally. Called only from Group::do_get_or_add_table()
     void do_set_table_type(Type table_type);
 
@@ -560,8 +548,13 @@ public:
     }
     Query where(const DictionaryLinkValues& dictionary_of_links) const;
 
-    Query query(const std::string& query_string, const std::vector<Mixed>& arguments = {}) const;
+    Query query(const std::string& query_string,
+                const std::vector<mpark::variant<Mixed, std::vector<Mixed>>>& arguments = {}) const;
+    Query query(const std::string& query_string, const std::vector<Mixed>& arguments) const;
     Query query(const std::string& query_string, const std::vector<Mixed>& arguments,
+                const query_parser::KeyPathMapping& mapping) const;
+    Query query(const std::string& query_string,
+                const std::vector<mpark::variant<Mixed, std::vector<Mixed>>>& arguments,
                 const query_parser::KeyPathMapping& mapping) const;
     Query query(const std::string& query_string, query_parser::Arguments& arguments,
                 const query_parser::KeyPathMapping&) const;
@@ -639,6 +632,24 @@ public:
     bool links_to_self(ColKey col_key) const;
     ColKey get_opposite_column(ColKey col_key) const;
     ColKey find_opposite_column(ColKey col_key) const;
+
+    class DisableReplication {
+    public:
+        DisableReplication(Table& table) noexcept
+            : m_table(table)
+            , m_repl(table.m_repl)
+        {
+            m_table.m_repl = &g_dummy_replication;
+        }
+        ~DisableReplication()
+        {
+            m_table.m_repl = m_repl;
+        }
+
+    private:
+        Table& m_table;
+        Replication* const* m_repl;
+    };
 
 private:
     enum LifeCycleCookie {
@@ -806,10 +817,9 @@ private:
     void flush_for_commit();
 
     bool is_cross_table_link_target() const noexcept;
+
     template <typename T>
     void aggregate(QueryStateBase& st, ColKey col_key) const;
-    template <typename T>
-    double average(ColKey col_key, size_t* resultcount) const;
 
     std::vector<ColKey> m_leaf_ndx2colkey;
     std::vector<ColKey::Idx> m_spec_ndx2leaf_ndx;
@@ -837,13 +847,11 @@ private:
 
     enum { s_collision_map_lo = 0, s_collision_map_hi = 1, s_collision_map_local_id = 2, s_collision_map_num_slots };
 
-    friend class SubtableNode;
     friend class _impl::TableFriend;
     friend class Query;
     friend class metrics::QueryInfo;
     template <class>
     friend class SimpleQuerySupport;
-    friend class LangBindHelper;
     friend class TableView;
     template <class T>
     friend class Columns;
@@ -862,20 +870,11 @@ private:
     friend class LnkLst;
     friend class Dictionary;
     friend class IncludeDescriptor;
+    template <class T>
+    friend class AggregateHelper;
 };
 
-inline std::ostream& operator<<(std::ostream& o, Table::Type table_type)
-{
-    switch (table_type) {
-        case Table::Type::TopLevel:
-            return o << "TopLevel";
-        case Table::Type::Embedded:
-            return o << "Embedded";
-        case Table::Type::TopLevelAsymmetric:
-            return o << "TopLevelAsymmetric";
-    }
-    return o << "Invalid table type: " << uint8_t(table_type);
-}
+std::ostream& operator<<(std::ostream& o, Table::Type table_type);
 
 class ColKeyIterator {
 public:
@@ -956,7 +955,7 @@ private:
 // It has member functions corresponding to the ones defined on Table.
 class LinkChain {
 public:
-    LinkChain(ConstTableRef t = {}, ExpressionComparisonType type = ExpressionComparisonType::Any)
+    LinkChain(ConstTableRef t = {}, util::Optional<ExpressionComparisonType> type = util::none)
         : m_current_table(t)
         , m_base_table(t)
         , m_comparison_type(type)
@@ -987,7 +986,8 @@ public:
     {
         auto ck = m_current_table->get_column_key(col_name);
         if (!ck) {
-            throw std::runtime_error(util::format("%1 has no property %2", m_current_table->get_name(), col_name));
+            throw std::runtime_error(
+                util::format("'%1' has no property '%2'", m_current_table->get_class_name(), col_name));
         }
         add(ck);
         return *this;
@@ -1063,7 +1063,7 @@ private:
     std::vector<ColKey> m_link_cols;
     ConstTableRef m_current_table;
     ConstTableRef m_base_table;
-    ExpressionComparisonType m_comparison_type;
+    util::Optional<ExpressionComparisonType> m_comparison_type;
 
     void add(ColKey ck);
 
@@ -1240,7 +1240,7 @@ inline Allocator& Table::get_alloc() const
 
 // For use by queries
 template <class T>
-inline Columns<T> Table::column(ColKey col_key, ExpressionComparisonType cmp_type) const
+inline Columns<T> Table::column(ColKey col_key, util::Optional<ExpressionComparisonType> cmp_type) const
 {
     LinkChain lc(m_own_ref, cmp_type);
     return lc.column<T>(col_key);

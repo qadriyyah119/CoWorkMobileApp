@@ -16,7 +16,7 @@ class WorkspaceListCell: UICollectionViewCell {
     override func updateConfiguration(using state: UICellConfigurationState) {
         guard let workspaceId = self.workspaceId else { return }
         
-        let contentConfiguration = SearchContentConfiguration(workspaceId: workspaceId)
+        let contentConfiguration = WorkspaceListContentConfiguration(workspaceId: workspaceId)
         self.contentConfiguration = contentConfiguration
     }
 }

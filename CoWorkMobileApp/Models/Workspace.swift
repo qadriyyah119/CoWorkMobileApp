@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import MapKit
 
 class Workspace: Object, Decodable {
     @Persisted(primaryKey: true) var id: String = ""
@@ -18,7 +19,9 @@ class Workspace: Object, Decodable {
     @Persisted var reviewCount: Int?
     @Persisted var categories: List<Category>
     @Persisted var rating: Double?
-    @Persisted var coordinates: Coordinates?
+//    @Persisted private var coordinates: Coordinates
+    @Persisted var latitude: Double = 0.0
+    @Persisted var longitude: Double = 0.0
     @Persisted var transactions: List<String>
     @Persisted var address: String?
     @Persisted var address2: String?
@@ -47,6 +50,8 @@ class Workspace: Object, Decodable {
         case categories = "categories"
         case rating = "rating"
         case coordinates = "coordinates"
+        case latitude = "latitude"
+        case longitude = "longitude"
         case transactions = "transactions"
         case location = "location"
         case address = "address1"
@@ -71,6 +76,7 @@ class Workspace: Object, Decodable {
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let locationContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .location)
+        let coordinatesContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .coordinates)
         
         id = try container.decode(String.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
@@ -81,7 +87,9 @@ class Workspace: Object, Decodable {
         reviewCount = try container.decodeIfPresent(Int.self, forKey: .reviewCount)
         categories = try container.decodeIfPresent(List<Category>.self, forKey: .categories) ?? List<Category>()
         rating = try container.decodeIfPresent(Double.self, forKey: .rating)
-        coordinates = try container.decodeIfPresent(Coordinates.self, forKey: .coordinates)
+//        coordinates = try container.decode(Coordinates.self, forKey: .coordinates)
+        latitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .latitude) ?? 0.0
+        longitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .longitude) ?? 0.0
         transactions = try container.decodeIfPresent(List<String>.self, forKey: .transactions) ?? List<String>()
 
         address = try locationContainer.decodeIfPresent(String.self, forKey: .address)
@@ -101,6 +109,11 @@ class Workspace: Object, Decodable {
         price = try container.decodeIfPresent(String.self, forKey: .price)
         hours = try container.decodeIfPresent(List<WorkspaceHours>.self, forKey: .hours) ?? List<WorkspaceHours>()
     }
+    
+    var coordinate: CLLocation {
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
+    
 }
 
 class Category: Object, Decodable {
@@ -108,10 +121,10 @@ class Category: Object, Decodable {
     @Persisted var title: String?
 }
 
-class Coordinates: Object, Decodable {
-    @Persisted var latitude: Double?
-    @Persisted var longitude: Double?
-}
+//private class Coordinates: Object, Decodable {
+//    @Persisted var latitude: Double
+//    @Persisted var longitude: Double
+//}
 
 class WorkspaceHours: Object, Decodable {
     @Persisted var hours = List<Open>()
@@ -125,13 +138,36 @@ class Open: Object, Decodable {
     @Persisted var day: Int?
 }
 
+class Region: Object, Decodable {
+    @Persisted var latitude: Double?
+    @Persisted var longitude: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case center = "center"
+        case latitude = "latitude"
+        case longitude = "longitude"
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let centerContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .center)
+        
+        latitude = try centerContainer.decodeIfPresent(Double.self, forKey: .latitude)
+        longitude = try centerContainer.decodeIfPresent(Double.self, forKey: .longitude)
+    }
+}
+
 class WorkspaceListResults: Object, Decodable {
     @Persisted var total: Int?
     @Persisted var businesses: List<Workspace>
+    @Persisted var region: Region?
     
     enum CodingKeys: String, CodingKey {
         case total = "total"
         case businesses = "businesses"
+        case region = "region"
     }
     
     convenience required init(from decoder: Decoder) throws {
@@ -140,5 +176,6 @@ class WorkspaceListResults: Object, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         total = try container.decodeIfPresent(Int.self, forKey: .total)
         businesses = try container.decodeIfPresent(List<Workspace>.self, forKey: .businesses) ?? List<Workspace>()
+        region = try container.decodeIfPresent(Region.self, forKey: .region)
     }
 }

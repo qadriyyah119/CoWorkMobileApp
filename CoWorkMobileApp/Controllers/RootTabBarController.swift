@@ -9,27 +9,37 @@ import UIKit
 
 class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    let viewModel = RootTabBarViewModel()
+    
+
+    let viewModel: RootTabBarViewModel
+    
+    init(viewModel: RootTabBarViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchCoordinator.start()
         self.setupView()
     }
     
     private func setupView() {
         let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = ThemeColors.mainBackgroundColor
         self.tabBar.standardAppearance = appearance
+        self.tabBar.scrollEdgeAppearance = appearance
         self.tabBar.tintColor = ThemeColors.tintColor
-        self.setViewControllers([searchVC, collectionsVC, profileVC], animated: false)
+        self.setViewControllers([searchCoordinator.navigationController, collectionsVC, profileVC], animated: false)
         self.delegate = self
     }
     
-    private lazy var searchVC: UINavigationController = {
-        let viewController = SearchViewController()
-        viewController.tabBarItem = UITabBarItem(title: viewModel.searchTabTitle, image: viewModel.searchTabIcon, tag: 0)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        return navigationController
-    }()
+    let searchCoordinator = SearchCoordinator(navigationController: UINavigationController())
     
     private lazy var collectionsVC: UINavigationController = {
         let viewController = CollectionsViewController()

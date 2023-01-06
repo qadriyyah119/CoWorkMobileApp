@@ -81,7 +81,16 @@ class WelcomeViewController: UIViewController {
         return stackView
     }()
     
-    let viewModel = WelcomeViewModel()
+    let viewModel: WelcomeViewModel
+    
+    init(viewModel: WelcomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,17 +112,14 @@ class WelcomeViewController: UIViewController {
     }
     
     @objc func registerButtonSelected() {
-        let registerViewController = AccountRegistrationViewController()
-        navigationController?.pushViewController(registerViewController, animated: true)
+        viewModel.showRegistrationView()
     }
     
     @objc func loginButtonSelected() {
-        let loginViewController = LoginViewController()
-        navigationController?.pushViewController(loginViewController, animated: true)
+        viewModel.showLoginView()
     }
     
     @objc func skipButtonSelected() {
-        let tabBarViewController = RootTabBarController()
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: tabBarViewController)
+        viewModel.showMainFlow()
     }
 }

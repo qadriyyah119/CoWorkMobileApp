@@ -25,7 +25,9 @@ class WorkspaceManager {
     static let shared = WorkspaceManager()
     
     func getWorkspaces(forSearchTerm term: String = "coffee+shop",
-                       location: String = "20774",
+                       location: String = "20009",
+                       radius: Int = 10000,
+                       sortBy: String = "best_match",
                        completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
         
         guard let key = apiKey, !key.isEmpty else {
@@ -37,7 +39,9 @@ class WorkspaceManager {
         var urlComponents = URLComponents(string: "\(url)/businesses/search")
         urlComponents?.queryItems = [
             URLQueryItem(name: "term", value: term),
-            URLQueryItem(name: "location", value: location)
+            URLQueryItem(name: "location", value: location),
+            URLQueryItem(name: "radius", value: String(radius)),
+            URLQueryItem(name: "sort_by", value: sortBy)
         ]
         
         guard let url = urlComponents?.url else {
