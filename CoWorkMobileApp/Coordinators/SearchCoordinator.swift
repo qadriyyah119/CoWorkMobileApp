@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Combine
 
 protocol WorkspaceDataSource: AnyObject {
     var workspaces: [Workspace] { get set }
@@ -17,38 +18,32 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
     var workspaces: [Workspace] = []
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var locationManager = CLLocationManager()
     
     private lazy var workspaceListVC: WorkspaceListViewController = {
-        let workspaceListViewModel = WorkspaceListViewModel(workspaces: workspaces)
-        let viewController = WorkspaceListViewController(viewModel: workspaceListViewModel)
-        viewController.tabBarItem = UITabBarItem(title: workspaceListViewModel.searchTabTitle, image: workspaceListViewModel.searchTabIcon, tag: 0)
+        let viewController = WorkspaceListViewController()
+//        viewController.tabBarItem = UITabBarItem(title: workspaceListViewModel.searchTabTitle, image: workspaceListViewModel.searchTabIcon, tag: 0)
         return viewController
     }()
     
     private lazy var mapViewController: MapViewController = {
-        let mapViewModel = MapViewModel(workspaces: workspaces)
-        let viewController = MapViewController(viewModel: mapViewModel)
+        let viewController = MapViewController()
         viewController.delegate = self
-        viewController.tabBarItem = UITabBarItem(title: mapViewModel.searchTabTitle, image: mapViewModel.searchTabIcon, tag: 0)
+//        viewController.tabBarItem = UITabBarItem(title: mapViewModel.searchTabTitle, image: mapViewModel.searchTabIcon, tag: 0)
         return viewController
     }()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
+
     func start() {
-        self.getWorkspaces {
-            self.navigationController.pushViewController(self.mapViewController, animated: true)
-        }
-        
-        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { _ in
-            self.presentModalView()
-        }
+        self.navigationController.pushViewController(self.mapViewController, animated: true)
         
     }
     
     private func presentModalView() {
+        guard self.navigationController.presentedViewController == nil else { return }
         let workspaceListViewController = workspaceListVC
         
         let navController = UINavigationController(rootViewController: workspaceListViewController)
@@ -76,22 +71,17 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
         self.navigationController.present(navController, animated: true)
     }
 
-    func getWorkspaces(completion: @escaping () -> Void) {
-            WorkspaceManager.shared.getWorkspaces { result in
-                switch result {
-                case .success(let workspaces):
-                    self.workspaces = Array(workspaces)
-                case .failure(let error):
-                    print(error)
-                }
-                completion()
-            }
-        }
 }
 
 extension SearchCoordinator: MapViewControllerDelegate {
-    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation) {
+    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String) {
         
+        workspaceListVC.currentLocation = location
+        workspaceListVC.searchQuery = query
+        
+        self.presentModalView()
+
     }
-    
+
 }
+

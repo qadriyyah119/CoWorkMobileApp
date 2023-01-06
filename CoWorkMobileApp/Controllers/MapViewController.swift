@@ -9,9 +9,10 @@ import UIKit
 import Cartography
 import MapKit
 import CoreLocation
+import Combine
 
 protocol MapViewControllerDelegate: AnyObject {
-    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation)
+    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String)
 }
 
 class MapViewController: UIViewController {
@@ -44,20 +45,31 @@ class MapViewController: UIViewController {
         return searchController
     }()
     
+    
     weak var delegate: MapViewControllerDelegate?
-    weak var datasource: WorkspaceDataSource?
+    weak var datasource: (any WorkspaceDataSource)?
     let viewModel: MapViewModel
     private var workspaceAnnotations: [MapAnnotation] = []
     var selectedWorkspace: Workspace? = nil
     lazy var geocoder = CLGeocoder()
-    private var previousLocation: CLLocation?
+    private var cancellables: Set<AnyCancellable> = []
+    var currentLocation: CLLocation? {
+        didSet {
+            viewModel.currentLocation = currentLocation
+        }
+    }
+    var searchQuery: String = "" {
+        didSet {
+            viewModel.searchQuery = searchQuery
+        }
+    }
     
     var isAuthorized: Bool {
         return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
     }
     
-    init(viewModel: MapViewModel) {
-        self.viewModel = viewModel
+    init() {
+        self.viewModel = MapViewModel(searchQuery: self.searchQuery)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,19 +80,15 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setRegion()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.allowsBackgroundLocationUpdates = true
         startLocationService()
         locationManager.requestWhenInUseAuthorization()
         loadAnnotations()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-//        if CLLocationManager.locationServicesEnabled(), isAuthorized {
-//            activateLocationServices()
-//        }
         
+        viewModel.$workspaces.sink { [weak self] workspaces in
+            self?.loadAnnotations(for: workspaces)
+        }.store(in: &cancellables)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +107,6 @@ class MapViewController: UIViewController {
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        printCurrentLocation()
         
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -120,18 +127,10 @@ class MapViewController: UIViewController {
     }
     
     private func activateLocationServices() {
-//        locationManager.requestLocation()
-        locationManager.startUpdatingLocation()
-    }
-
-    private func setRegion() {
-        guard let location: CLLocation = locationManager.location else { return }
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
-        mapView.setRegion(region, animated: true)
+        locationManager.requestLocation()
     }
     
-    private func printCurrentLocation() {
-        guard let location: CLLocation = locationManager.location else { return }
+    private func printCurrentLocation(location: CLLocation) {
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -143,15 +142,14 @@ class MapViewController: UIViewController {
                 let currentLocationString = "\(city), \(state)"
                 self?.currentLocationString = currentLocationString
                 self?.navigationItem.title = currentLocationString
-                
+
             }
         }
     }
     
-    private func loadAnnotations() {
-        let annotations = viewModel.workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
+    private func loadAnnotations(for workspaces: [Workspace] = []) {
+        let annotations = workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
         }
-        
         mapView.addAnnotations(annotations)
     }
     
@@ -176,25 +174,35 @@ extension MapViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-//        guard let currentLocation = locations.first else { return }
-//
-//        if previousLocation == nil {
-//            previousLocation = locations.first
-//        } else {
-//            guard let latestLocation = locations.first else { return }
-//            let distanceInMeters = previousLocation?.distance(from: latestLocation) ?? 0
-//            print("distance in meters: \(distanceInMeters)")
-//            previousLocation = latestLocation
-//        }
+        guard let currentLocation = locations.first else { return }
+        printCurrentLocation(location: currentLocation)
         
-        
-//        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-//        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
-//
-//        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-//        let region = MKCoordinateRegion(center: locationValue, span: span)
-//        mapView.setRegion(region, animated: true)
+        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
 
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: locationValue, span: span)
+        mapView.setRegion(region, animated: true)
+        
+        convertCurrentLocationToString(from: currentLocation) { city, zip, error in
+            if let zip = zip {
+                self.searchQuery = zip
+                self.viewModel.getWorkspaces(forLocation: currentLocation, locationQuery: self.searchQuery) {
+                    if !self.viewModel.workspaces.isEmpty {
+                        self.delegate?.mapViewController(self, userDidUpdateLocation: currentLocation, query: self.searchQuery)
+                    }
+                }
+            }
+        }
+    }
+    
+    func convertCurrentLocationToString(from location: CLLocation, completion: @escaping (_ city: String?, _ zip: String?, _ error: Error?) -> ()) {
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+            completion(placemarks?.first?.locality,
+                       placemarks?.first?.postalCode,
+                       error)
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -205,6 +213,8 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: MKMapViewDelegate {
     
+// Methods to use later:
+/*
 //    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
 //        centerMap(on: userLocation.coordinate)
 //    }
@@ -215,9 +225,29 @@ extension MapViewController: MKMapViewDelegate {
 //                                                  longitudinalMeters: regionRadius)
 //        mapView.setRegion(coordinateRegion, animated: true)
 //    }
-
+*/
+    
 }
 
 extension MapViewController: UISearchBarDelegate {
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(searchText) { placemark, error in
+            guard let location = placemark?.first?.location else { return }
+            
+            DispatchQueue.main.async {
+                self.printCurrentLocation(location: location)
+                let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                let region = MKCoordinateRegion(center: location.coordinate, span: span)
+                self.mapView.setRegion(region, animated: true)
+            }
+            self.viewModel.getWorkspaces(forLocation: location, locationQuery: searchText) {
+                if !self.viewModel.workspaces.isEmpty {
+                    self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
+                }
+            }
+        }
+    }
 }

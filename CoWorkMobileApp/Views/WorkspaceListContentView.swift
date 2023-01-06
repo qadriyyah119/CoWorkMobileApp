@@ -11,7 +11,7 @@ import RealmSwift
 
 class WorkspaceListContentView: UIView, UIContentView {
     
-    private var viewModel = WorkspaceListContentView_VModel()
+    private var viewModel = WorkspaceListContentViewViewModel()
     
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
