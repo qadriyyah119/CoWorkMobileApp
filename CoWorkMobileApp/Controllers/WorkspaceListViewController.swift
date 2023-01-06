@@ -64,7 +64,6 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.applySnapshot()
     }
     
     private func setupView() {

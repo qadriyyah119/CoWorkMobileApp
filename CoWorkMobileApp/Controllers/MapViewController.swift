@@ -11,10 +11,6 @@ import MapKit
 import CoreLocation
 import Combine
 
-
-// TODO: Subscribe to ViewModel workspace changes
-//
-
 protocol MapViewControllerDelegate: AnyObject {
     func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String)
 }
@@ -95,13 +91,6 @@ class MapViewController: UIViewController {
         }.store(in: &cancellables)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-//        if CLLocationManager.locationServicesEnabled(), isAuthorized {
-//            activateLocationServices()
-//        }
-        
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -118,7 +107,6 @@ class MapViewController: UIViewController {
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        printCurrentLocation()
         
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -140,11 +128,9 @@ class MapViewController: UIViewController {
     
     private func activateLocationServices() {
         locationManager.requestLocation()
-//        locationManager.startUpdatingLocation()
     }
     
-    private func printCurrentLocation() {
-        guard let location: CLLocation = locationManager.location else { return }
+    private func printCurrentLocation(location: CLLocation) {
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -164,7 +150,6 @@ class MapViewController: UIViewController {
     private func loadAnnotations(for workspaces: [Workspace] = []) {
         let annotations = workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
         }
-        
         mapView.addAnnotations(annotations)
     }
     
@@ -190,6 +175,7 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
         guard let currentLocation = locations.first else { return }
+        printCurrentLocation(location: currentLocation)
         
         guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         print("locations = \(locationValue.latitude) \(locationValue.longitude)")
@@ -252,6 +238,7 @@ extension MapViewController: UISearchBarDelegate {
             guard let location = placemark?.first?.location else { return }
             
             DispatchQueue.main.async {
+                self.printCurrentLocation(location: location)
                 let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
                 self.mapView.setRegion(region, animated: true)
@@ -261,7 +248,6 @@ extension MapViewController: UISearchBarDelegate {
                     self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
                 }
             }
-//            self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
         }
     }
 }

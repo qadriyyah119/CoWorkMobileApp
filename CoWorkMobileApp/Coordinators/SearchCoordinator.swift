@@ -19,11 +19,6 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var locationManager = CLLocationManager()
-//    var searchQuery: String = "" {
-//        didSet {
-//
-//        }
-//    }
     
     private lazy var workspaceListVC: WorkspaceListViewController = {
         let viewController = WorkspaceListViewController()
@@ -46,16 +41,6 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
         self.navigationController.pushViewController(self.mapViewController, animated: true)
         
     }
-
-
-func convertCurrentLocationToString(from location: CLLocation, completion: @escaping (_ city: String?, _ zip: String?, _ error: Error?) -> ()) {
-    let geoCoder = CLGeocoder()
-    geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-        completion(placemarks?.first?.locality,
-                   placemarks?.first?.postalCode,
-                   error)
-    }
-}
     
     private func presentModalView() {
         guard self.navigationController.presentedViewController == nil else { return }
