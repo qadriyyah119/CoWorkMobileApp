@@ -14,7 +14,14 @@ class WorkspaceListContentViewViewModel {
         didSet {
             if let workspace = workspace {
                 nameText = workspace.name
-                distanceText = "\(workspace.distance ?? 0.0)"
+                
+                if let workspaceDistance = workspace.distance {
+                    let distance = Measurement(value: workspaceDistance, unit: UnitLength.meters)
+                    let miles = distance.converted(to: .miles)
+                    let milesValue = round(miles.value * 10) / 10
+                    distanceText = "\(milesValue) mi"
+                }
+                
                 ratingText = "\(workspace.rating ?? 0.0)"
                 reviewCountText = "(\(workspace.reviewCount ?? 0))"
                 
