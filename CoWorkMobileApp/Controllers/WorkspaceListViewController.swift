@@ -15,16 +15,22 @@ import Combine
 class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
+        case topRated
         case allResults
         
         var description: String {
             switch self {
             case .allResults: return "All Results"
+            case .topRated: return "Top Rated"
             }
         }
     }
     
     struct WorkspaceItem: Hashable {
+        var workspaceId: String?
+    }
+    
+    struct TopRatedWorkspaceItem: Hashable {
         var workspaceId: String?
     }
     
@@ -58,7 +64,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         setupView()
         configureDataSource()
         viewModel.$workspaces.sink { [weak self] workspaces in
-            self?.applySnapshot(for: workspaces)
+            self?.applySnapshot(with: workspaces)
         }.store(in: &cancellables)
     }
     
@@ -96,6 +102,8 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
+            case .topRated:
+                return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: itemIdentifier)
             case .allResults:
                 return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: itemIdentifier)
             }
@@ -110,12 +118,34 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     
     private func configureLayout() -> UICollectionViewLayout {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.interSectionSpacing = 15.0
         
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, layoutEnv in
             
             guard let section = Section(rawValue: sectionIndex) else { return nil }
             
             switch section {
+            case .topRated:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                
+                let groupHeight = NSCollectionLayoutDimension.estimated(250)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: groupHeight)
+                
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+                
+                let headerLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0))
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize,
+                                                                                elementKind: SectionHeaderSupplementaryView.identifier,
+                                                                                alignment: .topLeading)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .groupPaging
+                section.boundarySupplementaryItems = [sectionHeader]
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+                
+                return section
 
             case .allResults:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -128,7 +158,9 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 
                 let headerLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44.0))
-                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize, elementKind: SectionHeaderSupplementaryView.identifier, alignment: .topLeading)
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerLayoutSize,
+                                                                                elementKind: SectionHeaderSupplementaryView.identifier,
+                                                                                alignment: .topLeading)
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.boundarySupplementaryItems = [sectionHeader]
@@ -140,11 +172,19 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         return layout
     }
     
-    private func applySnapshot(for workspaces: [Workspace] = []) {
-        var snapshot = NSDiffableDataSourceSectionSnapshot<WorkspaceItem>()
+    private func applySnapshot(with workspaces: [Workspace] = []) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, WorkspaceItem>()
+        snapshot.appendSections(Section.allCases)
+        
+        let topRated = workspaces
+            .filter { $0.reviewCount ?? 0 >= 50 && $0.rating ?? 0.0 >= 4.5 }
+            .prefix(5)
+            .map { WorkspaceItem(workspaceId: $0.id) }
+        
         let workspaceItems = workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
-        snapshot.append(workspaceItems)
-        diffableDataSource.apply(snapshot, to: .allResults, animatingDifferences: true)
+        snapshot.appendItems(workspaceItems, toSection: .allResults)
+        snapshot.appendItems(topRated, toSection: .topRated)
+        diffableDataSource.apply(snapshot, animatingDifferences: true)
 
     }
 
