@@ -19,7 +19,6 @@ class Workspace: Object, Decodable {
     @Persisted var reviewCount: Int?
     @Persisted var categories: List<Category>
     @Persisted var rating: Double?
-//    @Persisted private var coordinates: Coordinates
     @Persisted var latitude: Double = 0.0
     @Persisted var longitude: Double = 0.0
     @Persisted var transactions: List<String>
@@ -69,6 +68,7 @@ class Workspace: Object, Decodable {
         case photos = "photos"
         case price = "price"
         case hours = "hours"
+        
     }
     
     convenience required init(from decoder: Decoder) throws {
@@ -87,7 +87,6 @@ class Workspace: Object, Decodable {
         reviewCount = try container.decodeIfPresent(Int.self, forKey: .reviewCount)
         categories = try container.decodeIfPresent(List<Category>.self, forKey: .categories) ?? List<Category>()
         rating = try container.decodeIfPresent(Double.self, forKey: .rating)
-//        coordinates = try container.decode(Coordinates.self, forKey: .coordinates)
         latitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .latitude) ?? 0.0
         longitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .longitude) ?? 0.0
         transactions = try container.decodeIfPresent(List<String>.self, forKey: .transactions) ?? List<String>()
@@ -121,14 +120,24 @@ class Category: Object, Decodable {
     @Persisted var title: String?
 }
 
-//private class Coordinates: Object, Decodable {
-//    @Persisted var latitude: Double
-//    @Persisted var longitude: Double
-//}
-
 class WorkspaceHours: Object, Decodable {
-    @Persisted var hours = List<Open>()
+    @Persisted var open = List<Open>()
     @Persisted var isOpenNow: Bool = false
+    
+    enum CodingKeys: String, CodingKey {
+        case open = "open"
+        case isOpen = "is_open_now"
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        open = try container.decodeIfPresent(List<Open>.self, forKey: .open) ?? List<Open>()
+        isOpenNow = try container.decode(Bool.self, forKey: .isOpen)
+    }
+    
 }
 
 class Open: Object, Decodable {
@@ -136,6 +145,25 @@ class Open: Object, Decodable {
     @Persisted var start: String?
     @Persisted var end: String?
     @Persisted var day: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case isOvernight = "is_overnight"
+        case start = "start"
+        case end = "end"
+        case day = "day"
+    }
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        isOvernight = try container.decode(Bool.self, forKey: .isOvernight)
+        start = try container.decodeIfPresent(String.self, forKey: .start)
+        end = try container.decodeIfPresent(String.self, forKey: .end)
+        day = try container.decodeIfPresent(Int.self, forKey: .day)
+    }
+    
 }
 
 class Region: Object, Decodable {

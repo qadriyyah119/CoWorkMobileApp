@@ -22,12 +22,12 @@ class WorkspaceListContentView: UIView, UIContentView {
         return label
     }()
     
-    private let imageCard: UIView = {
-        let cardView = UIView()
-        cardView.layer.cornerRadius = 8
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        return cardView
-    }()
+//    private let imageCard: UIView = {
+//        let cardView = UIView()
+//        cardView.layer.cornerRadius = 8
+//        cardView.translatesAutoresizingMaskIntoConstraints = false
+//        return cardView
+//    }()
     
     private(set) lazy var spaceImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)

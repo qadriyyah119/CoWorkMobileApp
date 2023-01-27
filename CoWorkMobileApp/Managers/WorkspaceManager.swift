@@ -24,7 +24,7 @@ class WorkspaceManager {
     
     static let shared = WorkspaceManager()
     
-    func getWorkspaces(forSearchTerm term: String = "coffee+shop",
+    func getWorkspaces(forCategories categories: String = "sharedofficespaces",
                        location: String = "",
                        radius: Int = 10000,
                        sortBy: String = "best_match",
@@ -38,7 +38,7 @@ class WorkspaceManager {
         
         var urlComponents = URLComponents(string: "\(url)/businesses/search")
         urlComponents?.queryItems = [
-            URLQueryItem(name: "term", value: term),
+            URLQueryItem(name: "categories", value: categories),
             URLQueryItem(name: "location", value: location),
             URLQueryItem(name: "radius", value: String(radius)),
             URLQueryItem(name: "sort_by", value: sortBy)
@@ -63,6 +63,37 @@ class WorkspaceManager {
                         realm?.add(spaces, update: .modified)
                     })
                     completion(.success(spaces))
+                case .failure:
+                    completion(.failure(.invalidData))
+                }
+            }
+    }
+    
+    func getWorkspaceDetails(withId id: String, completion: @escaping(Result<Workspace, AuthError>) -> Void) {
+        
+        guard let key = apiKey, !key.isEmpty else {
+            print("API key does not exist")
+            completion(.failure(.invalidAPIKey))
+            return
+        }
+        
+        guard let url = URL(string: "\(url)/businesses/\(id)") else {
+            return completion(.failure(.invalidRequest))
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
+        
+        AF.request(request)
+            .responseDecodable(of: Workspace.self, decoder: JSONDecoder()) { response in
+                switch response.result {
+                case .success(let workspace):
+                    let realm = try? Realm()
+                    try? realm?.write({
+                        realm?.add(workspace, update: .modified)
+                    })
+                    completion(.success(workspace))
                 case .failure:
                     completion(.failure(.invalidData))
                 }

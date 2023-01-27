@@ -1,5 +1,5 @@
 //
-//  SearchCoordinator.swift
+//  WorkspaceCoordinator.swift
 //  CoWorkMobileApp
 //
 //  Created by Qadriyyah Thomas on 10/12/22.
@@ -14,14 +14,16 @@ protocol WorkspaceDataSource: AnyObject {
     var workspaces: [Workspace] { get set }
 }
 
-class SearchCoordinator: Coordinator, WorkspaceDataSource {
+class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
     var workspaces: [Workspace] = []
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var locationManager = CLLocationManager()
+    var workspaceDetailViewController: WorkspaceDetailViewController?
     
     private lazy var workspaceListVC: WorkspaceListViewController = {
         let viewController = WorkspaceListViewController()
+        viewController.delegate = self
 //        viewController.tabBarItem = UITabBarItem(title: workspaceListViewModel.searchTabTitle, image: workspaceListViewModel.searchTabIcon, tag: 0)
         return viewController
     }()
@@ -73,7 +75,7 @@ class SearchCoordinator: Coordinator, WorkspaceDataSource {
 
 }
 
-extension SearchCoordinator: MapViewControllerDelegate {
+extension WorkspaceCoordinator: MapViewControllerDelegate {
     func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String) {
         
         workspaceListVC.currentLocation = location
@@ -83,5 +85,15 @@ extension SearchCoordinator: MapViewControllerDelegate {
 
     }
 
+}
+
+extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
+    func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String) {
+        let workspaceDetailViewController = WorkspaceDetailViewController(workspaceId: id)
+        self.workspaceDetailViewController = workspaceDetailViewController
+        self.navigationController.pushViewController(workspaceDetailViewController, animated: true)
+//        controller.navigationController?.pushViewController(workspaceDetailViewController, animated: true)
+    }
+    
 }
 
