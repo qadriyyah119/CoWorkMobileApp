@@ -87,11 +87,11 @@ class WorkspaceListContentView: UIView, UIContentView {
     }()
     
     private lazy var ratingStar: UIImageView = {
-        let imageSize = UIFont.systemFont(ofSize: 14)
+        let imageSize = UIFont.systemFont(ofSize: 12)
         let config = UIImage.SymbolConfiguration(font: imageSize)
         let image = UIImage(systemName: "star.fill", withConfiguration: config)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .white
+        imageView.tintColor = .black
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -129,7 +129,7 @@ class WorkspaceListContentView: UIView, UIContentView {
         return stackView
     }()
     
-    private let contentView: UIView = {
+    private let containerView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -179,11 +179,11 @@ class WorkspaceListContentView: UIView, UIContentView {
     }
     
     private func setupView() {
-        addSubview(contentView)
-        [spaceImageView, nameStackView, ratingStackView].forEach { self.contentView.addSubview($0)}
+        addSubview(containerView)
+        [spaceImageView, nameStackView, ratingStackView].forEach { self.containerView.addSubview($0)}
         
-        constrain(contentView, spaceImageView, nameStackView, ratingStackView) { contentView, spaceImageView, nameStackView, ratingStackView in
-            contentView.edges == contentView.superview!.edges
+        constrain(containerView, spaceImageView, nameStackView, ratingStackView) { containerView, spaceImageView, nameStackView, ratingStackView in
+            containerView.edges == containerView.superview!.edges
             spaceImageView.top == spaceImageView.superview!.top
             spaceImageView.leading == spaceImageView.superview!.leading + 4
             spaceImageView.trailing == spaceImageView.superview!.trailing - 4

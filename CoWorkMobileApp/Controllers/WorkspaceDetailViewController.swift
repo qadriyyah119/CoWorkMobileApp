@@ -11,17 +11,19 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
         case workspaceImages
+        case details
         
         var description: String {
             switch self {
             case .workspaceImages: return ""
-            
+            case .details: return ""
             }
         }
     }
     
     struct WorkspaceDetailItem: Hashable {
         var workspaceId: String?
+        var imageUrl: String?
     }
     
     private(set) var collectionView: UICollectionView!
@@ -49,6 +51,12 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
                 self.applySnapshot(forWorkspace: workspace)
             }
         }
+        let xButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissVC))
+        navigationItem.leftBarButtonItem = xButton
+    }
+    
+    @objc func dismissVC() {
+        self.dismiss(animated: true)
     }
     
     private func setupView() {
@@ -70,12 +78,17 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
         cell.workspaceId = item.workspaceId
     }
     
+    private let detailCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailCell, WorkspaceDetailItem> { cell, indexPath, item in
+        cell.workspaceId = item.workspaceId
+    }
+    
     private func configureDataSource() {
         self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceDetailItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
             case .workspaceImages:
                 return collectionView.dequeueConfiguredReusableCell(using: self.imageCellRegistration, for: indexPath, item: itemIdentifier)
+            case .details: return collectionView.dequeueConfiguredReusableCell(using: self.detailCellRegistration, for: indexPath, item: itemIdentifier)
             }
         }
     }
@@ -92,16 +105,29 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
             case .workspaceImages:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
                 
-                let groupHeight = NSCollectionLayoutDimension.estimated(340)
+                let groupHeight = NSCollectionLayoutDimension.estimated(320)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
                 
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 
                 let section = NSCollectionLayoutSection(group: group)
-//                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+
+                return section
                 
+            case .details:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+
+                let groupHeight = NSCollectionLayoutDimension.estimated(100)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
+
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+
                 return section
             }
         }, configuration: configuration)
@@ -111,10 +137,12 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     
     private func applySnapshot(forWorkspace workspace: Workspace) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, WorkspaceDetailItem>()
-        snapshot.appendSections([.workspaceImages])
+        snapshot.appendSections(Section.allCases)
         
-        let detailImageItem = WorkspaceDetailItem(workspaceId: workspace.id)
-        snapshot.appendItems([detailImageItem], toSection: .workspaceImages)
+        let imageItems = WorkspaceDetailItem(workspaceId: workspace.id, imageUrl: workspace.url)
+        let detailItems = WorkspaceDetailItem(workspaceId: workspace.id)
+        snapshot.appendItems([imageItems], toSection: .workspaceImages)
+        snapshot.appendItems([detailItems], toSection: .details)
         diffableDataSource.apply(snapshot, animatingDifferences: true)
     }
     

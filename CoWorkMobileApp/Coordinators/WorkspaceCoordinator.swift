@@ -64,7 +64,7 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
                 sheet.detents = [.medium(), .large()]
             }
             sheet.selectedDetentIdentifier = .medium
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+//            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
             sheet.largestUndimmedDetentIdentifier = .medium
             sheet.preferredCornerRadius = 30
             sheet.prefersGrabberVisible = true
@@ -91,8 +91,9 @@ extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
     func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String) {
         let workspaceDetailViewController = WorkspaceDetailViewController(workspaceId: id)
         self.workspaceDetailViewController = workspaceDetailViewController
-        self.navigationController.pushViewController(workspaceDetailViewController, animated: true)
-//        controller.navigationController?.pushViewController(workspaceDetailViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: workspaceDetailViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        controller.navigationController?.present(navigationController, animated: true)
     }
     
 }

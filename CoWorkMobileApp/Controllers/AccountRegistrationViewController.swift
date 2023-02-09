@@ -20,7 +20,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         return label
     }()
     
-    private lazy var emailTextField: TextFieldWithPadding = {
+    private(set) lazy var emailTextField: TextFieldWithPadding = {
         let textField = makeStyledInputField()
         textField.placeholder = viewModel.emailPlaceholderText
         textField.clearButtonMode = .whileEditing
@@ -29,7 +29,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         return textField
     }()
     
-    private lazy var usernameTextField: TextFieldWithPadding = {
+    private(set) lazy var usernameTextField: TextFieldWithPadding = {
         let textField = makeStyledInputField()
         textField.placeholder = viewModel.usernamePlaceholderText
         textField.clearButtonMode = .whileEditing
@@ -38,7 +38,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         return textField
     }()
     
-    private lazy var passwordTextField: TextFieldWithPadding = {
+    private(set) lazy var passwordTextField: TextFieldWithPadding = {
         let textfield = makeStyledInputField()
         textfield.placeholder = viewModel.passwordPlaceholderText
         textfield.clearButtonMode = .whileEditing
@@ -117,6 +117,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -178,7 +179,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         }
     }
     
-    private func validateForm() -> Bool {
+    func validateForm() -> Bool {
         guard let email = emailTextField.text, !email.isEmpty, let username = usernameTextField.text, !username.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
             Banner.showBanner(withTitle: "Error!", subtitle: "Please complete all fields", style: .danger)
             return false

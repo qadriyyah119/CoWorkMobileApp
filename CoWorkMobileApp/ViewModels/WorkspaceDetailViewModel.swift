@@ -19,6 +19,7 @@ class WorkspaceDetailViewModel {
         WorkspaceManager.shared.getWorkspaceDetails(withId: id) { result in
             switch result {
             case .success(let workspace):
+                print("Details: \(workspace)")
                 self.workspace = workspace
             case .failure(let error):
                 print(error)
