@@ -96,25 +96,25 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     private func configureLayout() -> UICollectionViewLayout {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         configuration.interSectionSpacing = 15.0
-        
+
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, layoutEnv in
-            
+
             guard let section = Section(rawValue: sectionIndex) else { return nil }
-            
+
             switch section {
             case .workspaceImages:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
+
                 let groupHeight = NSCollectionLayoutDimension.estimated(320)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
-                
+
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
-                
+
                 let section = NSCollectionLayoutSection(group: group)
 
                 return section
-                
+
             case .details:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -129,6 +129,7 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
 
                 return section
+
             }
         }, configuration: configuration)
         return layout

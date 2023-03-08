@@ -124,7 +124,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         stackView.spacing = 8
         stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.insetsLayoutMarginsFromSafeArea = true
+        stackView.insetsLayoutMarginsFromSafeArea = true
         return stackView
     }()
     
@@ -157,7 +157,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         stackView.spacing = 8
         stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.insetsLayoutMarginsFromSafeArea = true
+        stackView.insetsLayoutMarginsFromSafeArea = true
         return stackView
     }()
     
@@ -181,7 +181,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         return label
     }()
     
-    private lazy var businessHoursHorizontalStackView: UIStackView = {
+    private lazy var businessHoursTitleHorizontalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             hoursIcon,
             businessHoursTitleLabel
@@ -195,11 +195,233 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         return stackView
     }()
     
-    private lazy var detailsVerticalStackView: UIStackView = {
+    private lazy var mondayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var mondayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var tuesdayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var tuesdayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var wednesdayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var wednesdayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var thursdayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var thursdayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var fridayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var fridayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var saturdayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var saturdayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var sundayTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var sundayHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        return label
+    }()
+    
+    private lazy var mondayHoursRowStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            addressHorizontalStackView,
-            phoneHorizontalStackView,
-            businessHoursHorizontalStackView
+            mondayTitleLabel,
+            mondayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var tuesdayHoursRowStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            tuesdayTitleLabel,
+            tuesdayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var wednesdayHoursRowStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            wednesdayTitleLabel,
+            wednesdayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var thursdayHoursRowStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            thursdayTitleLabel,
+            thursdayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var fridayHoursRowStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            fridayTitleLabel,
+            fridayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var saturdayHoursRowStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            saturdayTitleLabel,
+            saturdayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var sundayHoursRowStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            sundayTitleLabel,
+            sundayHoursLabel
+        ])
+        
+        stackView.axis = .horizontal
+//        stackView.spacing = 20
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        return stackView
+    }()
+    
+    private lazy var hoursVerticalStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            isOpenNowLabel,
+            mondayHoursRowStackView,
+            tuesdayHoursRowStackView,
+            wednesdayHoursRowStackView,
+            thursdayHoursRowStackView,
+            fridayHoursRowStackView,
+            saturdayHoursRowStackView,
+            sundayHoursRowStackView
         ])
         
         stackView.axis = .vertical
@@ -207,7 +429,26 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         stackView.alignment = .leading
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.insetsLayoutMarginsFromSafeArea = true
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 28, bottom: 0, trailing: 0)
+        return stackView
+    }()
+    
+    private lazy var detailsVerticalStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            addressHorizontalStackView,
+            phoneHorizontalStackView,
+            businessHoursTitleHorizontalStackView,
+            hoursVerticalStackView
+        ])
+        
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.alignment = .leading
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.setCustomSpacing(16.0, after: phoneHorizontalStackView)
+        stackView.insetsLayoutMarginsFromSafeArea = true
         return stackView
     }()
     
@@ -239,6 +480,16 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         }
     }
     
+    init(configuration: WorkspaceDetailContentConfiguration) {
+        super.init(frame: .zero)
+        self.configuration = configuration
+        self.setupView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func apply(configuration: WorkspaceDetailContentConfiguration) {
         guard configuration != currentConfiguration else { return }
         self.currentConfiguration = configuration
@@ -260,42 +511,43 @@ class WorkspaceDetailContentView: UIView, UIContentView {
             isOpenNowLabel.text = "Open"
             isOpenNowLabel.textColor = ThemeColors.greenColor
         } else {
-            isOpenNowLabel.text = "Closed"
+            isOpenNowLabel.text = "Closed now"
             isOpenNowLabel.textColor = .red
         }
         
         addressLabel.text = viewModel.addressText
         phoneLabel.text = viewModel.phoneText
-    }
-    
-    init(configuration: WorkspaceDetailContentConfiguration) {
-        super.init(frame: .zero)
-        self.configuration = configuration
-        self.setupView()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        mondayTitleLabel.text = viewModel.mondayText
+        mondayHoursLabel.text = viewModel.mondayHours
+        tuesdayTitleLabel.text = viewModel.tuesdayText
+        tuesdayHoursLabel.text = viewModel.tuesdayHours
+        wednesdayTitleLabel.text = viewModel.wednesdayText
+        wednesdayHoursLabel.text = viewModel.wednesdayHours
+        thursdayTitleLabel.text = viewModel.thursdayText
+        thursdayHoursLabel.text = viewModel.thursdayHours
+        fridayTitleLabel.text = viewModel.fridayText
+        fridayHoursLabel.text = viewModel.fridayHours
+        saturdayTitleLabel.text = viewModel.saturdayText
+        saturdayHoursLabel.text = viewModel.saturdayHours
+        sundayTitleLabel.text = viewModel.sundayText
+        sundayHoursLabel.text = viewModel.sundayHours
     }
     
     private func setupView() {
         addSubview(containerView)
         [nameLabel,
          ratingRowStackView,
-         isOpenNowLabel,
          lineView,
          detailsVerticalStackView].forEach { self.containerView.addSubview($0)}
         
-        constrain(containerView, nameLabel, ratingRowStackView, isOpenNowLabel, lineView, detailsVerticalStackView) { containerView, nameLabel, ratingRowStackView, isOpenNowLabel, lineView, detailsVerticalStackView in
+        constrain(containerView, nameLabel, ratingRowStackView, lineView, detailsVerticalStackView) { containerView, nameLabel, ratingRowStackView, lineView, detailsVerticalStackView in
             containerView.edges == containerView.superview!.edges
             nameLabel.leading == nameLabel.superview!.leading + 4
             nameLabel.trailing == nameLabel.superview!.trailing - 4
             ratingRowStackView.top == nameLabel.bottom + 8
             ratingRowStackView.leading == ratingRowStackView.superview!.leading + 4
             ratingRowStackView.trailing == ratingRowStackView.superview!.trailing - 4
-            isOpenNowLabel.top == ratingRowStackView.bottom + 4
-            isOpenNowLabel.leading == isOpenNowLabel.superview!.leading + 4
-            lineView.top == isOpenNowLabel.bottom + 8
+            lineView.top == ratingRowStackView.bottom + 8
             lineView.leading == lineView.superview!.leading + 4
             lineView.trailing == lineView.superview!.trailing - 4
             detailsVerticalStackView.top == lineView.bottom + 8
