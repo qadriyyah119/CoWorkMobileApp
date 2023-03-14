@@ -16,22 +16,7 @@ class WorkspaceDetailImageContentView: UIView, UIContentView {
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(bookmarkButton)
-        
-        constrain(bookmarkButton) { bookmarkButton in
-            bookmarkButton.trailing == bookmarkButton.superview!.trailing - 16
-            bookmarkButton.top == bookmarkButton.superview!.top + 16
-        }
         return imageView
-    }()
-    
-    private let bookmarkButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "bookmark.circle"), for: .normal)
-        button.tintColor = UIColor.white
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.sizeToFit()
-        return button
     }()
     
     private var currentConfiguration: WorkspaceDetailImageContentConfiguration!

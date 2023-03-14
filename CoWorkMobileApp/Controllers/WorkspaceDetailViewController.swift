@@ -53,10 +53,25 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
         }
         let xButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissVC))
         navigationItem.leftBarButtonItem = xButton
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: bookmarkButton)
     }
+    
+    private lazy var bookmarkButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "bookmark.circle"), for: .normal)
+        button.tintColor = UIColor.white
+        button.sizeToFit()
+        button.addTarget(self, action: #selector(saveToFavorites), for: .primaryActionTriggered)
+        return button
+    }()
     
     @objc func dismissVC() {
         self.dismiss(animated: true)
+    }
+    
+    @objc func saveToFavorites() {
+        print("Save")
     }
     
     private func setupView() {
