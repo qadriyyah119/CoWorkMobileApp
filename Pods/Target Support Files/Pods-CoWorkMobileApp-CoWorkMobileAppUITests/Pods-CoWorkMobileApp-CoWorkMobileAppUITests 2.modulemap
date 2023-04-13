@@ -1,6 +1,0 @@
-framework module Pods_CoWorkMobileApp_CoWorkMobileAppUITests {
-  umbrella header "Pods-CoWorkMobileApp-CoWorkMobileAppUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}

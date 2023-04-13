@@ -46,14 +46,13 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
     
     private func presentModalView() {
         guard self.navigationController.presentedViewController == nil else { return }
-        let workspaceListViewController = workspaceListVC
         
-        let navController = UINavigationController(rootViewController: workspaceListViewController)
+        let navController = UINavigationController(rootViewController: workspaceListVC)
         navController.modalPresentationStyle = .pageSheet
         navController.isModalInPresentation = true
-        
+
         let smallId = UISheetPresentationController.Detent.Identifier("small")
-        
+
         if let sheet = navController.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallId) { context in
@@ -71,6 +70,8 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
         }
         
         self.navigationController.present(navController, animated: true)
+//        var tabBarController = self.navigationController.viewControllers.first?.tabBarController
+//        tabBarController?.tabBar.bringSubviewToFront((navController.topViewController?.view)!)
     }
 
 }

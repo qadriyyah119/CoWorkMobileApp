@@ -73,31 +73,60 @@ class WorkspaceDetailContentViewViewModel {
     var sundayText: String?
     var sundayHours: String?
     
+//    private func setHours(forDay day: Int, time: String) {
+//        let weekDay: String = Calendar.current.weekdaySymbols[day]
+//
+//        switch day {
+//        case 0:
+//            sundayText = weekDay
+//            sundayHours = time
+//        case 1:
+//            mondayText = weekDay
+//            mondayHours = time
+//        case 2:
+//            tuesdayText = weekDay
+//            tuesdayHours = time
+//        case 3:
+//            wednesdayText = weekDay
+//            wednesdayHours = time
+//        case 4:
+//            thursdayText = weekDay
+//            thursdayHours = time
+//        case 5:
+//            fridayText = weekDay
+//            fridayHours = time
+//        case 6:
+//            saturdayText = weekDay
+//            saturdayHours = time
+//        default:
+//            break
+//        }
+//    }
+    
     private func setHours(forDay day: Int, time: String) {
-        let weekDay: String = Calendar.current.weekdaySymbols[day]
         
         switch day {
         case 0:
-            sundayText = weekDay
-            sundayHours = time
-        case 1:
-            mondayText = weekDay
+            mondayText = "Monday"
             mondayHours = time
-        case 2:
-            tuesdayText = weekDay
+        case 1:
+            tuesdayText = "Tuesday"
             tuesdayHours = time
-        case 3:
-            wednesdayText = weekDay
+        case 2:
+            wednesdayText = "Wednesday"
             wednesdayHours = time
-        case 4:
-            thursdayText = weekDay
+        case 3:
+            thursdayText = "Thursday"
             thursdayHours = time
-        case 5:
-            fridayText = weekDay
+        case 4:
+            fridayText = "Friday"
             fridayHours = time
-        case 6:
-            saturdayText = weekDay
+        case 5:
+            saturdayText = "Saturday"
             saturdayHours = time
+        case 6:
+            sundayText = "Sunday"
+            sundayHours = time
         default:
             break
         }
