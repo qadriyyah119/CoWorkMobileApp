@@ -54,6 +54,7 @@
 		2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */; };
 		2D66089028B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */; };
 		2D66089228BE9DE400C76819 /* RootTabBarViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */; };
+		2DA5078729E8B8BC008C53D2 /* WorkspaceReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5078629E8B8BC008C53D2 /* WorkspaceReview.swift */; };
 		2DABF5B528DBB4C0007D660E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DABF5B428DBB4C0007D660E /* MapViewController.swift */; };
 		2DABF5B728DBF573007D660E /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DABF5B628DBF573007D660E /* MapViewModel.swift */; };
 		2DC2CFC528F600B500FB7ACE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC2CFC428F600B500FB7ACE /* Coordinator.swift */; };
@@ -150,6 +151,7 @@
 		2D66088E28B42AE200C76819 /* APIKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKeys.xcconfig; sourceTree = "<group>"; };
 		2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListContentViewViewModel.swift; sourceTree = "<group>"; };
 		2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarViewModelTest.swift; sourceTree = "<group>"; };
+		2DA5078629E8B8BC008C53D2 /* WorkspaceReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceReview.swift; sourceTree = "<group>"; };
 		2DABF5B428DBB4C0007D660E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		2DABF5B628DBF573007D660E /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		2DC2CFC428F600B500FB7ACE /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				2D4207AF289AEED400F82B1F /* User.swift */,
 				2D66088228A6AED200C76819 /* Workspace.swift */,
 				2DC9246629280AF8000DF340 /* MapAnnotation.swift */,
+				2DA5078629E8B8BC008C53D2 /* WorkspaceReview.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -708,6 +711,7 @@
 				2DC9246D294A5971000DF340 /* WorkplaceAnnotationView.swift in Sources */,
 				2DC810A42983320500666610 /* WorkspaceDetailImageContentConfiguration.swift in Sources */,
 				2DC2CFC728F63C9700FB7ACE /* AppCoordinator.swift in Sources */,
+				2DA5078729E8B8BC008C53D2 /* WorkspaceReview.swift in Sources */,
 				2DC810AA2984511C00666610 /* WorkspaceDetailViewModel.swift in Sources */,
 				2DC810B0298990F800666610 /* WorkspaceDetailCell.swift in Sources */,
 				2D66087428A4107600C76819 /* RootTabBarController.swift in Sources */,

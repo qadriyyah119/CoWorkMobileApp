@@ -24,7 +24,7 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
     private lazy var workspaceListVC: WorkspaceListViewController = {
         let viewController = WorkspaceListViewController()
         viewController.delegate = self
-//        viewController.tabBarItem = UITabBarItem(title: workspaceListViewModel.searchTabTitle, image: workspaceListViewModel.searchTabIcon, tag: 0)
+//        viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
         return viewController
     }()
     
