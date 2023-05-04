@@ -54,6 +54,7 @@
 		2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */; };
 		2D66089028B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */; };
 		2D66089228BE9DE400C76819 /* RootTabBarViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */; };
+		2D738B862A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D738B852A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift */; };
 		2DA5078729E8B8BC008C53D2 /* WorkspaceReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5078629E8B8BC008C53D2 /* WorkspaceReview.swift */; };
 		2DA5078929EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */; };
 		2DA5078B29EDF6DF008C53D2 /* WorkspaceDetailReviewContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5078A29EDF6DF008C53D2 /* WorkspaceDetailReviewContentConfiguration.swift */; };
@@ -156,6 +157,7 @@
 		2D66088E28B42AE200C76819 /* APIKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = APIKeys.xcconfig; sourceTree = "<group>"; };
 		2D66088F28B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListContentViewViewModel.swift; sourceTree = "<group>"; };
 		2D66089128BE9DE400C76819 /* RootTabBarViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarViewModelTest.swift; sourceTree = "<group>"; };
+		2D738B852A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceReviewPopOverViewController.swift; sourceTree = "<group>"; };
 		2DA5078629E8B8BC008C53D2 /* WorkspaceReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceReview.swift; sourceTree = "<group>"; };
 		2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDetailReviewContentView.swift; sourceTree = "<group>"; };
 		2DA5078A29EDF6DF008C53D2 /* WorkspaceDetailReviewContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDetailReviewContentConfiguration.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				2D66087328A4107600C76819 /* RootTabBarController.swift */,
 				2DABF5B428DBB4C0007D660E /* MapViewController.swift */,
 				2DC810A12983206600666610 /* WorkspaceDetailViewController.swift */,
+				2D738B852A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -765,6 +768,7 @@
 				2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */,
 				2DC810A829844C3B00666610 /* WorkspaceDetailImageContentViewViewModel.swift in Sources */,
 				2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */,
+				2D738B862A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift in Sources */,
 				2D0E53A8289ACF0700D77978 /* SceneDelegate.swift in Sources */,
 				2D4207CD289B178C00F82B1F /* AlertingViewController.swift in Sources */,
 				2D4207CB289B16EC00F82B1F /* UserManager.swift in Sources */,

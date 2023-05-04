@@ -63,6 +63,8 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
                 sheet.detents = [.medium(), .large()]
             }
             sheet.selectedDetentIdentifier = .medium
+            sheet.prefersEdgeAttachedInCompactHeight = true
+            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true 
 //            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
             sheet.largestUndimmedDetentIdentifier = .medium
             sheet.preferredCornerRadius = 30
@@ -91,11 +93,26 @@ extension WorkspaceCoordinator: MapViewControllerDelegate {
 extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
     func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String) {
         let workspaceDetailViewController = WorkspaceDetailViewController(workspaceId: id)
+        workspaceDetailViewController.delegate = self
         self.workspaceDetailViewController = workspaceDetailViewController
         let navigationController = UINavigationController(rootViewController: workspaceDetailViewController)
         navigationController.modalPresentationStyle = .fullScreen
         controller.navigationController?.present(navigationController, animated: true)
     }
     
+}
+
+extension WorkspaceCoordinator: WorkspaceDetailViewControllerDelegate {
+    func didSelectViewMoreButton(forReview id: String) {
+        
+        guard let presentingViewController = ((self.navigationController.topViewController?.presentedViewController as? UINavigationController)?.viewControllers.first?.presentedViewController as? UINavigationController)?.viewControllers.first else { return }
+        
+        let reviewDetailViewController = WorkspaceReviewPopoverViewController()
+        
+        presentingViewController.modalPresentationStyle = .popover
+        
+        presentingViewController.present(reviewDetailViewController, animated: true)
+    }
+
 }
 

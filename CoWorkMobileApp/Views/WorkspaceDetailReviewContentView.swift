@@ -121,6 +121,8 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
     
     @objc func didTapViewMore() {
         print("View more tapped")
+        guard let reviewId = viewModel.workspaceReview?.id else { return }
+        self.didSelectViewMoreButton?(reviewId)
     }
     
     private func apply(configuration: WorkspaceDetailReviewContentConfiguration) {

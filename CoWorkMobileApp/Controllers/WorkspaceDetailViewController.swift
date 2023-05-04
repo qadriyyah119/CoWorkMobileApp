@@ -7,7 +7,11 @@
 import UIKit
 import Cartography
 
-class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate {
+protocol WorkspaceDetailViewControllerDelegate: AnyObject {
+    func didSelectViewMoreButton(forReview id: String)
+}
+
+class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate, WorkspaceDetailReviewContentConfigurationDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
         case workspaceImages
@@ -34,6 +38,8 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     
     let viewModel: WorkspaceDetailViewModel
     var workspaceId: String
+    
+    weak var delegate: WorkspaceDetailViewControllerDelegate?
     
     init(workspaceId: String) {
         self.workspaceId = workspaceId
@@ -93,26 +99,29 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
         
     }
     
-    private let imageCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailImageCell, WorkspaceDetailItem> { cell, indexPath, item in
-        cell.workspaceId = item.workspaceId
-    }
-    
-    private let detailCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailCell, WorkspaceDetailItem> { cell, indexPath, item in
-        cell.workspaceId = item.workspaceId
-    }
-    
-    private let reviewCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailReviewCell, WorkspaceDetailItem> { cell, indexPath, item in
-        cell.reviewId = item.reviewId
-    }
-    
     private func configureDataSource() {
+        
+        let imageCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailImageCell, WorkspaceDetailItem> { cell, indexPath, item in
+            cell.workspaceId = item.workspaceId
+        }
+        
+        let detailCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailCell, WorkspaceDetailItem> { cell, indexPath, item in
+            cell.workspaceId = item.workspaceId
+        }
+        
+        let reviewCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailReviewCell, WorkspaceDetailItem> { [weak self] cell, indexPath, item in
+            guard let self else { return }
+            cell.reviewId = item.reviewId
+            cell.reviewDelegate = self
+        }
+        
         self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceDetailItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
             case .workspaceImages:
-                return collectionView.dequeueConfiguredReusableCell(using: self.imageCellRegistration, for: indexPath, item: itemIdentifier)
-            case .details: return collectionView.dequeueConfiguredReusableCell(using: self.detailCellRegistration, for: indexPath, item: itemIdentifier)
-            case .reviews: return collectionView.dequeueConfiguredReusableCell(using: self.reviewCellRegistration, for: indexPath, item: itemIdentifier)
+                return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: itemIdentifier)
+            case .details: return collectionView.dequeueConfiguredReusableCell(using: detailCellRegistration, for: indexPath, item: itemIdentifier)
+            case .reviews: return collectionView.dequeueConfiguredReusableCell(using: reviewCellRegistration, for: indexPath, item: itemIdentifier)
             }
         }
     }
@@ -191,4 +200,16 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
         diffableDataSource.apply(snapshot, animatingDifferences: true)
     }
     
+    func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration, didSelectViewMoreForReview id: String) {
+        self.delegate?.didSelectViewMoreButton(forReview: id)
+    }
+    
 }
+
+//extension WorkspaceDetailViewController: WorkspaceDetailReviewContentConfigurationDelegate {
+//
+//    func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration, didSelectViewMoreForReview id: String) {
+//        self.delegate?.didSelectViewMoreButton(forReview: id)
+//    }
+//
+//}
