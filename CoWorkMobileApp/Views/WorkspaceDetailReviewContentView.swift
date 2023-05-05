@@ -9,7 +9,7 @@ import Cartography
 class WorkspaceDetailReviewContentView: UIView, UIContentView {
     
     private var viewModel = WorkspaceDetailReviewContentViewViewModel()
-    var didSelectViewMoreButton: ((_ reviewId: String) -> Void)?
+    var didSelectViewMoreButton: ((_ reviewId: String, _ sender: UIButton) -> Void)?
     
     private lazy var userProfileImage: CircularImageView = {
        return CircularImageView(radius: 50)
@@ -78,7 +78,7 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
         button.configuration = config
         button.addTarget(self,
                          action: #selector(didTapViewMore),
-                         for: .primaryActionTriggered)
+                         for: .touchUpInside)
         return button
     }()
     
@@ -119,10 +119,10 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func didTapViewMore() {
+    @objc func didTapViewMore(sender: UIButton) {
         print("View more tapped")
         guard let reviewId = viewModel.workspaceReview?.id else { return }
-        self.didSelectViewMoreButton?(reviewId)
+        self.didSelectViewMoreButton?(reviewId, sender)
     }
     
     private func apply(configuration: WorkspaceDetailReviewContentConfiguration) {

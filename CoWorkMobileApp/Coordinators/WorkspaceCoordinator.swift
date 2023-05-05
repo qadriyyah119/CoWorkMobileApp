@@ -14,7 +14,7 @@ protocol WorkspaceDataSource: AnyObject {
     var workspaces: [Workspace] { get set }
 }
 
-class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
+class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
     var workspaces: [Workspace] = []
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -103,16 +103,25 @@ extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
 }
 
 extension WorkspaceCoordinator: WorkspaceDetailViewControllerDelegate {
-    func didSelectViewMoreButton(forReview id: String) {
+    func didSelectViewMoreButton(forReview id: String, sender: UIButton) {
         
         guard let presentingViewController = ((self.navigationController.topViewController?.presentedViewController as? UINavigationController)?.viewControllers.first?.presentedViewController as? UINavigationController)?.viewControllers.first else { return }
         
-        let reviewDetailViewController = WorkspaceReviewPopoverViewController()
+        let reviewDetailViewController = WorkspaceReviewPopoverViewController(reviewId: id)
         
-        presentingViewController.modalPresentationStyle = .popover
-        
+        reviewDetailViewController.modalPresentationStyle = .popover
+        reviewDetailViewController.popoverPresentationController?.sourceView = sender
+        reviewDetailViewController.popoverPresentationController?.permittedArrowDirections = .up
+        reviewDetailViewController.popoverPresentationController?.delegate = self
         presentingViewController.present(reviewDetailViewController, animated: true)
+        
     }
 
+}
+
+extension WorkspaceCoordinator: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
 }
 

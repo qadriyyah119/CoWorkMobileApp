@@ -9,7 +9,8 @@ import UIKit
 protocol WorkspaceDetailReviewContentConfigurationDelegate: AnyObject {
     
     func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration,
-                                                   didSelectViewMoreForReview id: String)
+                                                   didSelectViewMoreForReview id: String,
+                                                   sender: UIButton)
 }
 
 public struct WorkspaceDetailReviewContentConfiguration: UIContentConfiguration {
@@ -25,9 +26,9 @@ public struct WorkspaceDetailReviewContentConfiguration: UIContentConfiguration 
         view.layer.shadowRadius = 5
         view.backgroundColor = ThemeColors.mainBackgroundColor
         
-        view.didSelectViewMoreButton = { id in
+        view.didSelectViewMoreButton = { id, sender in
             guard let id = reviewId else { return }
-            self.delegate?.workspaceDetailReviewContentConfiguration(configuration: self, didSelectViewMoreForReview: id)
+            self.delegate?.workspaceDetailReviewContentConfiguration(configuration: self, didSelectViewMoreForReview: id, sender: sender)
         }
         
         return view

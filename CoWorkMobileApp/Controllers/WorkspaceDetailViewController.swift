@@ -8,7 +8,7 @@ import UIKit
 import Cartography
 
 protocol WorkspaceDetailViewControllerDelegate: AnyObject {
-    func didSelectViewMoreButton(forReview id: String)
+    func didSelectViewMoreButton(forReview id: String, sender: UIButton)
 }
 
 class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate, WorkspaceDetailReviewContentConfigurationDelegate {
@@ -200,16 +200,9 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
         diffableDataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration, didSelectViewMoreForReview id: String) {
-        self.delegate?.didSelectViewMoreButton(forReview: id)
+    func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration, didSelectViewMoreForReview id: String, sender: UIButton) {
+        self.delegate?.didSelectViewMoreButton(forReview: id, sender: sender)
     }
     
 }
 
-//extension WorkspaceDetailViewController: WorkspaceDetailReviewContentConfigurationDelegate {
-//
-//    func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration, didSelectViewMoreForReview id: String) {
-//        self.delegate?.didSelectViewMoreButton(forReview: id)
-//    }
-//
-//}
