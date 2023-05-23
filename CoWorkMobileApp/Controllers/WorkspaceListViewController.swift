@@ -29,7 +29,8 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         }
     }
     
-    struct WorkspaceItem: Hashable {
+    struct WorkspaceItem: Identifiable, Hashable {
+        var id = UUID()
         var workspaceId: String?
     }
     

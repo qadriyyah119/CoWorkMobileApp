@@ -130,20 +130,6 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         return containerView
     }()
     
-//    private lazy var addressHorizontalStackView: UIStackView = {
-//        let stackView = UIStackView(arrangedSubviews: [
-//            addressIcon,
-//            addressLabel
-//        ])
-//
-//        stackView.axis = .horizontal
-//        stackView.spacing = 8
-//        stackView.alignment = .leading
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.insetsLayoutMarginsFromSafeArea = true
-//        return stackView
-//    }()
-    
     private lazy var phoneIcon: UIImageView = {
         let imageSize = UIFont.systemFont(ofSize: 16)
         let config = UIImage.SymbolConfiguration(font: imageSize)
@@ -288,15 +274,14 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         stackView.insetsLayoutMarginsFromSafeArea = true
         return stackView
     }()
-    
-    private lazy var lineView: UIImageView = {
-        let imageSize = UIFont.systemFont(ofSize: 10)
-        let config = UIImage.SymbolConfiguration(font: imageSize)
-        let image = UIImage(systemName: "minus", withConfiguration: config)
-        let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+        
+    private lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        NSLayoutConstraint.activate([
+          view.heightAnchor.constraint(equalToConstant: 1),
+        ])
+        return view
     }()
     
     private let containerView: UIView = {
@@ -376,7 +361,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
     
     private func populateView() {
         nameLabel.text = viewModel.nameText
-        distanceLabel.text = "distance"
+        distanceLabel.text = viewModel.distanceText
         ratingLabel.text = viewModel.ratingText
         reviewCountLabel.text = viewModel.reviewCountText
         

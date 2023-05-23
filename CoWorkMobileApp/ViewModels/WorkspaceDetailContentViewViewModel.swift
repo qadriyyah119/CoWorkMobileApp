@@ -5,20 +5,31 @@
 
 import UIKit
 import RealmSwift
+import CoreLocation
 
 class WorkspaceDetailContentViewViewModel {
+    var currentLocation: CLLocation?
     
     var workspace: Workspace? {
         didSet {
             if let workspace = workspace {
                 nameText = workspace.name
                 
-                if let workspaceDistance = workspace.distance {
-                    let distance = Measurement(value: workspaceDistance, unit: UnitLength.meters)
-                    let miles = distance.converted(to: .miles)
+                // Sample code to get location using coordinates once I reconfigure location manager code
+                if let currentLocation = currentLocation {
+                    let distanceValue = workspace.coordinate.distance(from: currentLocation)
+                    let distanceV = Measurement(value: distanceValue, unit: UnitLength.meters)
+                    let miles = distanceV.converted(to: .miles)
                     let milesValue = round(miles.value * 10) / 10
                     distanceText = "\(milesValue) mi"
                 }
+                
+//                if let workspaceDistance = workspace.distance {
+//                    let distance = Measurement(value: workspaceDistance, unit: UnitLength.meters)
+//                    let miles = distance.converted(to: .miles)
+//                    let milesValue = round(miles.value * 10) / 10
+//                    distanceText = "\(milesValue) mi"
+//                }
                 
                 ratingText = "\(workspace.rating ?? 0.0)"
                 reviewCountText = "(\(workspace.reviewCount ?? 0))"

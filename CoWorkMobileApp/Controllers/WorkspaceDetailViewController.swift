@@ -27,7 +27,8 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
         }
     }
     
-    struct WorkspaceDetailItem: Hashable {
+    struct WorkspaceDetailItem: Identifiable, Hashable {
+        var id = UUID()
         var workspaceId: String?
         var reviewId: String?
         var imageUrl: String?
@@ -62,17 +63,30 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
         }
 
         let xButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissVC))
-        navigationItem.leftBarButtonItem = xButton
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: bookmarkButton)
+        self.navigationItem.leftBarButtonItem = xButton
+//        self.navigationItem.leftBarButtonItem?.tintColor = .white
+//        navigationController?.navigationBar.tintColor = .white
+
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: bookmarkButton), UIBarButtonItem(customView: shareButton)]
     }
     
     private lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "bookmark.circle"), for: .normal)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24)
+        let image = UIImage(systemName: "bookmark.circle.fill", withConfiguration: imageConfig)
+        button.setImage(image, for: .normal)
         button.tintColor = UIColor.white
-        button.sizeToFit()
         button.addTarget(self, action: #selector(saveToFavorites), for: .primaryActionTriggered)
+        return button
+    }()
+    
+    private lazy var shareButton: UIButton = {
+        let button = UIButton(type: .system)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24)
+        let image = UIImage(systemName: "square.and.arrow.up.circle.fill", withConfiguration: imageConfig)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor.white
+        button.addTarget(self, action: #selector(shareWorkspace), for: .primaryActionTriggered)
         return button
     }()
     
@@ -82,6 +96,10 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
     
     @objc func saveToFavorites() {
         print("Save")
+    }
+    
+    @objc func shareWorkspace() {
+        print("Share")
     }
     
     private func setupView() {
@@ -175,7 +193,7 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 8, trailing: 8)
                 
                 return section
 
