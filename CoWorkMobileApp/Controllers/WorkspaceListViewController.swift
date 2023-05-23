@@ -11,6 +11,9 @@ import RealmSwift
 import CoreLocation
 import Combine
 
+protocol WorkspaceListViewControllerDelegate: AnyObject {
+    func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String)
+}
 
 class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     
@@ -37,8 +40,10 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     private(set) var collectionView: UICollectionView!
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
     
+    weak var delegate: WorkspaceListViewControllerDelegate?
     let viewModel: WorkspaceListViewModel
     private var cancellables: Set<AnyCancellable> = []
+    
     var currentLocation: CLLocation? {
         didSet {
             viewModel.currentLocation = currentLocation
@@ -186,6 +191,13 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         snapshot.appendItems(topRated, toSection: .topRated)
         diffableDataSource.apply(snapshot, animatingDifferences: true)
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        guard let workspace = diffableDataSource.itemIdentifier(for: indexPath)?.workspaceId else { return }
+        self.delegate?.workspaceListViewController(controller: self, didSelectWorkspaceWithId: workspace)
     }
 
 }

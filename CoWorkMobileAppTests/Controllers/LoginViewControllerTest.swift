@@ -14,7 +14,8 @@ class LoginViewControllerTest: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        viewController = LoginViewController()
+        var viewModel = LoginViewModel()
+        viewController = LoginViewController(viewModel: viewModel)
     }
 
     override func tearDownWithError() throws {
