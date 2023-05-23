@@ -130,20 +130,6 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         return containerView
     }()
     
-//    private lazy var addressHorizontalStackView: UIStackView = {
-//        let stackView = UIStackView(arrangedSubviews: [
-//            addressIcon,
-//            addressLabel
-//        ])
-//
-//        stackView.axis = .horizontal
-//        stackView.spacing = 8
-//        stackView.alignment = .leading
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.insetsLayoutMarginsFromSafeArea = true
-//        return stackView
-//    }()
-    
     private lazy var phoneIcon: UIImageView = {
         let imageSize = UIFont.systemFont(ofSize: 16)
         let config = UIImage.SymbolConfiguration(font: imageSize)
@@ -235,12 +221,48 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         return stackView
     }()
     
+    private lazy var reviewSectionIcon: UIImageView = {
+        let imageSize = UIFont.systemFont(ofSize: 16)
+        let config = UIImage.SymbolConfiguration(font: imageSize)
+        let image = UIImage(systemName: "star", withConfiguration: config)
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = .black
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private lazy var reviewSectionTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .right
+        label.text = "Reviews"
+        label.numberOfLines = 1
+        label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 16)
+        return label
+    }()
+    
+    private lazy var reviewSectionTitleHorizontalView: UIView = {
+        let containerView = UIView()
+        
+        [reviewSectionIcon, reviewSectionTitleLabel].forEach { containerView.addSubview($0) }
+        
+        reviewSectionIcon.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        reviewSectionIcon.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4).isActive = true
+        reviewSectionIcon.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4).isActive = true
+        reviewSectionTitleLabel.leadingAnchor.constraint(equalTo: reviewSectionIcon.trailingAnchor, constant: 8).isActive = true
+        reviewSectionTitleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 4).isActive = true
+        reviewSectionTitleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4).isActive = true
+        
+        return containerView
+    }()
+    
     private lazy var detailsVerticalStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             addressHorizontalView,
             phoneHorizontalView,
             businessHoursTitleHorizontalView,
-            hoursVerticalStackView
+            hoursVerticalStackView,
+            reviewSectionTitleHorizontalView
         ])
         
         stackView.axis = .vertical
@@ -252,18 +274,23 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         stackView.insetsLayoutMarginsFromSafeArea = true
         return stackView
     }()
-    
-    private lazy var lineView: UIImageView = {
-        let imageSize = UIFont.systemFont(ofSize: 10)
-        let config = UIImage.SymbolConfiguration(font: imageSize)
-        let image = UIImage(systemName: "minus", withConfiguration: config)
-        let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+        
+    private lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        NSLayoutConstraint.activate([
+          view.heightAnchor.constraint(equalToConstant: 1),
+        ])
+        return view
     }()
     
     private let containerView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let containerContentView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -334,7 +361,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
     
     private func populateView() {
         nameLabel.text = viewModel.nameText
-        distanceLabel.text = "distance"
+        distanceLabel.text = viewModel.distanceText
         ratingLabel.text = viewModel.ratingText
         reviewCountLabel.text = viewModel.reviewCountText
         
@@ -351,14 +378,20 @@ class WorkspaceDetailContentView: UIView, UIContentView {
     }
     
     private func setupView() {
-        addSubview(containerView)
+        addSubview(containerContentView)
+        self.containerContentView.addSubview(containerView)
         [nameLabel,
          ratingRowStackView,
          lineView,
          detailsVerticalStackView].forEach { self.containerView.addSubview($0)}
         
+        constrain(containerContentView, containerView) { containerContentView, containerView in
+            containerContentView.edges == containerContentView.superview!.edges
+        }
+        
         constrain(containerView, nameLabel, ratingRowStackView, lineView, detailsVerticalStackView) { containerView, nameLabel, ratingRowStackView, lineView, detailsVerticalStackView in
             containerView.edges == containerView.superview!.edges
+            nameLabel.top == nameLabel.superview!.top
             nameLabel.leading == nameLabel.superview!.leading + 4
             nameLabel.trailing == nameLabel.superview!.trailing - 4
             ratingRowStackView.top == nameLabel.bottom + 8
@@ -370,6 +403,8 @@ class WorkspaceDetailContentView: UIView, UIContentView {
             detailsVerticalStackView.top == lineView.bottom + 8
             detailsVerticalStackView.leading == detailsVerticalStackView.superview!.leading + 4
             detailsVerticalStackView.trailing == detailsVerticalStackView.superview!.trailing - 4
+            detailsVerticalStackView.bottom == detailsVerticalStackView.superview!.bottom
         }
+        
     }
 }

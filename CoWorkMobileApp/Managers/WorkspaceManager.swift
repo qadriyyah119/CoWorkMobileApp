@@ -27,6 +27,7 @@ class WorkspaceManager {
     func getWorkspaces(forCategories categories: String = "sharedofficespaces",
                        location: String = "",
                        radius: Int = 10000,
+                       attributes: String = "wifi_free",
                        sortBy: String = "best_match",
                        completion: @escaping(Result<List<Workspace>, AuthError>) -> Void) {
         
@@ -39,8 +40,10 @@ class WorkspaceManager {
         var urlComponents = URLComponents(string: "\(url)/businesses/search")
         urlComponents?.queryItems = [
             URLQueryItem(name: "categories", value: categories),
+            URLQueryItem(name: "categories", value: "coffeeroasteries"),
             URLQueryItem(name: "location", value: location),
             URLQueryItem(name: "radius", value: String(radius)),
+            URLQueryItem(name: "attributes", value: attributes),
             URLQueryItem(name: "sort_by", value: sortBy)
         ]
         
@@ -57,7 +60,6 @@ class WorkspaceManager {
                 switch response.result {
                 case .success(let workspace):
                     let spaces = workspace.businesses
-                    print(spaces[0])
                     let realm = try? Realm()
                     try? realm?.write({
                         realm?.add(spaces, update: .modified)
@@ -98,6 +100,49 @@ class WorkspaceManager {
                     completion(.failure(.invalidData))
                 }
             }
+    }
+    
+    func getWorkspaceReviews(withId id: String,
+                             limit: Int = 20,
+                             sortBy: String = "yelp_sort",
+                             completion: @escaping(Result<List<WorkspaceReview>, AuthError>) -> Void) {
+        
+        guard let key = apiKey, !key.isEmpty else {
+            print("API key does not exist")
+            completion(.failure(.invalidAPIKey))
+            return
+        }
+        
+        var urlComponents = URLComponents(string: "\(url)/businesses/\(id)/reviews")
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "limit", value: String(limit)),
+            URLQueryItem(name: "sort_by", value: sortBy)
+        ]
+        
+        guard let url = urlComponents?.url else {
+            return completion(.failure(.invalidRequest))
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
+        
+        AF.request(request)
+            .responseDecodable(of: ReviewResults.self, decoder: JSONDecoder()) { response in
+                switch response.result {
+                case .success(let review):
+                    let reviews = review.reviews
+                    print(reviews[0])
+                    let realm = try? Realm()
+                    try? realm?.write({
+                        realm?.add(reviews, update: .modified)
+                    })
+                    completion(.success(reviews))
+                case .failure:
+                    completion(.failure(.invalidData))
+                }
+            }
+        
     }
     
     func fetchImage(from urlString: String, completion: @escaping(Result<UIImage?, AuthError>) -> Void) {

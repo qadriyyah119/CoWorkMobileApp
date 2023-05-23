@@ -40,6 +40,7 @@ class MapViewModel: ObservableObject {
         WorkspaceManager.shared.getWorkspaces(location: locationQuery) { result in
             switch result {
             case .success(let workspaces):
+                print("Workspace: \(workspaces[1])")
                 self.workspaces = Array(workspaces)
             case .failure(let error):
                 print(error)

@@ -5,20 +5,31 @@
 
 import UIKit
 import RealmSwift
+import CoreLocation
 
 class WorkspaceDetailContentViewViewModel {
+    var currentLocation: CLLocation?
     
     var workspace: Workspace? {
         didSet {
             if let workspace = workspace {
                 nameText = workspace.name
                 
-                if let workspaceDistance = workspace.distance {
-                    let distance = Measurement(value: workspaceDistance, unit: UnitLength.meters)
-                    let miles = distance.converted(to: .miles)
+                // Sample code to get location using coordinates once I reconfigure location manager code
+                if let currentLocation = currentLocation {
+                    let distanceValue = workspace.coordinate.distance(from: currentLocation)
+                    let distanceV = Measurement(value: distanceValue, unit: UnitLength.meters)
+                    let miles = distanceV.converted(to: .miles)
                     let milesValue = round(miles.value * 10) / 10
                     distanceText = "\(milesValue) mi"
                 }
+                
+//                if let workspaceDistance = workspace.distance {
+//                    let distance = Measurement(value: workspaceDistance, unit: UnitLength.meters)
+//                    let miles = distance.converted(to: .miles)
+//                    let milesValue = round(miles.value * 10) / 10
+//                    distanceText = "\(milesValue) mi"
+//                }
                 
                 ratingText = "\(workspace.rating ?? 0.0)"
                 reviewCountText = "(\(workspace.reviewCount ?? 0))"
@@ -73,31 +84,60 @@ class WorkspaceDetailContentViewViewModel {
     var sundayText: String?
     var sundayHours: String?
     
+//    private func setHours(forDay day: Int, time: String) {
+//        let weekDay: String = Calendar.current.weekdaySymbols[day]
+//
+//        switch day {
+//        case 0:
+//            sundayText = weekDay
+//            sundayHours = time
+//        case 1:
+//            mondayText = weekDay
+//            mondayHours = time
+//        case 2:
+//            tuesdayText = weekDay
+//            tuesdayHours = time
+//        case 3:
+//            wednesdayText = weekDay
+//            wednesdayHours = time
+//        case 4:
+//            thursdayText = weekDay
+//            thursdayHours = time
+//        case 5:
+//            fridayText = weekDay
+//            fridayHours = time
+//        case 6:
+//            saturdayText = weekDay
+//            saturdayHours = time
+//        default:
+//            break
+//        }
+//    }
+    
     private func setHours(forDay day: Int, time: String) {
-        let weekDay: String = Calendar.current.weekdaySymbols[day]
         
         switch day {
         case 0:
-            sundayText = weekDay
-            sundayHours = time
-        case 1:
-            mondayText = weekDay
+            mondayText = "Monday"
             mondayHours = time
-        case 2:
-            tuesdayText = weekDay
+        case 1:
+            tuesdayText = "Tuesday"
             tuesdayHours = time
-        case 3:
-            wednesdayText = weekDay
+        case 2:
+            wednesdayText = "Wednesday"
             wednesdayHours = time
-        case 4:
-            thursdayText = weekDay
+        case 3:
+            thursdayText = "Thursday"
             thursdayHours = time
-        case 5:
-            fridayText = weekDay
+        case 4:
+            fridayText = "Friday"
             fridayHours = time
-        case 6:
-            saturdayText = weekDay
+        case 5:
+            saturdayText = "Saturday"
             saturdayHours = time
+        case 6:
+            sundayText = "Sunday"
+            sundayHours = time
         default:
             break
         }

@@ -7,22 +7,30 @@
 import UIKit
 import Cartography
 
-class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate {
+protocol WorkspaceDetailViewControllerDelegate: AnyObject {
+    func didSelectViewMoreButton(forReview id: String, sender: UIButton)
+}
+
+class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate, WorkspaceDetailReviewContentConfigurationDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
         case workspaceImages
         case details
+        case reviews
         
         var description: String {
             switch self {
             case .workspaceImages: return ""
             case .details: return ""
+            case .reviews: return ""
             }
         }
     }
     
-    struct WorkspaceDetailItem: Hashable {
+    struct WorkspaceDetailItem: Identifiable, Hashable {
+        var id = UUID()
         var workspaceId: String?
+        var reviewId: String?
         var imageUrl: String?
     }
     
@@ -31,6 +39,8 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     
     let viewModel: WorkspaceDetailViewModel
     var workspaceId: String
+    
+    weak var delegate: WorkspaceDetailViewControllerDelegate?
     
     init(workspaceId: String) {
         self.workspaceId = workspaceId
@@ -46,23 +56,37 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
         super.viewDidLoad()
         setupView()
         configureDataSource()
-        viewModel.getWorkspaceDetails(forId: self.workspaceId) {
-            if let workspace = self.viewModel.workspace {
-                self.applySnapshot(forWorkspace: workspace)
+        viewModel.getWorkspace(forId: self.workspaceId) {
+            if let workspace = self.viewModel.workspace, let reviews = self.viewModel.reviews {
+                self.applySnapshot(forWorkspace: workspace, reviews: reviews)
             }
         }
+
         let xButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissVC))
-        navigationItem.leftBarButtonItem = xButton
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: bookmarkButton)
+        self.navigationItem.leftBarButtonItem = xButton
+//        self.navigationItem.leftBarButtonItem?.tintColor = .white
+//        navigationController?.navigationBar.tintColor = .white
+
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: bookmarkButton), UIBarButtonItem(customView: shareButton)]
     }
     
     private lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "bookmark.circle"), for: .normal)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24)
+        let image = UIImage(systemName: "bookmark.circle.fill", withConfiguration: imageConfig)
+        button.setImage(image, for: .normal)
         button.tintColor = UIColor.white
-        button.sizeToFit()
         button.addTarget(self, action: #selector(saveToFavorites), for: .primaryActionTriggered)
+        return button
+    }()
+    
+    private lazy var shareButton: UIButton = {
+        let button = UIButton(type: .system)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24)
+        let image = UIImage(systemName: "square.and.arrow.up.circle.fill", withConfiguration: imageConfig)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor.white
+        button.addTarget(self, action: #selector(shareWorkspace), for: .primaryActionTriggered)
         return button
     }()
     
@@ -72,6 +96,10 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     
     @objc func saveToFavorites() {
         print("Save")
+    }
+    
+    @objc func shareWorkspace() {
+        print("Share")
     }
     
     private func setupView() {
@@ -89,28 +117,36 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
         
     }
     
-    private let imageCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailImageCell, WorkspaceDetailItem> { cell, indexPath, item in
-        cell.workspaceId = item.workspaceId
-    }
-    
-    private let detailCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailCell, WorkspaceDetailItem> { cell, indexPath, item in
-        cell.workspaceId = item.workspaceId
-    }
-    
     private func configureDataSource() {
+        
+        let imageCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailImageCell, WorkspaceDetailItem> { cell, indexPath, item in
+            cell.workspaceId = item.workspaceId
+        }
+        
+        let detailCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailCell, WorkspaceDetailItem> { cell, indexPath, item in
+            cell.workspaceId = item.workspaceId
+        }
+        
+        let reviewCellRegistration = UICollectionView.CellRegistration<WorkspaceDetailReviewCell, WorkspaceDetailItem> { [weak self] cell, indexPath, item in
+            guard let self else { return }
+            cell.reviewId = item.reviewId
+            cell.reviewDelegate = self
+        }
+        
         self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceDetailItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
             case .workspaceImages:
-                return collectionView.dequeueConfiguredReusableCell(using: self.imageCellRegistration, for: indexPath, item: itemIdentifier)
-            case .details: return collectionView.dequeueConfiguredReusableCell(using: self.detailCellRegistration, for: indexPath, item: itemIdentifier)
+                return collectionView.dequeueConfiguredReusableCell(using: imageCellRegistration, for: indexPath, item: itemIdentifier)
+            case .details: return collectionView.dequeueConfiguredReusableCell(using: detailCellRegistration, for: indexPath, item: itemIdentifier)
+            case .reviews: return collectionView.dequeueConfiguredReusableCell(using: reviewCellRegistration, for: indexPath, item: itemIdentifier)
             }
         }
     }
     
     private func configureLayout() -> UICollectionViewLayout {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
-        configuration.interSectionSpacing = 15.0
+        configuration.interSectionSpacing = 8.0
 
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, layoutEnv in
 
@@ -135,7 +171,7 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
 
-                let groupHeight = NSCollectionLayoutDimension.estimated(100)
+                let groupHeight = NSCollectionLayoutDimension.fractionalHeight(0.6)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
 
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
@@ -144,6 +180,22 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
                 section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
 
                 return section
+                
+            case .reviews:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                
+                let groupHeight = NSCollectionLayoutDimension.fractionalHeight(0.25)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.85), heightDimension: groupHeight)
+                
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 8, trailing: 8)
+                
+                return section
 
             }
         }, configuration: configuration)
@@ -151,15 +203,24 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate 
     }
     
     
-    private func applySnapshot(forWorkspace workspace: Workspace) {
+    private func applySnapshot(forWorkspace workspace: Workspace, reviews: [WorkspaceReview]) {
+        
         var snapshot = NSDiffableDataSourceSnapshot<Section, WorkspaceDetailItem>()
         snapshot.appendSections(Section.allCases)
-        
+
         let imageItems = WorkspaceDetailItem(workspaceId: workspace.id, imageUrl: workspace.url)
         let detailItems = WorkspaceDetailItem(workspaceId: workspace.id)
+        let reviews = reviews.compactMap { WorkspaceDetailItem(reviewId: $0.id) }
         snapshot.appendItems([imageItems], toSection: .workspaceImages)
         snapshot.appendItems([detailItems], toSection: .details)
+        snapshot.appendItems(reviews, toSection: .reviews)
+
         diffableDataSource.apply(snapshot, animatingDifferences: true)
     }
     
+    func workspaceDetailReviewContentConfiguration(configuration: WorkspaceDetailReviewContentConfiguration, didSelectViewMoreForReview id: String, sender: UIButton) {
+        self.delegate?.didSelectViewMoreButton(forReview: id, sender: sender)
+    }
+    
 }
+

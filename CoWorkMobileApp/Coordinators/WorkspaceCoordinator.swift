@@ -14,7 +14,7 @@ protocol WorkspaceDataSource: AnyObject {
     var workspaces: [Workspace] { get set }
 }
 
-class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
+class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
     var workspaces: [Workspace] = []
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -24,7 +24,7 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
     private lazy var workspaceListVC: WorkspaceListViewController = {
         let viewController = WorkspaceListViewController()
         viewController.delegate = self
-//        viewController.tabBarItem = UITabBarItem(title: workspaceListViewModel.searchTabTitle, image: workspaceListViewModel.searchTabIcon, tag: 0)
+//        viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
         return viewController
     }()
     
@@ -46,14 +46,13 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
     
     private func presentModalView() {
         guard self.navigationController.presentedViewController == nil else { return }
-        let workspaceListViewController = workspaceListVC
         
-        let navController = UINavigationController(rootViewController: workspaceListViewController)
+        let navController = UINavigationController(rootViewController: workspaceListVC)
         navController.modalPresentationStyle = .pageSheet
         navController.isModalInPresentation = true
-        
+
         let smallId = UISheetPresentationController.Detent.Identifier("small")
-        
+
         if let sheet = navController.sheetPresentationController {
             if #available(iOS 16.0, *) {
                 let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallId) { context in
@@ -64,6 +63,8 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
                 sheet.detents = [.medium(), .large()]
             }
             sheet.selectedDetentIdentifier = .medium
+            sheet.prefersEdgeAttachedInCompactHeight = true
+            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true 
 //            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
             sheet.largestUndimmedDetentIdentifier = .medium
             sheet.preferredCornerRadius = 30
@@ -71,6 +72,8 @@ class WorkspaceCoordinator: Coordinator, WorkspaceDataSource {
         }
         
         self.navigationController.present(navController, animated: true)
+//        var tabBarController = self.navigationController.viewControllers.first?.tabBarController
+//        tabBarController?.tabBar.bringSubviewToFront((navController.topViewController?.view)!)
     }
 
 }
@@ -90,11 +93,35 @@ extension WorkspaceCoordinator: MapViewControllerDelegate {
 extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
     func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String) {
         let workspaceDetailViewController = WorkspaceDetailViewController(workspaceId: id)
+        workspaceDetailViewController.delegate = self
         self.workspaceDetailViewController = workspaceDetailViewController
         let navigationController = UINavigationController(rootViewController: workspaceDetailViewController)
         navigationController.modalPresentationStyle = .fullScreen
         controller.navigationController?.present(navigationController, animated: true)
     }
     
+}
+
+extension WorkspaceCoordinator: WorkspaceDetailViewControllerDelegate {
+    func didSelectViewMoreButton(forReview id: String, sender: UIButton) {
+        
+        guard let presentingViewController = ((self.navigationController.topViewController?.presentedViewController as? UINavigationController)?.viewControllers.first?.presentedViewController as? UINavigationController)?.viewControllers.first else { return }
+        
+        let reviewDetailViewController = WorkspaceReviewPopoverViewController(reviewId: id)
+        
+        reviewDetailViewController.modalPresentationStyle = .popover
+        reviewDetailViewController.popoverPresentationController?.sourceView = sender
+        reviewDetailViewController.popoverPresentationController?.permittedArrowDirections = .up
+        reviewDetailViewController.popoverPresentationController?.delegate = self
+        presentingViewController.present(reviewDetailViewController, animated: true)
+        
+    }
+
+}
+
+extension WorkspaceCoordinator: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
 }
 
