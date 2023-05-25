@@ -19,12 +19,6 @@ class MapViewController: UIViewController {
     
     private lazy var currentLocationString: String = "Current Location"
     
-    private lazy var locationManager: CLLocationManager = {
-        let locationManager = CLLocationManager()
-        locationManager.delegate = self
-        return locationManager
-    }()
-    
     private lazy var mapView: MKMapView = {
         let map = MKMapView()
         map.isZoomEnabled = true
@@ -47,12 +41,20 @@ class MapViewController: UIViewController {
     
     
     weak var delegate: MapViewControllerDelegate?
-    weak var datasource: (any WorkspaceDataSource)?
     let viewModel: MapViewModel
     private var workspaceAnnotations: [MapAnnotation] = []
     var selectedWorkspace: Workspace? = nil
     lazy var geocoder = CLGeocoder()
     private var cancellables: Set<AnyCancellable> = []
+    
+    let locationHelper = LocationHelper.shared
+    private var locationCancellables: Set<AnyCancellable> = []
+    private var coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0) {
+        didSet {
+            didUpdateLocation(with: coordinates)
+        }
+    }
+    
     var currentLocation: CLLocation? {
         didSet {
             viewModel.currentLocation = currentLocation
@@ -62,10 +64,6 @@ class MapViewController: UIViewController {
         didSet {
             viewModel.searchQuery = searchQuery
         }
-    }
-    
-    var isAuthorized: Bool {
-        return self.locationManager.authorizationStatus == .authorizedWhenInUse || self.locationManager.authorizationStatus == .authorizedAlways
     }
     
     init() {
@@ -80,10 +78,9 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.allowsBackgroundLocationUpdates = true
-        startLocationService()
-        locationManager.requestWhenInUseAuthorization()
+        observeCoordinateUpdates()
+        observeDeniedLocationAccess()
+        locationHelper.startLocationServices()
         loadAnnotations()
         
         viewModel.$workspaces.sink { [weak self] workspaces in
@@ -115,19 +112,24 @@ class MapViewController: UIViewController {
         
     }
     
-    private func startLocationService() {
-        let authStatus = locationManager.authorizationStatus
+    func observeCoordinateUpdates() {
+        locationHelper.coordinatesPublisher
+            .sink { completion in
+                print("Handle \(completion) for error and finished subscription")
+            } receiveValue: { [weak self] coordinates in
+                self?.coordinates = coordinates
+            }
+            .store(in: &locationCancellables)
 
-        if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
-            activateLocationServices()
-        } else {
-            locationManager.requestWhenInUseAuthorization()
-            locationManager.requestAlwaysAuthorization()
-        }
     }
     
-    private func activateLocationServices() {
-        locationManager.requestLocation()
+    func observeDeniedLocationAccess() {
+        locationHelper.deniedAccessPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {
+                print("Handle access denied with alert")
+            }
+            .store(in: &locationCancellables)
     }
     
     private func printCurrentLocation(location: CLLocation) {
@@ -153,35 +155,13 @@ class MapViewController: UIViewController {
         mapView.addAnnotations(annotations)
     }
     
-}
-
-extension MapViewController: CLLocationManagerDelegate {
-
-
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let authStatus = manager.authorizationStatus
-
-        switch authStatus {
-        case .authorizedAlways , .authorizedWhenInUse:
-            activateLocationServices()
-        case .notDetermined , .denied , .restricted:
-            break
-        default:
-            break
-        }
-
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
-        guard let currentLocation = locations.first else { return }
+    func didUpdateLocation(with coordinates: CLLocationCoordinate2D) {
+        
+        let currentLocation = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
         printCurrentLocation(location: currentLocation)
         
-        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
-
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        let region = MKCoordinateRegion(center: locationValue, span: span)
+        let region = MKCoordinateRegion(center: coordinates, span: span)
         mapView.setRegion(region, animated: true)
         
         convertCurrentLocationToString(from: currentLocation) { city, zip, error in
@@ -204,28 +184,10 @@ extension MapViewController: CLLocationManagerDelegate {
                        error)
         }
     }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error - locationManager: \(error.localizedDescription)")
-    }
-
+    
 }
 
 extension MapViewController: MKMapViewDelegate {
-    
-// Methods to use later:
-/*
-//    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-//        centerMap(on: userLocation.coordinate)
-//    }
-//
-//    func centerMap(on location: CLLocationCoordinate2D, regionRadius: CLLocationDistance = 1000) {
-//        let coordinateRegion = MKCoordinateRegion(center: location,
-//                                                  latitudinalMeters: regionRadius,
-//                                                  longitudinalMeters: regionRadius)
-//        mapView.setRegion(coordinateRegion, animated: true)
-//    }
-*/
     
 }
 
