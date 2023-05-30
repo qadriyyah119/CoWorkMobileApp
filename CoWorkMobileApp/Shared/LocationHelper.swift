@@ -15,17 +15,18 @@ class LocationHelper: NSObject, CLLocationManagerDelegate, ObservableObject {
     
     var coordinatesPublisher = PassthroughSubject<CLLocationCoordinate2D, Error>()
     var deniedAccessPublisher = PassthroughSubject<Void, Never>() //used to notify the app in the event the user removes location access from settings
-
+    
+    private(set) var userLocation: CLLocation?
+    
     private lazy var locationManager: CLLocationManager = {
       let manager = CLLocationManager()
         manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.delegate = self
         return manager
     }()
 
     private override init() {
         super.init()
-
+        locationManager.delegate = self
     }
     
     func startLocationServices() {
@@ -35,7 +36,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate, ObservableObject {
             locationManager.requestWhenInUseAuthorization()
             locationManager.requestAlwaysAuthorization()
         case .authorizedWhenInUse, .authorizedAlways:
-            locationManager.startUpdatingLocation()
+            locationManager.requestLocation()
         default:
             // send denied access publisher
             print("denied access")
@@ -47,7 +48,7 @@ class LocationHelper: NSObject, CLLocationManagerDelegate, ObservableObject {
         switch manager.authorizationStatus {
             
         case .authorizedAlways, .authorizedWhenInUse:
-            manager.startUpdatingLocation()
+            manager.requestLocation()
 
         default:
             // send denied access publisher
@@ -57,6 +58,8 @@ class LocationHelper: NSObject, CLLocationManagerDelegate, ObservableObject {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        self.userLocation = location
+        
         coordinatesPublisher.send(location.coordinate)
     }
 

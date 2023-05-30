@@ -158,6 +158,7 @@ class MapViewController: UIViewController {
     func didUpdateLocation(with coordinates: CLLocationCoordinate2D) {
         
         let currentLocation = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
+        self.currentLocation = currentLocation
         printCurrentLocation(location: currentLocation)
         
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)

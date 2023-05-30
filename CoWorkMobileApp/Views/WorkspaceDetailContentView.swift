@@ -323,7 +323,6 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         self.currentConfiguration = configuration
         
         guard let workspaceId = currentConfiguration.workspaceId else { return }
-
         viewModel.fill(withWorkspaceId: workspaceId) {
             self.populateView()
         }
