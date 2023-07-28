@@ -18,11 +18,13 @@ protocol WorkspaceListViewControllerDelegate: AnyObject {
 class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
+        case filter
         case topRated
         case allResults
         
         var description: String {
             switch self {
+            case .filter: return ""
             case .allResults: return "All Results"
             case .topRated: return "Top Rated"
             }
@@ -32,6 +34,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     struct WorkspaceItem: Identifiable, Hashable {
         var id = UUID()
         var workspaceId: String?
+        var title: String?
     }
     
     struct TopRatedWorkspaceItem: Hashable {
@@ -99,6 +102,10 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         cell.workspaceId = item.workspaceId
     }
     
+    private let filterCellRegistration = UICollectionView.CellRegistration<WorkspaceListFilterCell, WorkspaceItem> { cell, indexPath, item in
+        cell.title = item.title
+    }
+    
     private let sectionHeaderRegistration = UICollectionView.SupplementaryRegistration<SectionHeaderSupplementaryView>(elementKind: SectionHeaderSupplementaryView.identifier) { supplementaryView, elementKind, indexPath in
         let section = Section(rawValue: indexPath.section)
         supplementaryView.updateLabel(withText: section?.description ?? "")
@@ -108,6 +115,8 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         self.diffableDataSource = UICollectionViewDiffableDataSource<Section, WorkspaceItem>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Unknown section") }
             switch section {
+            case .filter:
+                return collectionView.dequeueConfiguredReusableCell(using: self.filterCellRegistration, for: indexPath, item: itemIdentifier)
             case .topRated:
                 return collectionView.dequeueConfiguredReusableCell(using: self.cellRegistration, for: indexPath, item: itemIdentifier)
             case .allResults:
@@ -131,6 +140,20 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
             guard let section = Section(rawValue: sectionIndex) else { return nil }
             
             switch section {
+            case .filter:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.28), heightDimension: .fractionalHeight(0.2))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+                
+                return section
+                
             case .topRated:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -190,6 +213,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         let workspaceItems = workspaces.compactMap{ WorkspaceItem(workspaceId: $0.id) }
         snapshot.appendItems(workspaceItems, toSection: .allResults)
         snapshot.appendItems(topRated, toSection: .topRated)
+        snapshot.appendItems(<#T##identifiers: [WorkspaceItem]##[WorkspaceItem]#>)
         diffableDataSource.apply(snapshot, animatingDifferences: true)
 
     }

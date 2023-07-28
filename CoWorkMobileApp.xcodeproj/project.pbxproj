@@ -80,6 +80,9 @@
 		2DC9246729280AF8000DF340 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC9246629280AF8000DF340 /* MapAnnotation.swift */; };
 		2DC9246B2936892D000DF340 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC9246A2936892D000DF340 /* LocationHelper.swift */; };
 		2DC9246D294A5971000DF340 /* WorkplaceAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC9246C294A5971000DF340 /* WorkplaceAnnotationView.swift */; };
+		2DD00BA52A5DCC8B007FAC76 /* WorkspaceListFilterContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD00BA42A5DCC8B007FAC76 /* WorkspaceListFilterContentView.swift */; };
+		2DD00BA72A5E2FF5007FAC76 /* WorkspaceListFilterContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD00BA62A5E2FF5007FAC76 /* WorkspaceListFilterContentConfiguration.swift */; };
+		2DD00BA92A5E318C007FAC76 /* WorkspaceListFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD00BA82A5E318C007FAC76 /* WorkspaceListFilterCell.swift */; };
 		422B32D0FC34D5C217E1D859 /* Pods_CoWorkMobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E458D34B5EDEFFBECC7B55 /* Pods_CoWorkMobileApp.framework */; };
 		911B4D2E125AD114B2DD73A1 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B466ACF35B558691BA8E233 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		F0D6D55DC031613D119E1183 /* Pods_CoWorkMobileAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D824E73C4EC8E485290F882E /* Pods_CoWorkMobileAppTests.framework */; };
@@ -183,6 +186,9 @@
 		2DC9246629280AF8000DF340 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		2DC9246A2936892D000DF340 /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
 		2DC9246C294A5971000DF340 /* WorkplaceAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkplaceAnnotationView.swift; sourceTree = "<group>"; };
+		2DD00BA42A5DCC8B007FAC76 /* WorkspaceListFilterContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListFilterContentView.swift; sourceTree = "<group>"; };
+		2DD00BA62A5E2FF5007FAC76 /* WorkspaceListFilterContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListFilterContentConfiguration.swift; sourceTree = "<group>"; };
+		2DD00BA82A5E318C007FAC76 /* WorkspaceListFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListFilterCell.swift; sourceTree = "<group>"; };
 		5F30CC65B9ADB3B7390A8B24 /* Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp-CoWorkMobileAppUITests/Pods-CoWorkMobileApp-CoWorkMobileAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		67CF366BDB0DF009C9C5453C /* Pods-CoWorkMobileApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileApp.release.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileApp/Pods-CoWorkMobileApp.release.xcconfig"; sourceTree = "<group>"; };
 		70993228998EFE22FB965EF6 /* Pods-CoWorkMobileAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoWorkMobileAppTests.debug.xcconfig"; path = "Target Support Files/Pods-CoWorkMobileAppTests/Pods-CoWorkMobileAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -404,6 +410,7 @@
 				2DC810A32983320500666610 /* WorkspaceDetailImageContentConfiguration.swift */,
 				2DC810AD29898C6100666610 /* WorkspaceDetailContentConfiguration.swift */,
 				2DA5078A29EDF6DF008C53D2 /* WorkspaceDetailReviewContentConfiguration.swift */,
+				2DD00BA62A5E2FF5007FAC76 /* WorkspaceListFilterContentConfiguration.swift */,
 			);
 			path = ContentConfigurations;
 			sourceTree = "<group>";
@@ -419,6 +426,7 @@
 				2DC8109F2983194800666610 /* WorkspaceDetailImageContentView.swift */,
 				2DC810AB2989875600666610 /* WorkspaceDetailContentView.swift */,
 				2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */,
+				2DD00BA42A5DCC8B007FAC76 /* WorkspaceListFilterContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -430,6 +438,7 @@
 				2DC810A5298334D200666610 /* WorkspaceDetailImageCell.swift */,
 				2DC810AF298990F800666610 /* WorkspaceDetailCell.swift */,
 				2DA5078C29EE0EF1008C53D2 /* WorkspaceDetailReviewCell.swift */,
+				2DD00BA82A5E318C007FAC76 /* WorkspaceListFilterCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -737,6 +746,7 @@
 				2D66087428A4107600C76819 /* RootTabBarController.swift in Sources */,
 				2DA5078D29EE0EF1008C53D2 /* WorkspaceDetailReviewCell.swift in Sources */,
 				2D4207D1289B181200F82B1F /* AccountRegistrationViewController.swift in Sources */,
+				2DD00BA92A5E318C007FAC76 /* WorkspaceListFilterCell.swift in Sources */,
 				2D66087228A40D9800C76819 /* UserProfileViewController.swift in Sources */,
 				2D4207CF289B17B300F82B1F /* UITextFieldExtension.swift in Sources */,
 				2D66088128A5F3E300C76819 /* WorkspaceListContentView.swift in Sources */,
@@ -764,8 +774,10 @@
 				2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */,
 				2D66087D28A5F35800C76819 /* WorkspaceListContentConfiguration.swift in Sources */,
 				2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */,
+				2DD00BA52A5DCC8B007FAC76 /* WorkspaceListFilterContentView.swift in Sources */,
 				2D66088528AAAD0400C76819 /* HeaderView.swift in Sources */,
 				2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */,
+				2DD00BA72A5E2FF5007FAC76 /* WorkspaceListFilterContentConfiguration.swift in Sources */,
 				2DC810A829844C3B00666610 /* WorkspaceDetailImageContentViewViewModel.swift in Sources */,
 				2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */,
 				2D738B862A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift in Sources */,
