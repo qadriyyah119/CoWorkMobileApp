@@ -38,6 +38,7 @@ class AppCoordinator: Coordinator {
     
     func showLoginView() {
         let loginViewModel = LoginViewModel()
+        loginViewModel.coordinator = self 
         let loginViewController = LoginViewController(viewModel: loginViewModel)
         self.navigationController.pushViewController(loginViewController, animated: true)
     }
