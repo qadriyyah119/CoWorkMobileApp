@@ -9,6 +9,8 @@ import UIKit
 
 class LoginViewModel {
     
+    weak var coordinator: AppCoordinator?
+    
     enum LoginStrings {
         static let titleText = "Log In"
         static let emailTextfieldText = "email"
@@ -26,12 +28,16 @@ class LoginViewModel {
     func login(withEmail email: String, password: String) {
         AuthManager.shared.login(withEmail: email, password: password) { result in
             switch result {
-            case .success(let user):
-                print(user)
+            case .success:
+                self.showMainFlow()
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    func showMainFlow() {
+        coordinator?.showMainFlow()
     }
 
 }

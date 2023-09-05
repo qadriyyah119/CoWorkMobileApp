@@ -204,6 +204,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         self.creatingAccount = true
         
         UserManager.shared.createUser(with: emailTextField.text ?? "", username: usernameTextField.text ?? "", password: passwordTextField.text ?? "") { result in
+
             switch result {
             case .failure(let error):
                 print(error)
