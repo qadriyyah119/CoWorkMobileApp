@@ -24,6 +24,8 @@ class AppCoordinator: Coordinator {
         return viewController
     }()
     
+    let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -51,6 +53,7 @@ class AppCoordinator: Coordinator {
     
     func showMainFlow() {
         self.setupTabBarContentView()
+        workspaceCoordinator.start()
     }
     
     func setupTabBarContentView() {

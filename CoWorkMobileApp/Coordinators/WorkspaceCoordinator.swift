@@ -64,7 +64,7 @@ class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
             }
             sheet.selectedDetentIdentifier = .medium
             sheet.prefersEdgeAttachedInCompactHeight = true
-            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true 
+            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
 //            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
             sheet.largestUndimmedDetentIdentifier = .medium
             sheet.preferredCornerRadius = 30

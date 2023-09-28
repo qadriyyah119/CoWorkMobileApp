@@ -34,6 +34,8 @@
 		2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D4289B41A100F82B1F /* NotificationBanner.swift */; };
 		2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D628A1726100F82B1F /* LoginViewController.swift */; };
 		2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D828A172E500F82B1F /* LoginViewModel.swift */; };
+		2D4AF1B22AA8DCEB008B00BE /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4AF1B12AA8DCEB008B00BE /* ListViewController.swift */; };
+		2D4AF1B42AC4E722008B00BE /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4AF1B32AC4E722008B00BE /* MapView.swift */; };
 		2D64F90B28CA4AF00092C479 /* LoginViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90A28CA4AF00092C479 /* LoginViewControllerTest.swift */; };
 		2D64F90D28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90C28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift */; };
 		2D66086828A2D3F800C76819 /* WelcomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */; };
@@ -135,6 +137,8 @@
 		2D4207D4289B41A100F82B1F /* NotificationBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBanner.swift; sourceTree = "<group>"; };
 		2D4207D628A1726100F82B1F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2D4207D828A172E500F82B1F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		2D4AF1B12AA8DCEB008B00BE /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		2D4AF1B32AC4E722008B00BE /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2D64F90A28CA4AF00092C479 /* LoginViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTest.swift; sourceTree = "<group>"; };
 		2D64F90C28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewControllerTest.swift; sourceTree = "<group>"; };
 		2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModelTest.swift; sourceTree = "<group>"; };
@@ -309,6 +313,7 @@
 				2DABF5B428DBB4C0007D660E /* MapViewController.swift */,
 				2DC810A12983206600666610 /* WorkspaceDetailViewController.swift */,
 				2D738B852A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift */,
+				2D4AF1B12AA8DCEB008B00BE /* ListViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -419,6 +424,7 @@
 				2DC8109F2983194800666610 /* WorkspaceDetailImageContentView.swift */,
 				2DC810AB2989875600666610 /* WorkspaceDetailContentView.swift */,
 				2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */,
+				2D4AF1B32AC4E722008B00BE /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -724,6 +730,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D4AF1B22AA8DCEB008B00BE /* ListViewController.swift in Sources */,
 				2DA5079129F06722008C53D2 /* WorkspaceDetailReviewContentViewViewModel.swift in Sources */,
 				2DC9246B2936892D000DF340 /* LocationHelper.swift in Sources */,
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
@@ -764,6 +771,7 @@
 				2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */,
 				2D66087D28A5F35800C76819 /* WorkspaceListContentConfiguration.swift in Sources */,
 				2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */,
+				2D4AF1B42AC4E722008B00BE /* MapView.swift in Sources */,
 				2D66088528AAAD0400C76819 /* HeaderView.swift in Sources */,
 				2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */,
 				2DC810A829844C3B00666610 /* WorkspaceDetailImageContentViewViewModel.swift in Sources */,
