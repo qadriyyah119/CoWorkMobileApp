@@ -35,7 +35,6 @@
 		2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D628A1726100F82B1F /* LoginViewController.swift */; };
 		2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207D828A172E500F82B1F /* LoginViewModel.swift */; };
 		2D4AF1B22AA8DCEB008B00BE /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4AF1B12AA8DCEB008B00BE /* ListViewController.swift */; };
-		2D4AF1B42AC4E722008B00BE /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4AF1B32AC4E722008B00BE /* MapView.swift */; };
 		2D64F90B28CA4AF00092C479 /* LoginViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90A28CA4AF00092C479 /* LoginViewControllerTest.swift */; };
 		2D64F90D28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D64F90C28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift */; };
 		2D66086828A2D3F800C76819 /* WelcomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */; };
@@ -51,7 +50,7 @@
 		2D66087D28A5F35800C76819 /* WorkspaceListContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66087C28A5F35800C76819 /* WorkspaceListContentConfiguration.swift */; };
 		2D66088128A5F3E300C76819 /* WorkspaceListContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088028A5F3E300C76819 /* WorkspaceListContentView.swift */; };
 		2D66088328A6AED200C76819 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088228A6AED200C76819 /* Workspace.swift */; };
-		2D66088528AAAD0400C76819 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088428AAAD0400C76819 /* HeaderView.swift */; };
+		2D66088528AAAD0400C76819 /* MapViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088428AAAD0400C76819 /* MapViewHeader.swift */; };
 		2D66088728AAB3D700C76819 /* SectionHeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088628AAB3D700C76819 /* SectionHeaderSupplementaryView.swift */; };
 		2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088828AAB54C00C76819 /* WorkspaceManager.swift */; };
 		2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */; };
@@ -138,7 +137,6 @@
 		2D4207D628A1726100F82B1F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2D4207D828A172E500F82B1F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		2D4AF1B12AA8DCEB008B00BE /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
-		2D4AF1B32AC4E722008B00BE /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2D64F90A28CA4AF00092C479 /* LoginViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTest.swift; sourceTree = "<group>"; };
 		2D64F90C28CA4FCC0092C479 /* AccountRegistrationViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewControllerTest.swift; sourceTree = "<group>"; };
 		2D66086728A2D3F800C76819 /* WelcomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModelTest.swift; sourceTree = "<group>"; };
@@ -154,7 +152,7 @@
 		2D66087C28A5F35800C76819 /* WorkspaceListContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListContentConfiguration.swift; sourceTree = "<group>"; };
 		2D66088028A5F3E300C76819 /* WorkspaceListContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListContentView.swift; sourceTree = "<group>"; };
 		2D66088228A6AED200C76819 /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
-		2D66088428AAAD0400C76819 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		2D66088428AAAD0400C76819 /* MapViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewHeader.swift; sourceTree = "<group>"; };
 		2D66088628AAB3D700C76819 /* SectionHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderSupplementaryView.swift; sourceTree = "<group>"; };
 		2D66088828AAB54C00C76819 /* WorkspaceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceManager.swift; sourceTree = "<group>"; };
 		2D66088A28AB0EB500C76819 /* WorkspaceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceListCell.swift; sourceTree = "<group>"; };
@@ -417,14 +415,13 @@
 			isa = PBXGroup;
 			children = (
 				2D66087F28A5F3C200C76819 /* Cells */,
-				2D66088428AAAD0400C76819 /* HeaderView.swift */,
+				2D66088428AAAD0400C76819 /* MapViewHeader.swift */,
 				2D66088628AAB3D700C76819 /* SectionHeaderSupplementaryView.swift */,
 				2DC9246C294A5971000DF340 /* WorkplaceAnnotationView.swift */,
 				2D66088028A5F3E300C76819 /* WorkspaceListContentView.swift */,
 				2DC8109F2983194800666610 /* WorkspaceDetailImageContentView.swift */,
 				2DC810AB2989875600666610 /* WorkspaceDetailContentView.swift */,
 				2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */,
-				2D4AF1B32AC4E722008B00BE /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -771,8 +768,7 @@
 				2D66088B28AB0EB500C76819 /* WorkspaceListCell.swift in Sources */,
 				2D66087D28A5F35800C76819 /* WorkspaceListContentConfiguration.swift in Sources */,
 				2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */,
-				2D4AF1B42AC4E722008B00BE /* MapView.swift in Sources */,
-				2D66088528AAAD0400C76819 /* HeaderView.swift in Sources */,
+				2D66088528AAAD0400C76819 /* MapViewHeader.swift in Sources */,
 				2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */,
 				2DC810A829844C3B00666610 /* WorkspaceDetailImageContentViewViewModel.swift in Sources */,
 				2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */,

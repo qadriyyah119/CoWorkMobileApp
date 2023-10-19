@@ -9,8 +9,8 @@ import UIKit
 import Cartography
 import MapKit
 
-class HeaderView: UIView {
-    static let identifier = String(describing: HeaderView.self)
+class MapViewHeader: UIView {
+    static let identifier = String(describing: MapViewHeader.self)
     
     private lazy var minHeight: CGFloat = { 44 + 12 + 12 + safeAreaInsets.top }()
     private let maxHeight: CGFloat = 600
@@ -26,25 +26,14 @@ class HeaderView: UIView {
         return card
     }()
     
-//    private lazy var mapView: MKMapView = {
-//        let map = MKMapView()
-//        map.isZoomEnabled = true
-//        map.isScrollEnabled = true
-//        map.showsCompass = true
-//        map.showsBuildings = true
-//        map.showsUserLocation = true
-//        map.mapType = .standard
-//        return map
-//    }()
-    
-    private lazy var mapView: MapView = {
-        let map = MapView()
-//        map.isZoomEnabled = true
-//        map.isScrollEnabled = true
-//        map.showsCompass = true
-//        map.showsBuildings = true
-//        map.showsUserLocation = true
-//        map.mapType = .standard
+    var mapView: MKMapView = {
+        let map = MKMapView()
+        map.isZoomEnabled = true
+        map.isScrollEnabled = true
+        map.showsCompass = true
+        map.showsBuildings = true
+        map.showsUserLocation = true
+        map.mapType = .standard
         return map
     }()
     
@@ -110,7 +99,7 @@ class HeaderView: UIView {
             searchContainer.top == card.top
             searchContainer.leading == card.leading
             searchContainer.trailing == card.trailing
-            searchContainer.height == 130
+            searchContainer.height == 150
             searchBarButton.top >= searchContainer.top + 24
             searchBarButton.top >= searchContainer.safeAreaLayoutGuide.top + 12
             searchBarButton.leading == searchContainer.leading + 24
@@ -133,7 +122,7 @@ class HeaderView: UIView {
 
 // MARK: - Animation
 
-extension HeaderView {
+extension MapViewHeader {
     
     private var currentOffset: CGFloat {
         get { heightConstraint.constant }

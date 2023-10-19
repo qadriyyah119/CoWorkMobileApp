@@ -7,6 +7,7 @@
 import UIKit
 import Cartography
 import RealmSwift
+import MapKit
 import CoreLocation
 import Combine
 
@@ -29,9 +30,32 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         var workspaceId: String?
     }
     
+    private lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        return locationManager
+    }()
+    
+    private lazy var mapViewHeader: MapViewHeader = {
+        let view = MapViewHeader()
+        return view
+    }()
+    
+//    private lazy var mapViewHeader: MKMapView = {
+//        let map = MKMapView()
+//        map.isZoomEnabled = true
+//        map.isScrollEnabled = true
+//        map.showsCompass = true
+//        map.showsBuildings = true
+//        map.showsUserLocation = true
+//        map.mapType = .standard
+//        return map
+//    }()
+    
     private(set) var collectionView: UICollectionView!
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
-    private lazy var headerView = HeaderView()
+    private var workspaceAnnotations: [MapAnnotation] = []
+    lazy var geocoder = CLGeocoder()
     private var oldYOffset: CGFloat = 0
     
     let viewModel: WorkspaceListViewModel
@@ -60,9 +84,16 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        startLocationService()
+        locationManager.requestWhenInUseAuthorization()
+        loadAnnotations()
         configureDataSource()
+        
         viewModel.$workspaces.sink { [weak self] workspaces in
             self?.applySnapshot(with: workspaces)
+            self?.loadAnnotations(for: workspaces)
         }.store(in: &cancellables)
     }
     
@@ -73,20 +104,20 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     private func setupView() {
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        
+        mapViewHeader.mapView.register(WorkplaceAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = ThemeColors.mainBackgroundColor
         self.collectionView = collectionView
         self.collectionView.delegate = self
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(collectionView)
-        self.view.addSubview(headerView)
+        self.view.addSubview(self.mapViewHeader)
         
-        constrain(headerView, collectionView) { headerView, collectionView in
-            headerView.top == headerView.superview!.top
-            headerView.leading == headerView.superview!.leading
-            headerView.trailing == headerView.superview!.trailing
-            headerView.bottom == collectionView.top
+        constrain(mapViewHeader, collectionView) { mapViewHeader, collectionView in
+            mapViewHeader.top == mapViewHeader.superview!.top
+            mapViewHeader.leading == mapViewHeader.superview!.leading
+            mapViewHeader.trailing == mapViewHeader.superview!.trailing
+            mapViewHeader.bottom == collectionView.top
             collectionView.leading == collectionView.superview!.leading
             collectionView.trailing == collectionView.superview!.trailing
             collectionView.bottom == collectionView.superview!.bottom
@@ -192,13 +223,87 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
 
     }
     
+    private func startLocationService() {
+        let authStatus = locationManager.authorizationStatus
+
+        if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
+            activateLocationServices()
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
+        }
+    }
+    
+    private func activateLocationServices() {
+        locationManager.requestLocation()
+    }
+    
+    private func loadAnnotations(for workspaces: [Workspace] = []) {
+        let annotations = workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
+        }
+        mapViewHeader.mapView.addAnnotations(annotations)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
-        
-        let updateY = headerView.updateHeader(newY: yOffset, oldY: oldYOffset)
+
+        let updateY = mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
         scrollView.contentOffset.y = updateY
-        
+
         oldYOffset = scrollView.contentOffset.y
     }
 
+}
+
+extension ListViewController: CLLocationManagerDelegate {
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let authStatus = manager.authorizationStatus
+
+        switch authStatus {
+        case .authorizedAlways , .authorizedWhenInUse:
+            print("Auth: AuthorizedWhenInUse")
+            activateLocationServices()
+        case .notDetermined , .denied , .restricted:
+            break
+        default:
+            break
+        }
+
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        guard let currentLocation = locations.first else { return }
+//        printCurrentLocation(location: currentLocation)
+        
+        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
+
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: locationValue, span: span)
+        mapViewHeader.mapView.setRegion(region, animated: true)
+        
+        convertCurrentLocationToString(from: currentLocation) { city, zip, error in
+            if let zip = zip {
+                self.searchQuery = zip
+                self.viewModel.getWorkspaces(forLocation: currentLocation, locationQuery: self.searchQuery) {
+                    
+                }
+            }
+        }
+    }
+    
+    func convertCurrentLocationToString(from location: CLLocation, completion: @escaping (_ city: String?, _ zip: String?, _ error: Error?) -> ()) {
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+            completion(placemarks?.first?.locality,
+                       placemarks?.first?.postalCode,
+                       error)
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error - locationManager: \(error.localizedDescription)")
+    }
 }

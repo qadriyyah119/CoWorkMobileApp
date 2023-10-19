@@ -24,7 +24,7 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        workspaceCoordinator.start()
+        workspaceCoordinator.start()
         self.setupView()
     }
     
@@ -35,11 +35,15 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.standardAppearance = appearance
         self.tabBar.scrollEdgeAppearance = appearance
         self.tabBar.tintColor = ThemeColors.tintColor
-        self.setViewControllers([listVC, collectionsVC, profileVC], animated: false)
+        self.setViewControllers([workspaceCoordinator.navigationController, collectionsVC, profileVC], animated: false)
         self.delegate = self
     }
     
-//    let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+    let workspaceCoordinator: WorkspaceCoordinator = {
+        let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+        workspaceCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
+        return workspaceCoordinator
+    }()
     
     private lazy var listVC: ListViewController = {
         let viewController = ListViewController()

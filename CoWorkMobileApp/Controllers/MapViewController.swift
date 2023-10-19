@@ -163,6 +163,7 @@ extension MapViewController: CLLocationManagerDelegate {
 
         switch authStatus {
         case .authorizedAlways , .authorizedWhenInUse:
+            print("Auth: AuthorizedWhenInUse")
             activateLocationServices()
         case .notDetermined , .denied , .restricted:
             break

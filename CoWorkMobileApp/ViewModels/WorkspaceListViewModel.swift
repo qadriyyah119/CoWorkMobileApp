@@ -34,6 +34,19 @@ class WorkspaceListViewModel: ObservableObject {
         self.realmQuery()
     }
     
+    func getWorkspaces(forLocation location: CLLocation, locationQuery: String, completion: @escaping () -> Void) {
+        WorkspaceManager.shared.getWorkspaces(location: locationQuery) { result in
+            switch result {
+            case .success(let workspaces):
+                print("Workspace: \(workspaces[1])")
+                self.workspaces = Array(workspaces)
+            case .failure(let error):
+                print(error)
+            }
+            completion()
+        }
+    }
+    
     func realmQuery() {
         
         let realm = try? Realm()
