@@ -15,8 +15,6 @@ class MapViewHeader: UIView {
     private lazy var minHeight: CGFloat = { 44 + safeAreaInsets.top }()
     private let maxHeight: CGFloat = 600
     private var heightConstraint = NSLayoutConstraint()
-    private var maxTopSpace: CGFloat = 40
-    private var topSpaceConstraint = NSLayoutConstraint()
     
     private lazy var card: UIView = {
         let card = UIView()
@@ -62,7 +60,6 @@ class MapViewHeader: UIView {
         
         [card, separator].forEach {self.addSubview($0)}
         [mapView].forEach {self.card.addSubview($0)}
-//        self.searchContainer.addSubview(searchBarButton)
 
         constrain(card, separator, mapView) {card, separator, mapView in
             card.top == card.superview!.top
@@ -78,11 +75,6 @@ class MapViewHeader: UIView {
         }
     }
     
-//    override func safeAreaInsetsDidChange() {
-//        maxTopSpace = 40 + safeAreaInsets.top
-//        topSpaceConstraint.constant = maxTopSpace
-//    }
-    
 }
 
 // MARK: - Animation
@@ -94,66 +86,59 @@ extension MapViewHeader {
         set { animate(to: newValue) }
     }
     
-    func updateHeader(newY: CGFloat, oldY: CGFloat) -> CGFloat {
-        let scrollDiff = newY - oldY
+//    func updateHeader(newY: CGFloat, oldY: CGFloat) {
+//        let scrollDiff = newY - oldY
+//
+//        if scrollDiff > 0 { // Scrolling down
+//            animate(to: minHeight) // Collapse the header
+//        } else if scrollDiff < 0 { // Scrolling up
+//            animate(to: maxHeight) // Expand the header
+//        }
+//    }
+    
+    func updateHeader(yOffset: CGFloat) {
+        let shouldCollapse = yOffset > 0
+        let shouldExpand = yOffset < 0
 
-        let isScrollingUp = scrollDiff > 0
-        let isInContent = newY > 0
-        let hasRoomToCollapse = currentOffset > minHeight
-        let shouldCollapse = isScrollingUp && isInContent && hasRoomToCollapse
-
-        let isMovingDown = scrollDiff < 0
-        let isBeyondContent = newY < 0
-        let hasRoomToExpand = currentOffset < maxHeight
-        let shouldExpand = isMovingDown && isBeyondContent && hasRoomToExpand
-
-        if shouldCollapse || shouldExpand {
-            currentOffset -= scrollDiff
-            return newY - scrollDiff
+        if shouldCollapse {
+            animate(to: minHeight) // Collapse the header
+        } else if shouldExpand {
+            animate(to: maxHeight) // Expand the header
         }
-
-        return newY
     }
+
 
     
 //    func updateHeader(newY: CGFloat, oldY: CGFloat) -> CGFloat {
 //        let scrollDiff = newY - oldY
 //
-//        if scrollDiff > 0 {
-//            // Scrolling down
-//            // Expand the header
-//            animate(to: minHeight)
-//        } else if scrollDiff < 0 {
-//            // Scrolling up
-//            // Collapse the header
-//            animate(to: maxHeight)
+//        let isScrollingUp = scrollDiff > 0
+//        let isInContent = newY > 0
+//        let hasRoomToCollapse = currentOffset > minHeight
+//        let shouldCollapse = isScrollingUp && isInContent && hasRoomToCollapse
+//
+//        let isMovingDown = scrollDiff < 0
+//        let isBeyondContent = newY < 0
+//        let hasRoomToExpand = currentOffset < maxHeight
+//        let shouldExpand = isMovingDown && isBeyondContent && hasRoomToExpand
+//
+//        if shouldCollapse || shouldExpand {
+//            currentOffset -= scrollDiff
+//            return newY - scrollDiff
 //        }
 //
 //        return newY
 //    }
 
-    
-    
     private func animate(to value: CGFloat) {
         let newHeight = max(min(value, maxHeight), minHeight)
-        heightConstraint.constant = newHeight
+        UIView.animate(withDuration: 0.2) {
+            self.heightConstraint.constant = newHeight
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
+        }
         
-//        let normalized = (value - minHeight) / (maxHeight - minHeight)
-//        switch normalized {
-//        case ..<0.5:
-//            animateToFifty(normalized)
-//        default:
-//            animateToOneHundred(normalized)
-//        }
-    }
-    
-    private func animateToFifty(_ normalized: CGFloat) {
-        let newTop = normalized * 2 * maxTopSpace
-        topSpaceConstraint.constant = newTop
-    }
-
-    private func animateToOneHundred(_ normalized: CGFloat) {
-        topSpaceConstraint.constant = maxTopSpace
+        
     }
     
 }

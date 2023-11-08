@@ -50,17 +50,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         return searchController
     }()
     
-//    private lazy var mapViewHeader: MKMapView = {
-//        let map = MKMapView()
-//        map.isZoomEnabled = true
-//        map.isScrollEnabled = true
-//        map.showsCompass = true
-//        map.showsBuildings = true
-//        map.showsUserLocation = true
-//        map.mapType = .standard
-//        return map
-//    }()
-    
     private(set) var collectionView: UICollectionView!
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
     private var workspaceAnnotations: [MapAnnotation] = []
@@ -117,7 +106,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     
     private func setupView() {
         mapViewHeader.mapView.register(WorkplaceAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
+        var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = ThemeColors.mainBackgroundColor
         self.collectionView = collectionView
         self.collectionView.delegate = self
@@ -264,24 +253,34 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         mapViewHeader.mapView.addAnnotations(annotations)
     }
     
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let yOffset = scrollView.contentOffset.y
+//        print(yOffset)
+//        mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
+//        oldYOffset = yOffset
+//    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-      
         let yOffset = scrollView.contentOffset.y
         print(yOffset)
-        
-        handleScrollChange(newY: yOffset)
-        
-//        let updateY = mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
-//        scrollView.contentOffset.y = updateY
+        mapViewHeader.updateHeader(yOffset: yOffset)
+    }
 
+
+//    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//      
+//        let yOffset = scrollView.contentOffset.y
+//        print(yOffset)
+//        
+//        handleScrollChange(newY: yOffset)
+//
+//    }
+//    
+//    func handleScrollChange(newY: CGFloat) {
+//        let updateY = mapViewHeader.updateHeader(newY: newY, oldY: oldYOffset)
 //        oldYOffset = updateY
-    }
-    
-    // Add this method to the ListViewController
-    func handleScrollChange(newY: CGFloat) {
-        let updateY = mapViewHeader.updateHeader(newY: newY, oldY: oldYOffset)
-        oldYOffset = updateY
-    }
+//    }
 
 
     
