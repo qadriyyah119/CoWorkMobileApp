@@ -40,6 +40,7 @@ class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
 
     func start() {
         self.navigationController.pushViewController(self.listVC, animated: true)
+//        self.navigationController.setNavigationBarHidden(true, animated: true)
     }
 
 }

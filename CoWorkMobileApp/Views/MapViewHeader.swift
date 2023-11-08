@@ -12,7 +12,7 @@ import MapKit
 class MapViewHeader: UIView {
     static let identifier = String(describing: MapViewHeader.self)
     
-    private lazy var minHeight: CGFloat = { 44 + 12 + 12 + safeAreaInsets.top }()
+    private lazy var minHeight: CGFloat = { 44 + safeAreaInsets.top }()
     private let maxHeight: CGFloat = 600
     private var heightConstraint = NSLayoutConstraint()
     private var maxTopSpace: CGFloat = 40
@@ -37,31 +37,6 @@ class MapViewHeader: UIView {
         return map
     }()
     
-    private lazy var searchContainer: UIView = {
-        let container = UIView()
-        container.backgroundColor = UIColor(white: 1.0, alpha: 0)
-        return container
-    }()
-    
-    private(set) lazy var searchBarButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.buttonSize = .medium
-        config.cornerStyle = .capsule
-        config.baseBackgroundColor = .secondarySystemBackground
-        config.baseForegroundColor = UIColor.black
-        config.title = "Search Workspaces"
-        config.image = UIImage(systemName: "magnifyingglass")
-        config.imagePlacement = .leading
-        config.imagePadding = 15
-        
-        let button = UIButton(configuration: config, primaryAction: nil)
-        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self,
-//                         action: #selector(loginButtonSelected),
-//                         for: .primaryActionTriggered)
-        return button
-    }()
-    
     private lazy var separator: UIView = {
         let separator = UIView()
         separator.backgroundColor = .quaternaryLabel
@@ -82,29 +57,19 @@ class MapViewHeader: UIView {
         heightConstraint =  self.heightAnchor.constraint(equalToConstant: 600)
         
         NSLayoutConstraint.activate([
-//          self.heightAnchor.constraint(equalToConstant: 600)
           heightConstraint
         ])
         
         [card, separator].forEach {self.addSubview($0)}
-        [mapView, searchContainer].forEach {self.card.addSubview($0)}
-        self.searchContainer.addSubview(searchBarButton)
+        [mapView].forEach {self.card.addSubview($0)}
+//        self.searchContainer.addSubview(searchBarButton)
 
-        constrain(card, separator, mapView, searchContainer, searchBarButton) {card, separator, mapView, searchContainer, searchBarButton in
+        constrain(card, separator, mapView) {card, separator, mapView in
             card.top == card.superview!.top
             card.leading == card.superview!.leading
             card.trailing == card.superview!.trailing
             card.bottom == card.superview!.bottom
             mapView.edges == card.edges
-            searchContainer.top == card.top
-            searchContainer.leading == card.leading
-            searchContainer.trailing == card.trailing
-            searchContainer.height == 150
-            searchBarButton.top >= searchContainer.top + 24
-            searchBarButton.top >= searchContainer.safeAreaLayoutGuide.top + 12
-            searchBarButton.leading == searchContainer.leading + 24
-            searchBarButton.trailing == searchContainer.trailing - 24
-            searchBarButton.bottom == searchContainer.bottom - 12
             separator.height == 1
             separator.leading == separator.superview!.leading
             separator.trailing == separator.superview!.trailing
@@ -113,10 +78,10 @@ class MapViewHeader: UIView {
         }
     }
     
-    override func safeAreaInsetsDidChange() {
-        maxTopSpace = 40 + safeAreaInsets.top
-        topSpaceConstraint.constant = maxTopSpace
-    }
+//    override func safeAreaInsetsDidChange() {
+//        maxTopSpace = 40 + safeAreaInsets.top
+//        topSpaceConstraint.constant = maxTopSpace
+//    }
     
 }
 
@@ -130,48 +95,65 @@ extension MapViewHeader {
     }
     
     func updateHeader(newY: CGFloat, oldY: CGFloat) -> CGFloat {
-        let delta = newY - oldY
-        
-        let isMovingUp = delta > 0
+        let scrollDiff = newY - oldY
+
+        let isScrollingUp = scrollDiff > 0
         let isInContent = newY > 0
         let hasRoomToCollapse = currentOffset > minHeight
-        let shouldCollapse = isMovingUp && isInContent && hasRoomToCollapse
-        
-        let isMovingDown = delta < 0
+        let shouldCollapse = isScrollingUp && isInContent && hasRoomToCollapse
+
+        let isMovingDown = scrollDiff < 0
         let isBeyondContent = newY < 0
         let hasRoomToExpand = currentOffset < maxHeight
         let shouldExpand = isMovingDown && isBeyondContent && hasRoomToExpand
-        
+
         if shouldCollapse || shouldExpand {
-            currentOffset -= delta
-            return newY - delta
+            currentOffset -= scrollDiff
+            return newY - scrollDiff
         }
-        
+
         return newY
     }
+
+    
+//    func updateHeader(newY: CGFloat, oldY: CGFloat) -> CGFloat {
+//        let scrollDiff = newY - oldY
+//
+//        if scrollDiff > 0 {
+//            // Scrolling down
+//            // Expand the header
+//            animate(to: minHeight)
+//        } else if scrollDiff < 0 {
+//            // Scrolling up
+//            // Collapse the header
+//            animate(to: maxHeight)
+//        }
+//
+//        return newY
+//    }
+
+    
     
     private func animate(to value: CGFloat) {
-        let clamped = max(min(value, maxHeight), minHeight)
-        heightConstraint.constant = clamped
+        let newHeight = max(min(value, maxHeight), minHeight)
+        heightConstraint.constant = newHeight
         
-        let normalized = (value - minHeight) / (maxHeight - minHeight)
-        switch normalized {
-        case ..<0.5:
-            animateToFifty(normalized)
-        default:
-            animateToOneHundred(normalized)
-        }
+//        let normalized = (value - minHeight) / (maxHeight - minHeight)
+//        switch normalized {
+//        case ..<0.5:
+//            animateToFifty(normalized)
+//        default:
+//            animateToOneHundred(normalized)
+//        }
     }
     
     private func animateToFifty(_ normalized: CGFloat) {
         let newTop = normalized * 2 * maxTopSpace
         topSpaceConstraint.constant = newTop
-        searchContainer.backgroundColor = UIColor(white: 1.0, alpha: 1 - normalized * 2)
     }
-    
+
     private func animateToOneHundred(_ normalized: CGFloat) {
         topSpaceConstraint.constant = maxTopSpace
-        searchContainer.backgroundColor = UIColor(white: 1.0, alpha: 0)
     }
     
 }

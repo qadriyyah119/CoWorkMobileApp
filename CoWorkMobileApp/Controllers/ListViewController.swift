@@ -41,6 +41,15 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         return view
     }()
     
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search for Workspaces"
+        searchController.searchBar.searchBarStyle = .default
+        searchController.searchBar.searchTextField.backgroundColor = .white
+        searchController.obscuresBackgroundDuringPresentation = false
+        return searchController
+    }()
+    
 //    private lazy var mapViewHeader: MKMapView = {
 //        let map = MKMapView()
 //        map.isZoomEnabled = true
@@ -60,6 +69,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     
     let viewModel: WorkspaceListViewModel
     private var cancellables: Set<AnyCancellable> = []
+    private lazy var currentLocationString: String = "Current Location"
     
     var currentLocation: CLLocation? {
         didSet {
@@ -70,6 +80,10 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         didSet {
             viewModel.searchQuery = searchQuery
         }
+    }
+    
+    var topBarHeight: CGFloat {
+        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) + (self.navigationController?.navigationBar.frame.height ?? 0.0)
     }
     
     init() {
@@ -102,8 +116,6 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupView() {
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
         mapViewHeader.mapView.register(WorkplaceAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = ThemeColors.mainBackgroundColor
@@ -117,11 +129,19 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
             mapViewHeader.top == mapViewHeader.superview!.top
             mapViewHeader.leading == mapViewHeader.superview!.leading
             mapViewHeader.trailing == mapViewHeader.superview!.trailing
-            mapViewHeader.bottom == collectionView.top
+            collectionView.top == mapViewHeader.bottom
             collectionView.leading == collectionView.superview!.leading
             collectionView.trailing == collectionView.superview!.trailing
             collectionView.bottom == collectionView.superview!.bottom
         }
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.searchBar.delegate = self
     }
     
     private let cellRegistration = UICollectionView.CellRegistration<WorkspaceListCell, WorkspaceItem> { cell, indexPath, item in
@@ -245,12 +265,41 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      
         let yOffset = scrollView.contentOffset.y
+        print(yOffset)
+        
+        handleScrollChange(newY: yOffset)
+        
+//        let updateY = mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
+//        scrollView.contentOffset.y = updateY
 
-        let updateY = mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
-        scrollView.contentOffset.y = updateY
+//        oldYOffset = updateY
+    }
+    
+    // Add this method to the ListViewController
+    func handleScrollChange(newY: CGFloat) {
+        let updateY = mapViewHeader.updateHeader(newY: newY, oldY: oldYOffset)
+        oldYOffset = updateY
+    }
 
-        oldYOffset = scrollView.contentOffset.y
+
+    
+    private func printCurrentLocation(location: CLLocation) {
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let placemark = placemarks?.first else { return }
+            if let city = placemark.locality,
+               let state = placemark.administrativeArea {
+                let currentLocationString = "\(city), \(state)"
+                self?.currentLocationString = currentLocationString
+                self?.navigationItem.title = currentLocationString
+
+            }
+        }
     }
 
 }
@@ -275,7 +324,7 @@ extension ListViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
         guard let currentLocation = locations.first else { return }
-//        printCurrentLocation(location: currentLocation)
+        printCurrentLocation(location: currentLocation)
         
         guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
         print("locations = \(locationValue.latitude) \(locationValue.longitude)")
@@ -305,5 +354,27 @@ extension ListViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error - locationManager: \(error.localizedDescription)")
+    }
+}
+
+extension ListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(searchText) { placemark, error in
+            guard let location = placemark?.first?.location else { return }
+            
+            DispatchQueue.main.async {
+                self.printCurrentLocation(location: location)
+                let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                let region = MKCoordinateRegion(center: location.coordinate, span: span)
+                self.mapViewHeader.mapView.setRegion(region, animated: true)
+            }
+//            self.viewModel.getWorkspaces(forLocation: location, locationQuery: searchText) {
+//                if !self.viewModel.workspaces.isEmpty {
+//                    self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
+//                }
+//            }
+        }
     }
 }
