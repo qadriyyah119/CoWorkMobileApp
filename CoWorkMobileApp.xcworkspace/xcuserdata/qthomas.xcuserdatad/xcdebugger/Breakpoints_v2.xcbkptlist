@@ -3,4 +3,130 @@
    uuid = "1C34B623-8464-42CD-8507-C3DA0B32C42C"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A0AF1B09-0A16-43D2-827F-F790D4E55EE2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CoWorkMobileApp/Views/MapViewHeader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "currentOffset"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CoWorkMobileApp/Controllers/ListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "ListViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC - ff8b601cc7b3ccdc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoWorkMobileApp.ListViewController.oldYOffset.getter : CoreGraphics.CGFloat"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qthomas/Documents/Documents%20-%20BrooklynAfro&apos;s%20MacBook%20Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Controllers/ListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "89">
+               </Location>
+               <Location
+                  uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC - bc9ed7402bfc7cc0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoWorkMobileApp.ListViewController.oldYOffset.setter : CoreGraphics.CGFloat"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qthomas/Documents/Documents%20-%20BrooklynAfro&apos;s%20MacBook%20Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Controllers/ListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "102">
+               </Location>
+               <Location
+                  uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC - 11ea6a77b5ff68d1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoWorkMobileApp.ListViewController.oldYOffset.modify : CoreGraphics.CGFloat"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qthomas/Documents/Documents%20-%20BrooklynAfro&apos;s%20MacBook%20Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Controllers/ListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC - edddaf83a8ba1c13"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoWorkMobileApp.ListViewController.oldYOffset.modify : CoreGraphics.CGFloat with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qthomas/Documents/Documents%20-%20BrooklynAfro&apos;s%20MacBook%20Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Controllers/ListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "15">
+               </Location>
+               <Location
+                  uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC - d16f8a28dbb02d6d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoWorkMobileApp.ListViewController.init() -&gt; CoWorkMobileApp.ListViewController"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qthomas/Documents/Documents%20-%20BrooklynAfro&apos;s%20MacBook%20Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Controllers/ListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "418">
+               </Location>
+               <Location
+                  uuid = "D6F9E669-B39F-4E29-A9E0-02601E35F6EC - 3d2e71c34f447455"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoWorkMobileApp.ListViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;CoWorkMobileApp.ListViewController&gt;"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qthomas/Documents/Documents%20-%20BrooklynAfro&apos;s%20MacBook%20Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Controllers/ListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "394">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

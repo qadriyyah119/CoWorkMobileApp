@@ -86,59 +86,63 @@ extension MapViewHeader {
         set { animate(to: newValue) }
     }
     
-//    func updateHeader(newY: CGFloat, oldY: CGFloat) {
-//        let scrollDiff = newY - oldY
-//
-//        if scrollDiff > 0 { // Scrolling down
-//            animate(to: minHeight) // Collapse the header
-//        } else if scrollDiff < 0 { // Scrolling up
-//            animate(to: maxHeight) // Expand the header
-//        }
-//    }
-    
-    func updateHeader(yOffset: CGFloat) {
-        let shouldCollapse = yOffset > 0
-        let shouldExpand = yOffset < 0
-
-        if shouldCollapse {
-            animate(to: minHeight) // Collapse the header
-        } else if shouldExpand {
-            animate(to: maxHeight) // Expand the header
-        }
-    }
-
-
     
 //    func updateHeader(newY: CGFloat, oldY: CGFloat) -> CGFloat {
 //        let scrollDiff = newY - oldY
 //
+//        let isScrollingDown = scrollDiff < 0
 //        let isScrollingUp = scrollDiff > 0
 //        let isInContent = newY > 0
-//        let hasRoomToCollapse = currentOffset > minHeight
-//        let shouldCollapse = isScrollingUp && isInContent && hasRoomToCollapse
-//
-//        let isMovingDown = scrollDiff < 0
 //        let isBeyondContent = newY < 0
+//        let hasRoomToCollapse = currentOffset > minHeight
 //        let hasRoomToExpand = currentOffset < maxHeight
-//        let shouldExpand = isMovingDown && isBeyondContent && hasRoomToExpand
 //
-//        if shouldCollapse || shouldExpand {
-//            currentOffset -= scrollDiff
-//            return newY - scrollDiff
+//        // Collapse when scrolling down and there's room to collapse
+//        let shouldCollapse = isScrollingUp && isInContent && hasRoomToCollapse
+//        // Expand when scrolling up and there's room to expand
+//        let shouldExpand = isScrollingDown && isBeyondContent && hasRoomToExpand
+//
+//        if shouldCollapse {
+//            currentOffset = minHeight
+//        } else if shouldExpand {
+//            currentOffset = maxHeight
 //        }
 //
+//        // It is not clear why you would return newY - scrollDiff.
+//        // This is not typically necessary unless you are trying to account for a correction.
+//        // Usually, the newY passed in is simply the new oldY for the next call.
 //        return newY
 //    }
+    
+    func updateHeader(newY: CGFloat, oldY: CGFloat) {
+        let scrollDiff = newY - oldY
 
-    private func animate(to value: CGFloat) {
-        let newHeight = max(min(value, maxHeight), minHeight)
-        UIView.animate(withDuration: 0.2) {
-            self.heightConstraint.constant = newHeight
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
+        let isScrollingDown = scrollDiff > 0 && newY > 0 // User is scrolling down past the first item.
+        let isScrollingUp = scrollDiff < 0 && newY < 0 // User is pulling down at the top.
+        
+        var newHeight = currentOffset
+        
+        if isScrollingDown {
+            // User is scrolling down - Collapse
+            newHeight = max(minHeight, currentOffset - abs(scrollDiff))
+        } else if isScrollingUp {
+            // User is pulling up - Expand
+            newHeight = min(maxHeight, currentOffset + abs(scrollDiff))
         }
         
-        
+        // If the new height is different than the current height, update it.
+        if newHeight != currentOffset {
+            animate(to: newHeight)
+        }
     }
+
     
+    private func animate(to value: CGFloat) {
+        let newHeight = max(min(value, maxHeight), minHeight)
+        UIView.animate(withDuration: 0.3) {
+            self.heightConstraint.constant = newHeight
+            self.layoutIfNeeded()
+        }
+    }
+
 }

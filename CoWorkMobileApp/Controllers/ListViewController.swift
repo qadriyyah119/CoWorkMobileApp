@@ -106,7 +106,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     
     private func setupView() {
         mapViewHeader.mapView.register(WorkplaceAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = ThemeColors.mainBackgroundColor
         self.collectionView = collectionView
         self.collectionView.delegate = self
@@ -255,32 +255,22 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
     
 //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        let yOffset = scrollView.contentOffset.y
+//        print("SCROLLVIEW CALLED!!")
 //        print(yOffset)
-//        mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
-//        oldYOffset = yOffset
+
+        // Assuming updateHeader returns the newY value to be used as oldYOffset
+        // in the next call to scrollViewDidScroll.
+//        oldYOffset = mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
 //    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
+        print("SCROLLVIEW CALLED!!")
         print(yOffset)
-        mapViewHeader.updateHeader(yOffset: yOffset)
+        mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
     }
 
 
-//    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//      
-//        let yOffset = scrollView.contentOffset.y
-//        print(yOffset)
-//        
-//        handleScrollChange(newY: yOffset)
-//
-//    }
-//    
-//    func handleScrollChange(newY: CGFloat) {
-//        let updateY = mapViewHeader.updateHeader(newY: newY, oldY: oldYOffset)
-//        oldYOffset = updateY
-//    }
 
 
     
