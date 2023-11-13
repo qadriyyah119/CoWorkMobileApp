@@ -45,13 +45,6 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         return workspaceCoordinator
     }()
     
-    private lazy var listVC: ListViewController = {
-        let viewController = ListViewController()
-//        viewController.delegate = self
-        viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
-        return viewController
-    }()
-    
     private lazy var collectionsVC: UINavigationController = {
         let viewController = CollectionsViewController()
         viewController.tabBarItem = UITabBarItem(title: viewModel.collectionsTabTitle, image: viewModel.collectionsTabIcon, tag: 1)

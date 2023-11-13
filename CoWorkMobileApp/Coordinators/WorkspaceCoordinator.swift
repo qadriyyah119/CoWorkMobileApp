@@ -21,33 +21,26 @@ class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
     var locationManager = CLLocationManager()
     var workspaceDetailViewController: WorkspaceDetailViewController?
     
-    private lazy var listVC: ListViewController = {
-        let viewController = ListViewController()
+    private lazy var workspaceListVC: WorkspaceListViewController = {
+        let viewController = WorkspaceListViewController()
         viewController.delegate = self
         viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
         return viewController
     }()
-    
-//    private lazy var workspaceListVC: WorkspaceListViewController = {
-//        let viewController = WorkspaceListViewController()
-//        viewController.delegate = self
-////        viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
-//        return viewController
-//    }()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
 
     func start() {
-        self.navigationController.pushViewController(self.listVC, animated: true)
+        self.navigationController.pushViewController(self.workspaceListVC, animated: true)
     }
 
 }
 
-extension WorkspaceCoordinator: ListViewControllerDelegate {
+extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
     
-    func listViewController(controller: ListViewController, didSelectWorkspaceWithId id: String) {
+    func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String) {
         let workspaceDetailViewController = WorkspaceDetailViewController(workspaceId: id)
         workspaceDetailViewController.delegate = self
         self.workspaceDetailViewController = workspaceDetailViewController
