@@ -252,17 +252,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         }
         mapViewHeader.mapView.addAnnotations(annotations)
     }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let yOffset = scrollView.contentOffset.y
-//        print("SCROLLVIEW CALLED!!")
-//        print(yOffset)
-
-        // Assuming updateHeader returns the newY value to be used as oldYOffset
-        // in the next call to scrollViewDidScroll.
-//        oldYOffset = mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
-//    }
-    
+        
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         print("SCROLLVIEW CALLED!!")

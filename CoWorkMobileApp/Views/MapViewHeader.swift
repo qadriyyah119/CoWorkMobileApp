@@ -12,7 +12,7 @@ import MapKit
 class MapViewHeader: UIView {
     static let identifier = String(describing: MapViewHeader.self)
     
-    private lazy var minHeight: CGFloat = { 44 + safeAreaInsets.top }()
+    private lazy var minHeight: CGFloat = { 44 }()
     private let maxHeight: CGFloat = 600
     private var heightConstraint = NSLayoutConstraint()
     
@@ -86,34 +86,6 @@ extension MapViewHeader {
         set { animate(to: newValue) }
     }
     
-    
-//    func updateHeader(newY: CGFloat, oldY: CGFloat) -> CGFloat {
-//        let scrollDiff = newY - oldY
-//
-//        let isScrollingDown = scrollDiff < 0
-//        let isScrollingUp = scrollDiff > 0
-//        let isInContent = newY > 0
-//        let isBeyondContent = newY < 0
-//        let hasRoomToCollapse = currentOffset > minHeight
-//        let hasRoomToExpand = currentOffset < maxHeight
-//
-//        // Collapse when scrolling down and there's room to collapse
-//        let shouldCollapse = isScrollingUp && isInContent && hasRoomToCollapse
-//        // Expand when scrolling up and there's room to expand
-//        let shouldExpand = isScrollingDown && isBeyondContent && hasRoomToExpand
-//
-//        if shouldCollapse {
-//            currentOffset = minHeight
-//        } else if shouldExpand {
-//            currentOffset = maxHeight
-//        }
-//
-//        // It is not clear why you would return newY - scrollDiff.
-//        // This is not typically necessary unless you are trying to account for a correction.
-//        // Usually, the newY passed in is simply the new oldY for the next call.
-//        return newY
-//    }
-    
     func updateHeader(newY: CGFloat, oldY: CGFloat) {
         let scrollDiff = newY - oldY
 
@@ -139,10 +111,14 @@ extension MapViewHeader {
     
     private func animate(to value: CGFloat) {
         let newHeight = max(min(value, maxHeight), minHeight)
-        UIView.animate(withDuration: 0.3) {
-            self.heightConstraint.constant = newHeight
-            self.layoutIfNeeded()
-        }
+        self.heightConstraint.constant = newHeight
+        self.superview?.layoutIfNeeded()
+        self.layoutIfNeeded()
+//        UIView.animate(withDuration: 0.3) {
+//            self.heightConstraint.constant = newHeight
+//            self.superview?.layoutIfNeeded()
+//            self.layoutIfNeeded()
+//        }
     }
 
 }
