@@ -12,7 +12,8 @@ import CoreLocation
 import Combine
 
 protocol ListViewControllerDelegate: AnyObject {
-    func listViewController(_ controller: ListViewController, userDidUpdateLocation location: CLLocation, query: String)
+//    func listViewController(_ controller: ListViewController, userDidUpdateLocation location: CLLocation, query: String)
+    func listViewController(controller: ListViewController, didSelectWorkspaceWithId id: String)
 }
 
 class ListViewController: UIViewController, UICollectionViewDelegate {
@@ -235,6 +236,13 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         snapshot.appendItems(topRated, toSection: .topRated)
         diffableDataSource.apply(snapshot, animatingDifferences: true)
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        guard let workspace = diffableDataSource.itemIdentifier(for: indexPath)?.workspaceId else { return }
+        self.delegate?.listViewController(controller: self, didSelectWorkspaceWithId: workspace)
     }
     
     private func startLocationService() {
