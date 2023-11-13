@@ -11,6 +11,10 @@ import MapKit
 import CoreLocation
 import Combine
 
+protocol ListViewControllerDelegate: AnyObject {
+    func listViewController(_ controller: ListViewController, userDidUpdateLocation location: CLLocation, query: String)
+}
+
 class ListViewController: UIViewController, UICollectionViewDelegate {
     
     private enum Section: Int, CaseIterable, CustomStringConvertible {
@@ -50,6 +54,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate {
         return searchController
     }()
     
+    weak var delegate: ListViewControllerDelegate?
     private(set) var collectionView: UICollectionView!
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
     private var workspaceAnnotations: [MapAnnotation] = []
@@ -349,11 +354,9 @@ extension ListViewController: UISearchBarDelegate {
                 let region = MKCoordinateRegion(center: location.coordinate, span: span)
                 self.mapViewHeader.mapView.setRegion(region, animated: true)
             }
-//            self.viewModel.getWorkspaces(forLocation: location, locationQuery: searchText) {
-//                if !self.viewModel.workspaces.isEmpty {
-//                    self.delegate?.mapViewController(self, userDidUpdateLocation: location, query: searchText)
-//                }
-//            }
+            self.viewModel.getWorkspaces(forLocation: location, locationQuery: searchText) {
+
+            }
         }
     }
 }
