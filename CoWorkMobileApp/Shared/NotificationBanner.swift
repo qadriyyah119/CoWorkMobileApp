@@ -11,7 +11,7 @@ import NotificationBannerSwift
 class Banner: NotificationBanner {
     
     static func showBanner(withTitle title: String, subtitle: String, style: BannerStyle) {
-        let banner: NotificationBanner = NotificationBanner(title: title, subtitle: subtitle, style: style)
+        let banner: FloatingNotificationBanner = FloatingNotificationBanner(title: title, subtitle: subtitle, style: style)
         banner.show()
     }
 }
