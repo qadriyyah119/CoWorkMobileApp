@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27B153282B4DF0BF001CA0A8 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */; };
+		27B153292B4DF0BF001CA0A8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */; };
+		27B1532A2B4DF0BF001CA0A8 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */; };
+		27B1532B2B4DF0BF001CA0A8 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153262B4DF0BF001CA0A8 /* Roboto-Medium.ttf */; };
+		27B1532C2B4DF0BF001CA0A8 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153272B4DF0BF001CA0A8 /* Roboto-Light.ttf */; };
+		27B1532E2B4E08BF001CA0A8 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1532D2B4E08BF001CA0A8 /* AuthCoordinator.swift */; };
+		27B153302B4E08E9001CA0A8 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1532F2B4E08E9001CA0A8 /* OnboardingCoordinator.swift */; };
 		2C1C3778B21090FBFC193DEA /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0111B5FE5E9F75E66C43F388 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53A5289ACF0700D77978 /* AppDelegate.swift */; };
 		2D0E53A8289ACF0700D77978 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53A7289ACF0700D77978 /* SceneDelegate.swift */; };
@@ -17,11 +24,6 @@
 		2D0E53C7289ACF0800D77978 /* CoWorkMobileAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53C6289ACF0800D77978 /* CoWorkMobileAppUITests.swift */; };
 		2D0E53C9289ACF0800D77978 /* CoWorkMobileAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53C8289ACF0800D77978 /* CoWorkMobileAppUITestsLaunchTests.swift */; };
 		2D4207B0289AEED400F82B1F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207AF289AEED400F82B1F /* User.swift */; };
-		2D4207BA289AF51300F82B1F /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B7289AF49C00F82B1F /* Roboto-Bold.ttf */; };
-		2D4207BB289AF51D00F82B1F /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B5289AF49C00F82B1F /* Roboto-Light.ttf */; };
-		2D4207BC289AF52000F82B1F /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B6289AF49C00F82B1F /* Roboto-Medium.ttf */; };
-		2D4207BD289AF52300F82B1F /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B8289AF49C00F82B1F /* Roboto-Regular.ttf */; };
-		2D4207BE289AF52600F82B1F /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D4207B9289AF49C00F82B1F /* Roboto-Thin.ttf */; };
 		2D4207C0289AFEF100F82B1F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207BF289AFEF100F82B1F /* Theme.swift */; };
 		2D4207C2289B05E800F82B1F /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207C1289B05E800F82B1F /* WelcomeViewModel.swift */; };
 		2D4207C4289B146700F82B1F /* AccountRegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4207C3289B146700F82B1F /* AccountRegistrationViewModel.swift */; };
@@ -105,6 +107,13 @@
 /* Begin PBXFileReference section */
 		0111B5FE5E9F75E66C43F388 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12223D324A989B5DBA0B125D /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Thin.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		27B153262B4DF0BF001CA0A8 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Medium.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		27B153272B4DF0BF001CA0A8 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Light.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Light.ttf"; sourceTree = "<group>"; };
+		27B1532D2B4E08BF001CA0A8 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
+		27B1532F2B4E08E9001CA0A8 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		2D0E53A2289ACF0700D77978 /* CoWorkMobileApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoWorkMobileApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0E53A5289ACF0700D77978 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D0E53A7289ACF0700D77978 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,11 +127,6 @@
 		2D0E53C6289ACF0800D77978 /* CoWorkMobileAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoWorkMobileAppUITests.swift; sourceTree = "<group>"; };
 		2D0E53C8289ACF0800D77978 /* CoWorkMobileAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoWorkMobileAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2D4207AF289AEED400F82B1F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		2D4207B5289AF49C00F82B1F /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Light.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Light.ttf"; sourceTree = SOURCE_ROOT; };
-		2D4207B6289AF49C00F82B1F /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Medium.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Medium.ttf"; sourceTree = SOURCE_ROOT; };
-		2D4207B7289AF49C00F82B1F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Bold.ttf"; sourceTree = SOURCE_ROOT; };
-		2D4207B8289AF49C00F82B1F /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Regular.ttf"; sourceTree = SOURCE_ROOT; };
-		2D4207B9289AF49C00F82B1F /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Thin.ttf"; path = "CoWorkMobileApp/Shared/Roboto-Thin.ttf"; sourceTree = SOURCE_ROOT; };
 		2D4207BF289AFEF100F82B1F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		2D4207C1289B05E800F82B1F /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		2D4207C3289B146700F82B1F /* AccountRegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -220,6 +224,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27B153222B4DF007001CA0A8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */,
+				27B153272B4DF0BF001CA0A8 /* Roboto-Light.ttf */,
+				27B153262B4DF0BF001CA0A8 /* Roboto-Medium.ttf */,
+				27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */,
+				27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		2D0E5399289ACF0600D77978 = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +350,7 @@
 		2D4207B1289AF2E600F82B1F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				2D4207B4289AF40D00F82B1F /* Fonts */,
+				27B153222B4DF007001CA0A8 /* Fonts */,
 				2D4207BF289AFEF100F82B1F /* Theme.swift */,
 				2D4207C5289B14C400F82B1F /* CustomUIButton.swift */,
 				2D4207CC289B178C00F82B1F /* AlertingViewController.swift */,
@@ -346,18 +362,6 @@
 				2DA5078E29F0546E008C53D2 /* CircularImageView.swift */,
 			);
 			path = Shared;
-			sourceTree = "<group>";
-		};
-		2D4207B4289AF40D00F82B1F /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				2D4207B7289AF49C00F82B1F /* Roboto-Bold.ttf */,
-				2D4207B5289AF49C00F82B1F /* Roboto-Light.ttf */,
-				2D4207B6289AF49C00F82B1F /* Roboto-Medium.ttf */,
-				2D4207B8289AF49C00F82B1F /* Roboto-Regular.ttf */,
-				2D4207B9289AF49C00F82B1F /* Roboto-Thin.ttf */,
-			);
-			path = Fonts;
 			sourceTree = "<group>";
 		};
 		2D4207C7289B166E00F82B1F /* Managers */ = {
@@ -439,6 +443,8 @@
 			children = (
 				2DC2CFC628F63C9700FB7ACE /* AppCoordinator.swift */,
 				2DC2CFC828F752A200FB7ACE /* WorkspaceCoordinator.swift */,
+				27B1532D2B4E08BF001CA0A8 /* AuthCoordinator.swift */,
+				27B1532F2B4E08E9001CA0A8 /* OnboardingCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -590,13 +596,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D4207BE289AF52600F82B1F /* Roboto-Thin.ttf in Resources */,
 				2D0E53B2289ACF0800D77978 /* LaunchScreen.storyboard in Resources */,
-				2D4207BD289AF52300F82B1F /* Roboto-Regular.ttf in Resources */,
 				2D0E53AF289ACF0800D77978 /* Assets.xcassets in Resources */,
-				2D4207BC289AF52000F82B1F /* Roboto-Medium.ttf in Resources */,
-				2D4207BB289AF51D00F82B1F /* Roboto-Light.ttf in Resources */,
-				2D4207BA289AF51300F82B1F /* Roboto-Bold.ttf in Resources */,
+				27B1532B2B4DF0BF001CA0A8 /* Roboto-Medium.ttf in Resources */,
+				27B153292B4DF0BF001CA0A8 /* Roboto-Regular.ttf in Resources */,
+				27B1532C2B4DF0BF001CA0A8 /* Roboto-Light.ttf in Resources */,
+				27B1532A2B4DF0BF001CA0A8 /* Roboto-Thin.ttf in Resources */,
+				27B153282B4DF0BF001CA0A8 /* Roboto-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +731,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DA5079129F06722008C53D2 /* WorkspaceDetailReviewContentViewViewModel.swift in Sources */,
+				27B153302B4E08E9001CA0A8 /* OnboardingCoordinator.swift in Sources */,
 				2DC9246B2936892D000DF340 /* LocationHelper.swift in Sources */,
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
 				2DC9246D294A5971000DF340 /* WorkplaceAnnotationView.swift in Sources */,
@@ -766,6 +773,7 @@
 				2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */,
 				2D66088528AAAD0400C76819 /* HeaderView.swift in Sources */,
 				2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */,
+				27B1532E2B4E08BF001CA0A8 /* AuthCoordinator.swift in Sources */,
 				2DC810A829844C3B00666610 /* WorkspaceDetailImageContentViewViewModel.swift in Sources */,
 				2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */,
 				2D738B862A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift in Sources */,

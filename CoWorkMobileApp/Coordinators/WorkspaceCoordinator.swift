@@ -10,28 +10,18 @@ import MapKit
 import CoreLocation
 import Combine
 
-protocol WorkspaceDataSource: AnyObject {
-    var workspaces: [Workspace] { get set }
-}
-
-class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
-    var workspaces: [Workspace] = []
+class WorkspaceCoordinator: NSObject, Coordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    var locationManager = CLLocationManager()
+    var type: CoordinatorType { .workspace }
+    weak var finishDelegate: CoordinatorFinishDelegate?
+    
     var workspaceDetailViewController: WorkspaceDetailViewController?
     
     private lazy var workspaceListVC: WorkspaceListViewController = {
         let viewController = WorkspaceListViewController()
         viewController.delegate = self
-//        viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
-        return viewController
-    }()
-    
-    private lazy var mapViewController: MapViewController = {
-        let viewController = MapViewController()
-        viewController.delegate = self
-//        viewController.tabBarItem = UITabBarItem(title: mapViewModel.searchTabTitle, image: mapViewModel.searchTabIcon, tag: 0)
+        viewController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
         return viewController
     }()
     
@@ -40,57 +30,13 @@ class WorkspaceCoordinator: NSObject, Coordinator, WorkspaceDataSource {
     }
 
     func start() {
-        self.navigationController.pushViewController(self.mapViewController, animated: true)
-        
-    }
-    
-    private func presentModalView() {
-        guard self.navigationController.presentedViewController == nil else { return }
-        
-        let navController = UINavigationController(rootViewController: workspaceListVC)
-        navController.modalPresentationStyle = .pageSheet
-        navController.isModalInPresentation = true
-
-        let smallId = UISheetPresentationController.Detent.Identifier("small")
-
-        if let sheet = navController.sheetPresentationController {
-            if #available(iOS 16.0, *) {
-                let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallId) { context in
-                    return 80
-                }
-                sheet.detents = [smallDetent, .medium(), .large()]
-            } else {
-                sheet.detents = [.medium(), .large()]
-            }
-            sheet.selectedDetentIdentifier = .medium
-            sheet.prefersEdgeAttachedInCompactHeight = true
-            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true 
-//            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheet.largestUndimmedDetentIdentifier = .medium
-            sheet.preferredCornerRadius = 30
-            sheet.prefersGrabberVisible = true
-        }
-        
-        self.navigationController.present(navController, animated: true)
-//        var tabBarController = self.navigationController.viewControllers.first?.tabBarController
-//        tabBarController?.tabBar.bringSubviewToFront((navController.topViewController?.view)!)
-    }
-
-}
-
-extension WorkspaceCoordinator: MapViewControllerDelegate {
-    func mapViewController(_ controller: MapViewController, userDidUpdateLocation location: CLLocation, query: String) {
-        
-        workspaceListVC.currentLocation = location
-        workspaceListVC.searchQuery = query
-        
-        self.presentModalView()
-
+        self.navigationController.pushViewController(self.workspaceListVC, animated: true)
     }
 
 }
 
 extension WorkspaceCoordinator: WorkspaceListViewControllerDelegate {
+    
     func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String) {
         let workspaceDetailViewController = WorkspaceDetailViewController(workspaceId: id)
         workspaceDetailViewController.delegate = self

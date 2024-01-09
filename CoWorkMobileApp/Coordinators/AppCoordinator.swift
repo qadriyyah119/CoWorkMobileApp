@@ -10,6 +10,8 @@ import UIKit
 class AppCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var type: CoordinatorType { .app }
+    weak var finishDelegate: CoordinatorFinishDelegate? = nil
     
     private lazy var welcomeViewController: WelcomeViewController = {
         let welcomeViewModel = WelcomeViewModel()
@@ -24,6 +26,8 @@ class AppCoordinator: Coordinator {
         return viewController
     }()
     
+    let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
@@ -37,20 +41,28 @@ class AppCoordinator: Coordinator {
     }
     
     func showLoginView() {
-        let loginViewModel = LoginViewModel()
-        loginViewModel.coordinator = self 
-        let loginViewController = LoginViewController(viewModel: loginViewModel)
-        self.navigationController.pushViewController(loginViewController, animated: true)
+        let authCoordinator = AuthCoordinator(navigationController: navigationController)
+        authCoordinator.finishDelegate = self
+        childCoordinators.append(authCoordinator)
+        authCoordinator.start()
+
     }
     
     func showRegistrationView() {
-        let registrationViewModel = AccountRegistrationViewModel()
-        let registrationViewController = AccountRegistrationViewController(viewModel: registrationViewModel)
-        self.navigationController.pushViewController(registrationViewController, animated: true)
+        let onboardingCoordinator = OnboardingCoordinator(navigationController: navigationController)
+        onboardingCoordinator.finishDelegate = self
+        childCoordinators.append(onboardingCoordinator)
+        onboardingCoordinator.start()
     }
     
-    func showMainFlow() {
+    func showMainFlow(withSuccessBanner showBanner: Bool = false) {
         self.setupTabBarContentView()
+        workspaceCoordinator.start()
+        if showBanner {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                Banner.showBanner(withTitle: "Success!", subtitle: "Welcome! You have successfull registered with CoWork!", style: .success)
+            }
+        }
     }
     
     func setupTabBarContentView() {
@@ -59,3 +71,20 @@ class AppCoordinator: Coordinator {
     
 }
 
+extension AppCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        
+        childCoordinators = childCoordinators.filter({ $0.type != childCoordinator.type })
+        
+        switch childCoordinator.type {
+        case .auth:
+            navigationController.viewControllers.removeAll()
+            showMainFlow(withSuccessBanner: false)
+        case .onboarding:
+            navigationController.viewControllers.removeAll()
+            showMainFlow(withSuccessBanner: true)
+        default:
+            break
+        }
+    }
+}
