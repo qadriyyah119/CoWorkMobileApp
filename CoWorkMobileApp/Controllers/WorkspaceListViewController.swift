@@ -8,10 +8,12 @@
 import UIKit
 import Cartography
 import RealmSwift
+import MapKit
 import CoreLocation
 import Combine
 
 protocol WorkspaceListViewControllerDelegate: AnyObject {
+//    func listViewController(_ controller: ListViewController, userDidUpdateLocation location: CLLocation, query: String)
     func workspaceListViewController(controller: WorkspaceListViewController, didSelectWorkspaceWithId id: String)
 }
 
@@ -34,16 +36,36 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         var workspaceId: String?
     }
     
-    struct TopRatedWorkspaceItem: Hashable {
-        var workspaceId: String?
-    }
+    private lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        return locationManager
+    }()
     
-    private(set) var collectionView: UICollectionView!
-    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
+    private lazy var mapViewHeader: MapViewHeader = {
+        let view = MapViewHeader()
+        return view
+    }()
+    
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search for Workspaces"
+        searchController.searchBar.searchBarStyle = .default
+        searchController.searchBar.searchTextField.backgroundColor = .white
+        searchController.obscuresBackgroundDuringPresentation = false
+        return searchController
+    }()
     
     weak var delegate: WorkspaceListViewControllerDelegate?
+    private(set) var collectionView: UICollectionView!
+    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, WorkspaceItem>!
+    private var workspaceAnnotations: [MapAnnotation] = []
+    lazy var geocoder = CLGeocoder()
+    private var oldYOffset: CGFloat = 0
+    
     let viewModel: WorkspaceListViewModel
     private var cancellables: Set<AnyCancellable> = []
+    private lazy var currentLocationString: String = "Current Location"
     
     var currentLocation: CLLocation? {
         didSet {
@@ -54,6 +76,10 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         didSet {
             viewModel.searchQuery = searchQuery
         }
+    }
+    
+    var topBarHeight: CGFloat {
+        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) + (self.navigationController?.navigationBar.frame.height ?? 0.0)
     }
     
     init() {
@@ -68,9 +94,16 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.allowsBackgroundLocationUpdates = true
+        startLocationService()
+        locationManager.requestWhenInUseAuthorization()
+        loadAnnotations()
         configureDataSource()
+        
         viewModel.$workspaces.sink { [weak self] workspaces in
             self?.applySnapshot(with: workspaces)
+            self?.loadAnnotations(for: workspaces)
         }.store(in: &cancellables)
     }
     
@@ -79,20 +112,32 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     }
     
     private func setupView() {
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        
-        lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
+        mapViewHeader.mapView.register(WorkplaceAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
         collectionView.backgroundColor = ThemeColors.mainBackgroundColor
         self.collectionView = collectionView
         self.collectionView.delegate = self
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(collectionView)
+        self.view.addSubview(self.mapViewHeader)
         
-        constrain(collectionView) { collectionView in
-            collectionView.edges == collectionView.superview!.edges
+        constrain(mapViewHeader, collectionView) { mapViewHeader, collectionView in
+            mapViewHeader.top == mapViewHeader.superview!.top
+            mapViewHeader.leading == mapViewHeader.superview!.leading
+            mapViewHeader.trailing == mapViewHeader.superview!.trailing
+            collectionView.top == mapViewHeader.bottom
+            collectionView.leading == collectionView.superview!.leading
+            collectionView.trailing == collectionView.superview!.trailing
+            collectionView.bottom == collectionView.superview!.bottom
         }
-    
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.searchBar.delegate = self
     }
     
     private let cellRegistration = UICollectionView.CellRegistration<WorkspaceListCell, WorkspaceItem> { cell, indexPath, item in
@@ -200,26 +245,121 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         guard let workspace = diffableDataSource.itemIdentifier(for: indexPath)?.workspaceId else { return }
         self.delegate?.workspaceListViewController(controller: self, didSelectWorkspaceWithId: workspace)
     }
+    
+    private func startLocationService() {
+        let authStatus = locationManager.authorizationStatus
+
+        if authStatus == .authorizedAlways || authStatus == .authorizedWhenInUse {
+            activateLocationServices()
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
+        }
+    }
+    
+    private func activateLocationServices() {
+        locationManager.requestLocation()
+    }
+    
+    private func loadAnnotations(for workspaces: [Workspace] = []) {
+        let annotations = workspaces.compactMap { MapAnnotation(name: $0.name, location: $0.coordinate, rating: $0.rating ?? 0.0)
+        }
+        mapViewHeader.mapView.addAnnotations(annotations)
+    }
+        
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yOffset = scrollView.contentOffset.y
+        mapViewHeader.updateHeader(newY: yOffset, oldY: oldYOffset)
+    }
+    
+    private func printCurrentLocation(location: CLLocation) {
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let placemark = placemarks?.first else { return }
+            if let city = placemark.locality,
+               let state = placemark.administrativeArea {
+                let currentLocationString = "\(city), \(state)"
+                self?.currentLocationString = currentLocationString
+                self?.navigationItem.title = currentLocationString
+
+            }
+        }
+    }
 
 }
 
-extension WorkspaceListViewController {
+extension WorkspaceListViewController: CLLocationManagerDelegate {
     
-    func setupGradient() {
-        lazy var gradient: CAGradientLayer = {
-            let gradient = CAGradientLayer()
-            gradient.type = .axial
-            gradient.colors = [
-                ThemeColors.grayColor?.cgColor ?? UIColor.darkGray.cgColor,
-                UIColor.lightGray.cgColor,
-                UIColor.white.cgColor
-            ]
-            gradient.locations = [0, 0.25, 1]
-            return gradient
-        }()
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let authStatus = manager.authorizationStatus
+
+        switch authStatus {
+        case .authorizedAlways , .authorizedWhenInUse:
+            print("Auth: AuthorizedWhenInUse")
+            activateLocationServices()
+        case .notDetermined , .denied , .restricted:
+            break
+        default:
+            break
+        }
+
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        guard let currentLocation = locations.first else { return }
+        printCurrentLocation(location: currentLocation)
         
-        gradient.frame = view.bounds
-        self.view.layer.addSublayer(gradient)
+        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locationValue.latitude) \(locationValue.longitude)")
+
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: locationValue, span: span)
+        mapViewHeader.mapView.setRegion(region, animated: true)
+        
+        convertCurrentLocationToString(from: currentLocation) { city, zip, error in
+            if let zip = zip {
+                self.searchQuery = zip
+                self.viewModel.getWorkspaces(forLocation: currentLocation, locationQuery: self.searchQuery) {
+                    
+                }
+            }
+        }
+    }
+    
+    func convertCurrentLocationToString(from location: CLLocation, completion: @escaping (_ city: String?, _ zip: String?, _ error: Error?) -> ()) {
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location) { placemarks, error in
+            completion(placemarks?.first?.locality,
+                       placemarks?.first?.postalCode,
+                       error)
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error - locationManager: \(error.localizedDescription)")
     }
 }
 
+extension WorkspaceListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(searchText) { placemark, error in
+            guard let location = placemark?.first?.location else { return }
+            
+            DispatchQueue.main.async {
+                self.printCurrentLocation(location: location)
+                let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                let region = MKCoordinateRegion(center: location.coordinate, span: span)
+                self.mapViewHeader.mapView.setRegion(region, animated: true)
+            }
+            self.viewModel.getWorkspaces(forLocation: location, locationQuery: searchText) {
+
+            }
+        }
+    }
+}

@@ -9,6 +9,10 @@ import UIKit
 import Cartography
 import NotificationBannerSwift
 
+protocol LoginViewControllerDelegate: AnyObject {
+    func loginViewController(controller: LoginViewController, didLoginSuccessfully withUser: String)
+}
+
 class LoginViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
@@ -85,6 +89,7 @@ class LoginViewController: UIViewController {
     }
     
     let viewModel: LoginViewModel
+    weak var delegate: LoginViewControllerDelegate?
     
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -116,15 +121,19 @@ class LoginViewController: UIViewController {
         guard self.validateForm() else { return }
         self.signingIn = true
         
-        viewModel.login(withEmail: emailTextField.text ?? "", password: passwordTextField.text ?? "")
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            self.signingIn = false
+        viewModel.didTapLogin(withEmail: emailTextField.text ?? "", password: passwordTextField.text ?? "") {
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+                Banner.showBanner(withTitle: "Success!", subtitle: "Welcome \(self.viewModel.user)", style: .success)
+                self.signingIn = false
+            }
+            
+            self.delegate?.loginViewController(controller: self, didLoginSuccessfully: self.viewModel.user)
         }
     }
     
     private func validateForm() -> Bool {
         guard let email = emailTextField.text, !email.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
-            Banner.showBanner(withTitle: "Error!", subtitle: "Please complete all fields", style: .danger)
+            Banner.showBanner(withTitle: "Login Error!", subtitle: "Please complete all fields, and try again.", style: .danger)
             return false
         }
         

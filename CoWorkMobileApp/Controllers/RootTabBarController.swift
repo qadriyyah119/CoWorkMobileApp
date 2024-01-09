@@ -9,8 +9,6 @@ import UIKit
 
 class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    
-
     let viewModel: RootTabBarViewModel
     
     init(viewModel: RootTabBarViewModel) {
@@ -39,7 +37,11 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
     }
     
-    let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+    let workspaceCoordinator: WorkspaceCoordinator = {
+        let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+        workspaceCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "location.magnifyingglass"), tag: 0)
+        return workspaceCoordinator
+    }()
     
     private lazy var collectionsVC: UINavigationController = {
         let viewController = CollectionsViewController()

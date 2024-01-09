@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 import Cartography
 import NotificationBannerSwift
+
+protocol AccountRegistrationViewControllerDelegate: AnyObject {
+    func accountRegistrationViewController(controller: AccountRegistrationViewController, didRegisterSuccessfully withUser: String)
+}
 
 class AccountRegistrationViewController: UIViewController, AlertingViewController {
     
@@ -109,8 +114,12 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         }
     }
     
+    var email: String = ""
+    var password: String = ""
+    var username: String = ""
     var isPasswordValid = false
     let viewModel: AccountRegistrationViewModel
+    weak var delegate: AccountRegistrationViewControllerDelegate?
     
     init(viewModel: AccountRegistrationViewModel) {
         self.viewModel = viewModel
@@ -186,15 +195,32 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         }
         
         guard emailTextField.isEmailValid else {
-            Banner.showBanner(withTitle: "Email Error", subtitle: "Please enter a valid email", style: .danger)
+            Banner.showBanner(withTitle: "Email Error!", subtitle: "Please enter a valid email", style: .danger)
             return false
         }
         
         guard passwordTextField.isPasswordValid else {
-            Banner.showBanner(withTitle: "Password Error", subtitle: "Please enter a valid password", style: .danger)
+            Banner.showBanner(withTitle: "Password Error!", subtitle: "Please enter a valid password", style: .danger)
             return false
         }
         
+        do {
+            try Realm().addUnique(User.self, uniqueKeyPath: "email", value: email)
+        } catch {
+            Banner.showBanner(withTitle: "Error!", subtitle: "Email already exist. Please try again", style: .danger)
+            return false
+        }
+        
+        do {
+            try Realm().addUnique(User.self, uniqueKeyPath: "username", value: username)
+        } catch {
+            Banner.showBanner(withTitle: "Error!", subtitle: "Username already exist. Please try again", style: .danger)
+            return false
+        }
+        
+        self.email = email
+        self.password = password
+        self.username = username
         return true
     }
     
@@ -210,12 +236,13 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
                 print(error)
                 Banner.showBanner(withTitle: "Error!", subtitle: "Unable to create account. Please try again.", style: .warning)
             case .success:
-                Banner.showBanner(withTitle: "Success!", subtitle: "You have successfull registered with CoWork!", style: .success)
+                    self.viewModel.userRegistered(withEmail: self.email, password: self.password) {
+                        self.delegate?.accountRegistrationViewController(controller: self, didRegisterSuccessfully: self.viewModel.user)
+                    }
+                    self.creatingAccount = false
             }
         }
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            self.creatingAccount = false
-        }
+
     }
     
     private func makeStyledInputField() -> TextFieldWithPadding {
