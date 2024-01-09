@@ -16,8 +16,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
-
 #import <Realm/RLMRealm.h>
 
 /**
@@ -101,7 +99,7 @@ typedef NS_ENUM(NSUInteger, RLMSyncProgressMode) {
  */
 typedef void(^RLMProgressNotificationBlock)(NSUInteger transferredBytes, NSUInteger transferrableBytes);
 
-NS_ASSUME_NONNULL_BEGIN
+RLM_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /**
  A token object corresponding to a progress notification block on a session object.
@@ -109,6 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
  To stop notifications manually, call `-invalidate` on it. Notifications should be stopped before
  the token goes out of scope or is destroyed.
  */
+RLM_SWIFT_SENDABLE RLM_FINAL // is internally thread-safe
 @interface RLMProgressNotificationToken : RLMNotificationToken
 @end
 
@@ -121,6 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
  lifespans of sessions associated with Realms are managed automatically. Session
  objects can be accessed from any thread.
  */
+RLM_SWIFT_SENDABLE RLM_FINAL // is internally thread-safe
 @interface RLMSyncSession : NSObject
 
 /// The session's current state.
@@ -161,6 +161,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resume;
 
 /**
+ Request an immediate reconnection to the server if the session is disconnected.
+
+ Realm automatically reconnects after disconnects with an exponential backoff,
+ which is reset when the reachability handler reports a network status change.
+ In some scenarios an application may wish to skip the reconnect delay, such as
+ when an application receives the DidBecomeActive notification, which can be
+ done by calling this method. Calling this method is never required.
+
+ This method is asynchronous and merely skips the current reconnect delay, so
+ the connection state will still normally be disconnected immediately after
+ calling it.
+
+ Has no effect if the session is currently connected.
+ */
+- (void)reconnect;
+
+/**
  Register a progress notification block.
 
  Multiple blocks can be registered with the same session at once. Each block
@@ -195,6 +212,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                                          block:(RLMProgressNotificationBlock)block
 NS_REFINED_FOR_SWIFT;
 
+
+/// Wait for pending uploads to complete or the session to expire, and dispatch the callback onto the specified queue.
+- (BOOL)waitForUploadCompletionOnQueue:(nullable dispatch_queue_t)queue callback:(void(^)(NSError * _Nullable))callback NS_REFINED_FOR_SWIFT;
+
+/// Wait for pending downloads to complete or the session to expire, and dispatch the callback onto the specified queue.
+- (BOOL)waitForDownloadCompletionOnQueue:(nullable dispatch_queue_t)queue callback:(void(^)(NSError * _Nullable))callback NS_REFINED_FOR_SWIFT;
+
 /**
  Given an error action token, immediately handle the corresponding action.
  
@@ -220,6 +244,7 @@ NS_REFINED_FOR_SWIFT;
 
  @see `RLMSyncErrorClientResetError`, `RLMSyncErrorPermissionDeniedError`
  */
+RLM_SWIFT_SENDABLE RLM_FINAL
 @interface RLMSyncErrorActionToken : NSObject
 
 /// :nodoc:
@@ -230,46 +255,4 @@ NS_REFINED_FOR_SWIFT;
 
 @end
 
-/**
- A task object which can be used to observe or cancel an async open.
-
- When a synchronized Realm is opened asynchronously, the latest state of the
- Realm is downloaded from the server before the completion callback is invoked.
- This task object can be used to observe the state of the download or to cancel
- it. This should be used instead of trying to observe the download via the sync
- session as the sync session itself is created asynchronously, and may not exist
- yet when -[RLMRealm asyncOpenWithConfiguration:completion:] returns.
- */
-@interface RLMAsyncOpenTask : NSObject
-/**
- Register a progress notification block.
-
- Each registered progress notification block is called whenever the sync
- subsystem has new progress data to report until the task is either cancelled
- or the completion callback is called. Progress notifications are delivered on
- the main queue.
- */
-- (void)addProgressNotificationBlock:(RLMProgressNotificationBlock)block;
-
-/**
- Register a progress notification block which is called on the given queue.
-
- Each registered progress notification block is called whenever the sync
- subsystem has new progress data to report until the task is either cancelled
- or the completion callback is called. Progress notifications are delivered on
- the supplied queue.
- */
-- (void)addProgressNotificationOnQueue:(dispatch_queue_t)queue
-                                 block:(RLMProgressNotificationBlock)block;
-
-/**
- Cancel the asynchronous open.
-
- Any download in progress will be cancelled, and the completion block for this
- async open will never be called. If multiple async opens on the same Realm are
- happening concurrently, all other opens will fail with the error "operation cancelled".
- */
-- (void)cancel;
-@end
-
-NS_ASSUME_NONNULL_END
+RLM_HEADER_AUDIT_END(nullability, sendability)

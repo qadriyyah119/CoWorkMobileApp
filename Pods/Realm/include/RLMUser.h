@@ -16,8 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
-
+#import <Realm/RLMConstants.h>
 #import <Realm/RLMCredentials.h>
 #import <Realm/RLMRealmConfiguration.h>
 #import <Realm/RLMSyncConfiguration.h>
@@ -38,18 +37,22 @@ typedef NS_ENUM(NSUInteger, RLMUserState) {
 };
 
 /// A block type used to report an error related to a specific user.
+RLM_SWIFT_SENDABLE
 typedef void(^RLMOptionalUserBlock)(RLMUser * _Nullable, NSError * _Nullable);
 
 /// A block type used to report an error on a network request from the user.
+RLM_SWIFT_SENDABLE
 typedef void(^RLMUserOptionalErrorBlock)(NSError * _Nullable);
 
 /// A block which returns a dictionary should there be any custom data set for a user
+RLM_SWIFT_SENDABLE
 typedef void(^RLMUserCustomDataBlock)(NSDictionary * _Nullable, NSError * _Nullable);
 
 /// A block type for returning from function calls.
+RLM_SWIFT_SENDABLE
 typedef void(^RLMCallFunctionCompletionBlock)(id<RLMBSON> _Nullable, NSError * _Nullable);
 
-NS_ASSUME_NONNULL_BEGIN
+RLM_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /**
  A `RLMUser` instance represents a single Realm App user account.
@@ -61,11 +64,12 @@ NS_ASSUME_NONNULL_BEGIN
  Note that user objects are only vended out via SDK APIs, and cannot be directly
  initialized. User objects can be accessed from any thread.
  */
+RLM_SWIFT_SENDABLE RLM_FINAL // internally thread-safe
 @interface RLMUser : NSObject
 
 /**
  The unique Atlas App Services string identifying this user.
- Note this is different from an identitiy: A user may have multiple identities but has a single indentifier. See RLMUserIdentity.
+ Note this is different from an identity: A user may have multiple identities but has a single identifier. See RLMUserIdentity.
  */
 @property (nonatomic, readonly) NSString *identifier NS_SWIFT_NAME(id);
 
@@ -73,18 +77,25 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSArray<RLMUserIdentity *> *identities;
 
 /**
- The user's refresh token used to access the Realm Applcation.
+ The user's refresh token used to access App Services.
 
- This is required to make HTTP requests to the Realm App's REST API
- for functionality not exposed natively. It should be treated as sensitive data.
- */
+ By default, refresh tokens expire 60 days after they are issued.
+ You can configure this time for your App's refresh tokens to be
+ anywhere between 30 minutes and 180 days.
+
+ You can configure the refresh token expiration time for all sessions in
+ an App from the Admin UI or Admin API.
+*/
 @property (nullable, nonatomic, readonly) NSString *refreshToken;
 
 /**
- The user's refresh token used to access the Realm Application.
+ The user's access token used to access App Services.
 
- This is required to make HTTP requests to Atlas App Services' REST API
- for functionality not exposed natively. It should be treated as sensitive data.
+ This is required to make HTTP requests to Atlas App Services like the Data API or GraphQL.
+ It should be treated as sensitive data.
+
+ The Realm SDK automatically manages access tokens and refreshes them
+ when they expire.
  */
 @property (nullable, nonatomic, readonly) NSString *accessToken;
 
@@ -381,6 +392,7 @@ NS_ASSUME_NONNULL_BEGIN
  Note this is different from a user's unique identifier string.
  @seeAlso `RLMUser.identifier`
  */
+RLM_SWIFT_SENDABLE RLM_FINAL // immutable final class
 @interface RLMUserIdentity : NSObject
 
 /**
@@ -406,6 +418,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  A profile for a given User.
  */
+RLM_SWIFT_SENDABLE RLM_FINAL // immutable final class
 @interface RLMUserProfile : NSObject
 
 /// The full name of the user.
@@ -431,4 +444,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+RLM_HEADER_AUDIT_END(nullability, sendability)

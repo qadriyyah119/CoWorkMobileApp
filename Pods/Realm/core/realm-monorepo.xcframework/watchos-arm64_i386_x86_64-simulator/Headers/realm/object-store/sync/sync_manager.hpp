@@ -24,7 +24,9 @@
 #include <realm/util/checked_mutex.hpp>
 #include <realm/util/logger.hpp>
 #include <realm/util/optional.hpp>
+#include <realm/sync/binding_callback_thread_observer.hpp>
 #include <realm/sync/config.hpp>
+#include <realm/sync/socket_provider.hpp>
 
 #include <memory>
 #include <mutex>
@@ -73,17 +75,32 @@ struct SyncClientConfig {
     MetadataMode metadata_mode = MetadataMode::Encryption;
     util::Optional<std::vector<char>> custom_encryption_key;
 
-    using LoggerFactory = std::function<std::unique_ptr<util::Logger>(util::Logger::Level)>;
+    using LoggerFactory = std::function<std::shared_ptr<util::Logger>(util::Logger::Level)>;
     LoggerFactory logger_factory;
-    // FIXME: Should probably be util::Logger::Level::error
     util::Logger::Level log_level = util::Logger::Level::info;
     ReconnectMode reconnect_mode = ReconnectMode::normal; // For internal sync-client testing only!
+#if REALM_DISABLE_SYNC_MULTIPLEXING
     bool multiplex_sessions = false;
+#else
+    bool multiplex_sessions = true;
+#endif
 
+    // The SyncSocket instance used by the Sync Client for event synchronization
+    // and creating WebSockets. If not provided the default implementation will be used.
+    std::shared_ptr<sync::SyncSocketProvider> socket_provider;
+
+    // Optional thread observer for event loop thread events in the default SyncSocketProvider
+    // implementation. It is not used for custom SyncSocketProvider implementations.
+    std::shared_ptr<BindingCallbackThreadObserver> default_socket_provider_thread_observer;
+
+    // {@
     // Optional information about the binding/application that is sent as part of the User-Agent
-    // when establishing a connection to the server.
+    // when establishing a connection to the server. These values are only used by the default
+    // SyncSocket implementation. Custom SyncSocket implementations must update the User-Agent
+    // directly, if supported by the platform APIs.
     std::string user_agent_binding_info;
     std::string user_agent_application_info;
+    // @}
 
     SyncClientTimeouts timeouts;
 };
@@ -102,20 +119,21 @@ public:
     // The metadata and file management subsystems must also have already been configured.
     bool immediately_run_file_actions(const std::string& original_name) REQUIRES(!m_file_system_mutex);
 
-    // Use a single connection for all sync sessions for each host/port rather
+    // Enables/disables using a single connection for all sync sessions for each host/port/user rather
     // than one per session.
     // This must be called before any sync sessions are created, cannot be
     // disabled afterwards, and currently is incompatible with automatic failover.
-    void enable_session_multiplexing() REQUIRES(!m_mutex);
+    void set_session_multiplexing(bool allowed) REQUIRES(!m_mutex);
 
     // Destroys the sync manager, terminates all sessions created by it, and stops its SyncClient.
     ~SyncManager();
 
     // Sets the log level for the Sync Client.
-    // The log level can only be set up until the point the Sync Client is created. This happens when the first
-    // Session is created.
+    // The log level can only be set up until the point the Sync Client is
+    // created (when the first Session is created) or an App operation is
+    // performed (e.g. log in).
     void set_log_level(util::Logger::Level) noexcept REQUIRES(!m_mutex);
-    void set_logger_factory(SyncClientConfig::LoggerFactory) noexcept REQUIRES(!m_mutex);
+    void set_logger_factory(SyncClientConfig::LoggerFactory) REQUIRES(!m_mutex);
 
     // Sets the application level user agent string.
     // This should have the format specified here:
@@ -156,14 +174,14 @@ public:
     // makes it possible to guarantee that all sessions have, in fact, been closed.
     void wait_for_sessions_to_terminate() REQUIRES(!m_mutex);
 
-    // If the metadata manager is configured, perform an update. Returns `true` iff the code was run.
+    // If the metadata manager is configured, perform an update. Returns `true` if the code was run.
     bool perform_metadata_update(util::FunctionRef<void(SyncMetadataManager&)> update_function) const
         REQUIRES(!m_file_system_mutex);
 
     // Get a sync user for a given identity, or create one if none exists yet, and set its token.
     // If a logged-out user exists, it will marked as logged back in.
-    std::shared_ptr<SyncUser> get_user(const std::string& id, std::string refresh_token, std::string access_token,
-                                       const std::string provider_type, std::string device_id)
+    std::shared_ptr<SyncUser> get_user(const std::string& user_id, const std::string& refresh_token,
+                                       const std::string& access_token, const std::string& device_id)
         REQUIRES(!m_user_mutex, !m_file_system_mutex);
 
     // Get an existing user for a given identifier, if one exists and is logged in.
@@ -176,7 +194,7 @@ public:
     std::shared_ptr<SyncUser> get_current_user() const REQUIRES(!m_user_mutex, !m_file_system_mutex);
 
     // Log out a given user
-    void log_out_user(const std::string& user_id) REQUIRES(!m_user_mutex, !m_file_system_mutex);
+    void log_out_user(const SyncUser& user) REQUIRES(!m_user_mutex, !m_file_system_mutex);
 
     // Sets the currently active user.
     void set_current_user(const std::string& user_id) REQUIRES(!m_user_mutex, !m_file_system_mutex);
@@ -233,12 +251,18 @@ public:
         return m_config;
     }
 
-    // Create a new logger of the type which will be used by the sync client
-    std::unique_ptr<util::Logger> make_logger() const REQUIRES(!m_mutex);
+    // Return the cached logger
+    const std::shared_ptr<util::Logger>& get_logger() const REQUIRES(!m_mutex);
 
     SyncManager();
     SyncManager(const SyncManager&) = delete;
     SyncManager& operator=(const SyncManager&) = delete;
+
+    struct OnlyForTesting {
+        friend class TestHelper;
+
+        static void voluntary_disconnect_all_connections(SyncManager&);
+    };
 
 protected:
     friend class SyncUser;
@@ -271,8 +295,8 @@ private:
     bool run_file_action(SyncFileActionMetadata&) REQUIRES(m_file_system_mutex);
     void init_metadata(SyncClientConfig config, const std::string& app_id);
 
-    // Create a new logger of the type which will be used by the sync client
-    std::unique_ptr<util::Logger> do_make_logger() const REQUIRES(m_mutex);
+    // internally create a new logger - used by configure() and set_logger_factory()
+    void do_make_logger() REQUIRES(m_mutex);
 
     // Protects m_users
     mutable util::CheckedMutex m_user_mutex;
@@ -284,6 +308,7 @@ private:
     mutable std::unique_ptr<_impl::SyncClient> m_sync_client GUARDED_BY(m_mutex);
 
     SyncClientConfig m_config GUARDED_BY(m_mutex);
+    mutable std::shared_ptr<util::Logger> m_logger_ptr GUARDED_BY(m_mutex);
 
     // Protects m_file_manager and m_metadata_manager
     mutable util::CheckedMutex m_file_system_mutex;

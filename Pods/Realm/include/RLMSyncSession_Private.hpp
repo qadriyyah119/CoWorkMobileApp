@@ -18,7 +18,6 @@
 
 #import "RLMSyncSession.h"
 
-#import "RLMSyncUtil_Private.h"
 #import <memory>
 
 namespace realm {
@@ -26,31 +25,22 @@ class AsyncOpenTask;
 class SyncSession;
 }
 
-NS_ASSUME_NONNULL_BEGIN
+RLM_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 @interface RLMSyncSession () {
 @public     // So it's visible to tests
     std::weak_ptr<realm::SyncSession> _session;
-} RLM_SYNC_UNINITIALIZABLE
+}
+
+- (instancetype)init __attribute__((unavailable("This type cannot be created directly")));
++ (instancetype)new __attribute__((unavailable("This type cannot be created directly")));
 
 - (instancetype)initWithSyncSession:(std::shared_ptr<realm::SyncSession> const&)session;
-
-/// Wait for pending uploads to complete or the session to expire, and dispatch the callback onto the specified queue.
-- (BOOL)waitForUploadCompletionOnQueue:(nullable dispatch_queue_t)queue callback:(void(^)(NSError * _Nullable))callback;
-
-/// Wait for pending downloads to complete or the session to expire, and dispatch the callback onto the specified queue.
-- (BOOL)waitForDownloadCompletionOnQueue:(nullable dispatch_queue_t)queue callback:(void(^)(NSError * _Nullable))callback;
 
 @end
 
 @interface RLMSyncErrorActionToken ()
-
 - (instancetype)initWithOriginalPath:(std::string)originalPath;
-
 @end
 
-@interface RLMAsyncOpenTask ()
-@property (nonatomic) std::shared_ptr<realm::AsyncOpenTask> task;
-@end
-
-NS_ASSUME_NONNULL_END
+RLM_HEADER_AUDIT_END(nullability, sendability)
