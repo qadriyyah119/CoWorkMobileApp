@@ -9,7 +9,7 @@ import UIKit
 
 class LoginViewModel {
     
-    weak var coordinator: AppCoordinator?
+    var user: String = ""
     
     enum LoginStrings {
         static let titleText = "Log In"
@@ -25,19 +25,18 @@ class LoginViewModel {
     let signInButtonText: String = LoginStrings.signInText
     let sigingInText: String = LoginStrings.signingInText
     
-    func login(withEmail email: String, password: String) {
+    
+    func didTapLogin(withEmail email: String, password: String, completion: @escaping () -> Void) {
         AuthManager.shared.login(withEmail: email, password: password) { result in
             switch result {
-            case .success:
-                self.showMainFlow()
-            case .failure(let error):
+            case .success(let user):
+                print("User: \(user.username)")
+                self.user = user.username
+            case.failure(let error):
                 print(error)
             }
+            completion()
         }
     }
     
-    func showMainFlow() {
-        coordinator?.showMainFlow()
-    }
-
 }
