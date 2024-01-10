@@ -23,7 +23,7 @@ class AuthManager {
     
     var currentUser: User?
     
-    func login(withEmail email: String, password: String, completion: @escaping(Result<String, AuthError>) -> Void) {
+    func login(withEmail email: String, password: String, completion: @escaping(Result<User, AuthError>) -> Void) {
         let realm = try? Realm()
         let users = realm?.objects(User.self)
         
@@ -33,7 +33,7 @@ class AuthManager {
             completion(.failure(.invalidRequest))
             return
         }
-        completion(.success(isValidUser.id))
+        completion(.success(isValidUser))
     }
     
 }

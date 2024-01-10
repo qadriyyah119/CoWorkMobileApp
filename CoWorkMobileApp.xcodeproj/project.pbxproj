@@ -14,6 +14,7 @@
 		27B1532C2B4DF0BF001CA0A8 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153272B4DF0BF001CA0A8 /* Roboto-Light.ttf */; };
 		27B1532E2B4E08BF001CA0A8 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1532D2B4E08BF001CA0A8 /* AuthCoordinator.swift */; };
 		27B153302B4E08E9001CA0A8 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1532F2B4E08E9001CA0A8 /* OnboardingCoordinator.swift */; };
+		27B153322B4E29DF001CA0A8 /* MapViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B153312B4E29DF001CA0A8 /* MapViewHeader.swift */; };
 		2C1C3778B21090FBFC193DEA /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0111B5FE5E9F75E66C43F388 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */; };
 		2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53A5289ACF0700D77978 /* AppDelegate.swift */; };
 		2D0E53A8289ACF0700D77978 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0E53A7289ACF0700D77978 /* SceneDelegate.swift */; };
@@ -114,6 +115,7 @@
 		27B153272B4DF0BF001CA0A8 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Light.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		27B1532D2B4E08BF001CA0A8 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		27B1532F2B4E08E9001CA0A8 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
+		27B153312B4E29DF001CA0A8 /* MapViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewHeader.swift; sourceTree = "<group>"; };
 		2D0E53A2289ACF0700D77978 /* CoWorkMobileApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoWorkMobileApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0E53A5289ACF0700D77978 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D0E53A7289ACF0700D77978 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 				2DC8109F2983194800666610 /* WorkspaceDetailImageContentView.swift */,
 				2DC810AB2989875600666610 /* WorkspaceDetailContentView.swift */,
 				2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */,
+				27B153312B4E29DF001CA0A8 /* MapViewHeader.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -754,6 +757,7 @@
 				2D66087628A4186B00C76819 /* RootTabBarViewModel.swift in Sources */,
 				2DC2CFC528F600B500FB7ACE /* Coordinator.swift in Sources */,
 				2D4207D728A1726200F82B1F /* LoginViewController.swift in Sources */,
+				27B153322B4E29DF001CA0A8 /* MapViewHeader.swift in Sources */,
 				2DC810A6298334D200666610 /* WorkspaceDetailImageCell.swift in Sources */,
 				2DC810B82992F8B200666610 /* DateFormatHelper.swift in Sources */,
 				2D4207D928A172E500F82B1F /* LoginViewModel.swift in Sources */,
