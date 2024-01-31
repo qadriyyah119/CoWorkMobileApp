@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		278B0E862B698FEF00BAFFEB /* UserProfileContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E852B698FEF00BAFFEB /* UserProfileContentConfiguration.swift */; };
+		278B0E882B6990DE00BAFFEB /* UserProfileContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E872B6990DE00BAFFEB /* UserProfileContentView.swift */; };
+		278B0E8A2B69ADA100BAFFEB /* UserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E892B69ADA100BAFFEB /* UserProfileCell.swift */; };
+		278B0E8C2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E8B2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift */; };
 		27B153282B4DF0BF001CA0A8 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */; };
 		27B153292B4DF0BF001CA0A8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */; };
 		27B1532A2B4DF0BF001CA0A8 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */; };
@@ -108,6 +112,10 @@
 /* Begin PBXFileReference section */
 		0111B5FE5E9F75E66C43F388 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12223D324A989B5DBA0B125D /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		278B0E852B698FEF00BAFFEB /* UserProfileContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileContentConfiguration.swift; sourceTree = "<group>"; };
+		278B0E872B6990DE00BAFFEB /* UserProfileContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileContentView.swift; sourceTree = "<group>"; };
+		278B0E892B69ADA100BAFFEB /* UserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCell.swift; sourceTree = "<group>"; };
+		278B0E8B2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileContentViewViewModel.swift; sourceTree = "<group>"; };
 		27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Thin.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -345,6 +353,7 @@
 				2DC810A92984511C00666610 /* WorkspaceDetailViewModel.swift */,
 				2DC810B1298991D800666610 /* WorkspaceDetailContentViewViewModel.swift */,
 				2DA5079029F06722008C53D2 /* WorkspaceDetailReviewContentViewViewModel.swift */,
+				278B0E8B2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -410,6 +419,7 @@
 				2DC810A32983320500666610 /* WorkspaceDetailImageContentConfiguration.swift */,
 				2DC810AD29898C6100666610 /* WorkspaceDetailContentConfiguration.swift */,
 				2DA5078A29EDF6DF008C53D2 /* WorkspaceDetailReviewContentConfiguration.swift */,
+				278B0E852B698FEF00BAFFEB /* UserProfileContentConfiguration.swift */,
 			);
 			path = ContentConfigurations;
 			sourceTree = "<group>";
@@ -426,6 +436,7 @@
 				2DC810AB2989875600666610 /* WorkspaceDetailContentView.swift */,
 				2DA5078829EDF626008C53D2 /* WorkspaceDetailReviewContentView.swift */,
 				27B153312B4E29DF001CA0A8 /* MapViewHeader.swift */,
+				278B0E872B6990DE00BAFFEB /* UserProfileContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -437,6 +448,7 @@
 				2DC810A5298334D200666610 /* WorkspaceDetailImageCell.swift */,
 				2DC810AF298990F800666610 /* WorkspaceDetailCell.swift */,
 				2DA5078C29EE0EF1008C53D2 /* WorkspaceDetailReviewCell.swift */,
+				278B0E892B69ADA100BAFFEB /* UserProfileCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -749,6 +761,7 @@
 				2D4207D1289B181200F82B1F /* AccountRegistrationViewController.swift in Sources */,
 				2D66087228A40D9800C76819 /* UserProfileViewController.swift in Sources */,
 				2D4207CF289B17B300F82B1F /* UITextFieldExtension.swift in Sources */,
+				278B0E8A2B69ADA100BAFFEB /* UserProfileCell.swift in Sources */,
 				2D66088128A5F3E300C76819 /* WorkspaceListContentView.swift in Sources */,
 				2DA5078F29F0546E008C53D2 /* CircularImageView.swift in Sources */,
 				2D66086E28A40C6E00C76819 /* WorkspaceListViewController.swift in Sources */,
@@ -776,12 +789,15 @@
 				2D66087D28A5F35800C76819 /* WorkspaceListContentConfiguration.swift in Sources */,
 				2D4207D5289B41A100F82B1F /* NotificationBanner.swift in Sources */,
 				2D66088528AAAD0400C76819 /* HeaderView.swift in Sources */,
+				278B0E882B6990DE00BAFFEB /* UserProfileContentView.swift in Sources */,
 				2D66088928AAB54C00C76819 /* WorkspaceManager.swift in Sources */,
 				27B1532E2B4E08BF001CA0A8 /* AuthCoordinator.swift in Sources */,
 				2DC810A829844C3B00666610 /* WorkspaceDetailImageContentViewViewModel.swift in Sources */,
 				2D0E53A6289ACF0700D77978 /* AppDelegate.swift in Sources */,
 				2D738B862A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift in Sources */,
+				278B0E8C2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift in Sources */,
 				2D0E53A8289ACF0700D77978 /* SceneDelegate.swift in Sources */,
+				278B0E862B698FEF00BAFFEB /* UserProfileContentConfiguration.swift in Sources */,
 				2D4207CD289B178C00F82B1F /* AlertingViewController.swift in Sources */,
 				2D4207CB289B16EC00F82B1F /* UserManager.swift in Sources */,
 				2DC810AE29898C6100666610 /* WorkspaceDetailContentConfiguration.swift in Sources */,

@@ -213,18 +213,18 @@ class MapViewController: UIViewController {
 //
 //extension MapViewController: MKMapViewDelegate {
 //    
-// Methods to use later:
-/*
-//    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-//        centerMap(on: userLocation.coordinate)
-//    }
-//
-//    func centerMap(on location: CLLocationCoordinate2D, regionRadius: CLLocationDistance = 1000) {
-//        let coordinateRegion = MKCoordinateRegion(center: location,
-//                                                  latitudinalMeters: regionRadius,
-//                                                  longitudinalMeters: regionRadius)
-//        mapView.setRegion(coordinateRegion, animated: true)
-//    }
+//// Methods to use later:
+///*
+////    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+////        centerMap(on: userLocation.coordinate)
+////    }
+////
+////    func centerMap(on location: CLLocationCoordinate2D, regionRadius: CLLocationDistance = 1000) {
+////        let coordinateRegion = MKCoordinateRegion(center: location,
+////                                                  latitudinalMeters: regionRadius,
+////                                                  longitudinalMeters: regionRadius)
+////        mapView.setRegion(coordinateRegion, animated: true)
+////    }
 //*/
 //    
 }
