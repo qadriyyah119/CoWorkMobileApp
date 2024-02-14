@@ -33,7 +33,7 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.standardAppearance = appearance
         self.tabBar.scrollEdgeAppearance = appearance
         self.tabBar.tintColor = ThemeColors.tintColor
-        self.setViewControllers([workspaceCoordinator.navigationController, collectionsVC, profileVC], animated: false)
+        self.setViewControllers([workspaceCoordinator.navigationController, collectionsVC, userProfileCoordinator.navigationController], animated: false)
         self.delegate = self
     }
     
@@ -43,6 +43,12 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         return workspaceCoordinator
     }()
     
+    let userProfileCoordinator: UserProfileCoordinator = {
+        let userProfileCoordinator = UserProfileCoordinator(navigationController: UINavigationController())
+        userProfileCoordinator.navigationController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
+        return userProfileCoordinator
+    }()
+    
     private lazy var collectionsVC: UINavigationController = {
         let viewController = CollectionsViewController()
         viewController.tabBarItem = UITabBarItem(title: viewModel.collectionsTabTitle, image: viewModel.collectionsTabIcon, tag: 1)
@@ -50,11 +56,11 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         return navigationController
     }()
     
-    private lazy var profileVC: UINavigationController = {
-        let viewController = UserProfileViewController()
-        viewController.tabBarItem = UITabBarItem(title: viewModel.profileTabTitle, image: viewModel.profileTabIcon, tag: 2)
-        let navigationController = UINavigationController(rootViewController: viewController)
-        return navigationController
-    }()
+//    private lazy var profileVC: UINavigationController = {
+//        let viewController = UserProfileViewController()
+//        viewController.tabBarItem = UITabBarItem(title: viewModel.profileTabTitle, image: viewModel.profileTabIcon, tag: 2)
+//        let navigationController = UINavigationController(rootViewController: viewController)
+//        return navigationController
+//    }()
 
 }

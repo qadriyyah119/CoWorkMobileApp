@@ -21,7 +21,7 @@ class AuthManager {
     
     static let shared = AuthManager()
     
-    var currentUser: User?
+    private(set) var currentUser: User?
     
     func login(withEmail email: String, password: String, completion: @escaping(Result<User, AuthError>) -> Void) {
         let realm = try? Realm()
@@ -33,7 +33,16 @@ class AuthManager {
             completion(.failure(.invalidRequest))
             return
         }
+        setLoggedInUser(user: isValidUser)
         completion(.success(isValidUser))
+    }
+    
+    func setLoggedInUser(user: User) {
+        self.currentUser = user
+    }
+    
+    func loggedInUserLoggedOut(user: User) {
+        
     }
     
 }

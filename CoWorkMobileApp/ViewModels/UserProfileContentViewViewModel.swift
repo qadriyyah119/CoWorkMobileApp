@@ -13,7 +13,8 @@ class UserProfileContentViewViewModel {
     var user: User? {
         didSet {
             if let user = user {
-                
+                print("User: \(user.username)")
+                userNameText = user.username
             }
         }
     }

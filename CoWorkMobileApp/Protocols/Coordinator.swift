@@ -10,7 +10,7 @@ import UIKit
 // MARK: - Coordinator Type
 /// Define type of flow
 enum CoordinatorType {
-    case app, onboarding, auth, workspace
+    case app, onboarding, auth, workspace, userProfile, rootTabBar
 }
 
 // MARK: - Coordinator Output

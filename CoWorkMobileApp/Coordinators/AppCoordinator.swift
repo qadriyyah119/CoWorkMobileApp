@@ -26,6 +26,11 @@ class AppCoordinator: Coordinator {
         return viewController
     }()
     
+    private lazy var rootTabBarCoordinator: RootTabBarCoordinator = {
+        let coordinator = RootTabBarCoordinator(navigationController: navigationController)
+        return coordinator
+    }()
+    
     let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
     
     init(navigationController: UINavigationController) {
@@ -56,8 +61,11 @@ class AppCoordinator: Coordinator {
     }
     
     func showMainFlow(withSuccessBanner showBanner: Bool = false) {
-        self.setupTabBarContentView()
-        workspaceCoordinator.start()
+//        self.setupTabBarContentView()
+//        workspaceCoordinator.start()
+        let rootTabBarCoordinator = RootTabBarCoordinator(navigationController: navigationController)
+        rootTabBarCoordinator.start()
+//        childCoordinators.append(rootTabBarCoordinator)
         if showBanner {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 Banner.showBanner(withTitle: "Success!", subtitle: "Welcome! You have successfull registered with CoWork!", style: .success)
