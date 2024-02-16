@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import RealmSwift
+import Combine
 
 class AppCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var type: CoordinatorType { .app }
     weak var finishDelegate: CoordinatorFinishDelegate? = nil
+    
+    var currentUser: User?
+    var currentUserPublisher = CurrentValueSubject<User?, Never>(nil)
     
     private lazy var welcomeViewController: WelcomeViewController = {
         let welcomeViewModel = WelcomeViewModel()
@@ -38,7 +43,28 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        showWelcomeView()
+//        showWelcomeView()
+        
+        if (getCurrentUser() != nil) {
+            self.currentUser = getCurrentUser()
+            updateUser(currentUser!) // change this. Find another way to unwrap
+            showMainFlow()
+        } else {
+            showWelcomeView()
+        }
+        
+    }
+    
+    func updateUser(_ user: User) {
+        currentUserPublisher.send(user)
+    }
+    
+    func getCurrentUser() -> User? {
+        guard let id = UserDefaults.standard.string(forKey: "currentUserId") else { return nil }
+        
+        let realm = try? Realm()
+        let user = realm?.object(ofType: User.self, forPrimaryKey: id)
+        return user
     }
     
     func showWelcomeView() {
@@ -64,8 +90,10 @@ class AppCoordinator: Coordinator {
 //        self.setupTabBarContentView()
 //        workspaceCoordinator.start()
         let rootTabBarCoordinator = RootTabBarCoordinator(navigationController: navigationController)
+        rootTabBarCoordinator.parentCoordinator = self
+        childCoordinators.append(rootTabBarCoordinator)
         rootTabBarCoordinator.start()
-//        childCoordinators.append(rootTabBarCoordinator)
+       
         if showBanner {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 Banner.showBanner(withTitle: "Success!", subtitle: "Welcome! You have successfull registered with CoWork!", style: .success)

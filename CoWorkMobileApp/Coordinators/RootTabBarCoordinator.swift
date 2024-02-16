@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 enum TabBarPage {
     
@@ -66,6 +67,9 @@ class RootTabBarCoordinator: NSObject, Coordinator {
     var tabBarController: UITabBarController
     var type: CoordinatorType { .rootTabBar }
     weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var parentCoordinator: AppCoordinator?
+    var currentUser: User?
+    var subscriptons = Set<AnyCancellable>()
     
     required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -78,6 +82,14 @@ class RootTabBarCoordinator: NSObject, Coordinator {
         let controllers: [UINavigationController] = pages.map({ getTabController($0) })
         
         setupTabBarController(withTabControllers: controllers)
+        
+        subscribeToCurrentUser()
+    }
+    
+    func subscribeToCurrentUser() {
+        self.parentCoordinator?.currentUserPublisher.sink { [weak self] user in
+            self?.currentUser = user
+        }.store(in: &subscriptons)
     }
     
     private func setupTabBarController(withTabControllers tabControllers: [UIViewController]) {

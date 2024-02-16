@@ -1006,6 +1006,7 @@
 				DEVELOPMENT_TEAM = N4RBX9TSJP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CoWorkMobileApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This application requires location services to work";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This application requires location services to work";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1040,6 +1041,7 @@
 				DEVELOPMENT_TEAM = N4RBX9TSJP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CoWorkMobileApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This application requires location services to work";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This application requires location services to work";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

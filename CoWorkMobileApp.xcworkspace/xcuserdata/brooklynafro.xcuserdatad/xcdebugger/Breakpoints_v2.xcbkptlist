@@ -20,5 +20,69 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F211228D-000D-42D7-B46A-A1B0FE0D8F2B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CoWorkMobileApp/Coordinators/RootTabBarCoordinator.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "subscribeToCurrentUser()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F211228D-000D-42D7-B46A-A1B0FE0D8F2B - 8456ee21df710a41"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;CoWorkMobileApp.User&gt;) -&gt; () in CoWorkMobileApp.RootTabBarCoordinator.subscribeToCurrentUser() -&gt; ()"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/brooklynafro/Documents/iOS/CoWorkMobileApp/CoWorkMobileApp/Coordinators/RootTabBarCoordinator.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "99">
+               </Location>
+               <Location
+                  uuid = "F211228D-000D-42D7-B46A-A1B0FE0D8F2B - 8456ee21df710a83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;CoWorkMobileApp.User&gt;) -&gt; () in CoWorkMobileApp.RootTabBarCoordinator.subscribeToCurrentUser() -&gt; ()"
+                  moduleName = "CoWorkMobileApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/brooklynafro/Documents/iOS/CoWorkMobileApp/CoWorkMobileApp/Coordinators/RootTabBarCoordinator.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "91"
+                  endingLineNumber = "91"
+                  offsetFromSymbolStart = "99">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "49129824-B9C8-44F5-9DE7-B94DF926B107"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CoWorkMobileApp/Coordinators/AppCoordinator.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "updateUser(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
