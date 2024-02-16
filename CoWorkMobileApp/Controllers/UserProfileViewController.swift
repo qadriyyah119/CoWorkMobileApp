@@ -45,7 +45,7 @@ class UserProfileViewController: UIViewController {
     
     private lazy var logoutButton: UIButton = {
         var config = UIButton.Configuration.filled()
-        config.buttonSize = .large
+        config.buttonSize = .medium
         config.baseBackgroundColor = ThemeColors.secondaryColor
         config.baseForegroundColor = UIColor.white
         config.title = viewModel.logoutText
@@ -59,6 +59,31 @@ class UserProfileViewController: UIViewController {
         return button
     }()
     
+    private(set) lazy var deleteAccountButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.title = viewModel.deleteText
+        config.baseForegroundColor = UIColor.red
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = config
+        button.addTarget(self,
+                         action: #selector(deleteButtonSelected),
+                         for: .primaryActionTriggered)
+        return button
+    }()
+    
+    private lazy var accountActionsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            logoutButton,
+            deleteAccountButton
+        ])
+        
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insetsLayoutMarginsFromSafeArea = true
+        stackView.spacing = 10
+        return stackView
+    }()
     
     let viewModel: UserProfileViewModel
     var userId: String?
@@ -81,15 +106,15 @@ class UserProfileViewController: UIViewController {
     
     private func setupView() {
         self.view.backgroundColor = ThemeColors.mainBackgroundColor
-        [userProfileImage, userProfileNameLabel, logoutButton].forEach {self.view.addSubview($0)}
+        [userProfileImage, userProfileNameLabel, accountActionsStackView].forEach {self.view.addSubview($0)}
         
-        constrain(userProfileImage, userProfileNameLabel, logoutButton) { userProfileImage, userProfileNameLabel, logoutButton in
+        constrain(userProfileImage, userProfileNameLabel, accountActionsStackView) { userProfileImage, userProfileNameLabel, accountActionsStackView in
             userProfileImage.centerX == userProfileImage.superview!.centerX
             userProfileImage.top == userProfileImage.superview!.top + 80
             userProfileNameLabel.top == userProfileImage.bottom + 10
             userProfileNameLabel.centerX == userProfileNameLabel.superview!.centerX
-            logoutButton.centerX == logoutButton.superview!.centerX
-            logoutButton.bottom == logoutButton.superview!.bottom - 16
+            accountActionsStackView.centerX == accountActionsStackView.superview!.centerX
+            accountActionsStackView.bottom == accountActionsStackView.superview!.bottom - 16
         }
     }
     
@@ -97,8 +122,12 @@ class UserProfileViewController: UIViewController {
         userProfileNameLabel.text = viewModel.userNameText
     }
     
-    @objc func didTapLogout(sender: UIButton) {
+    @objc func didTapLogout() {
         print("Logout tapped")
+    }
+    
+    @objc func deleteButtonSelected() {
+        print("Delete Account tapped")
     }
 
 }

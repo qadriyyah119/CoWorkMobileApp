@@ -8,6 +8,7 @@
 import UIKit
 import Cartography
 import NotificationBannerSwift
+import AuthenticationServices
 
 protocol LoginViewControllerDelegate: AnyObject {
     func loginViewController(controller: LoginViewController, didLoginSuccessfully withUser: String)
@@ -65,12 +66,19 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private lazy var appleSignInButton: ASAuthorizationAppleIDButton = {
+        let button = ASAuthorizationAppleIDButton()
+        button.addTarget(self, action: #selector(loginWithAppleId), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
             emailTextField,
             passwordTextField,
-            signInButton
+            signInButton,
+            appleSignInButton
         ])
         
         stackView.axis = .vertical
@@ -104,6 +112,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+        performExistingAccountSetupFlows()
     }
     
     private func setupView() {
@@ -131,6 +140,29 @@ class LoginViewController: UIViewController {
         }
     }
     
+    @objc func loginWithAppleId() {
+        print("Pressed signin with Apple ID")
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    private func performExistingAccountSetupFlows() {
+        // Prepare requests for both Apple ID and password providers.
+        let requests = [ASAuthorizationAppleIDProvider().createRequest(), ASAuthorizationPasswordProvider().createRequest()]
+        
+        // Create an authorization controller with the given requests.
+        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
     private func validateForm() -> Bool {
         guard let email = emailTextField.text, !email.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
             Banner.showBanner(withTitle: "Login Error!", subtitle: "Please complete all fields, and try again.", style: .danger)
@@ -152,4 +184,37 @@ class LoginViewController: UIViewController {
         return textField
     }
     
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("ERROR: Apple ID Sign In Error!")
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            // Create an account in your system
+            let userIdentifier = appleIDCredential.user
+            let userFirstName = appleIDCredential.fullName?.givenName
+            let userLastName = appleIDCredential.fullName?.familyName
+            let userEmail = appleIDCredential.email
+            
+            // Navigate to other view controller. Call delegate to go to WorkspaceListVC
+        } else if let passwordCredential = authorization.credential as? ASPasswordCredential {
+            // Sign in using an existing iCloud Keychain credential
+            let username = passwordCredential.user
+            let password = passwordCredential.password
+            
+            // Navigate to other view controller. Call delegate to go to WorkspaceListVC
+        }
+    }
+    
+}
+
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
 }

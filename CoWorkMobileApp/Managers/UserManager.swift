@@ -27,12 +27,14 @@ class UserManager {
             
             try realm?.write {
                 realm?.add(user)
+                print("USER: \(user), \(user.id)")
             }
-            print("USER: \(user), \(user.id)")
+            let id = user.id
+            UserDefaults.standard.set(id, forKey: "currentUserId")
+            completion(.success(true))
         } catch let error {
             completion(.failure(error))
         }
-        completion(.success(true))
     }
 }
 

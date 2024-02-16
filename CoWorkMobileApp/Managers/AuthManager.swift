@@ -16,6 +16,8 @@ class AuthManager {
     enum AuthError: Error {
         case invalidRequest
         case invalidData
+        case userNotFound
+        case wrongPassword
         case unknownError
     }
     

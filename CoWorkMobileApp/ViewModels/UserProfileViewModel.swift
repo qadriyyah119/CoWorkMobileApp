@@ -20,6 +20,7 @@ class UserProfileViewModel {
     
     var userNameText: String? = "Brooklyn Afro"
     let logoutText: String = "Log Out"
+    let deleteText: String = "Delete Account"
     var userImage: String = "person.fill"
     var userImageCompletion: ((UIImage?) -> Void)?
     
