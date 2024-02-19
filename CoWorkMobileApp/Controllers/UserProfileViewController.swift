@@ -87,10 +87,16 @@ class UserProfileViewController: UIViewController {
     }()
     
     let viewModel: UserProfileViewModel
-    var userId: String?
     
-    init() {
-        self.viewModel = UserProfileViewModel()
+    var userId: String = "" {
+        didSet {
+            viewModel.userId = userId
+        }
+    }
+    
+    init(userId: String) {
+        self.userId = userId
+        self.viewModel = UserProfileViewModel(userId: self.userId)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -102,7 +108,6 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         populateView()
-        viewModel.getUser()
     }
     
     private func setupView() {

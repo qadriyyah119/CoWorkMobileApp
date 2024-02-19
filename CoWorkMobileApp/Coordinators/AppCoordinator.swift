@@ -16,7 +16,12 @@ class AppCoordinator: Coordinator {
     weak var finishDelegate: CoordinatorFinishDelegate? = nil
     
     var currentUser: User?
-    var currentUserPublisher = CurrentValueSubject<User?, Never>(nil)
+    private let currentUserPublisher = CurrentValueSubject<User?, Never>(nil)
+    
+    var currentUserUpdates: AnyPublisher<User?, Never> {
+        return currentUserPublisher.eraseToAnyPublisher()
+    }
+    
     
     private lazy var welcomeViewController: WelcomeViewController = {
         let welcomeViewModel = WelcomeViewModel()
@@ -25,14 +30,14 @@ class AppCoordinator: Coordinator {
         return viewController
     }()
     
-    private lazy var rootTabBarController: RootTabBarController = {
-        let rootTabBarViewModel = RootTabBarViewModel()
-        let viewController = RootTabBarController(viewModel: rootTabBarViewModel)
-        return viewController
-    }()
+//    private lazy var rootTabBarController: RootTabBarController = {
+//        let rootTabBarViewModel = RootTabBarViewModel()
+//        let viewController = RootTabBarController(viewModel: rootTabBarViewModel)
+//        return viewController
+//    }()
     
     private lazy var rootTabBarCoordinator: RootTabBarCoordinator = {
-        let coordinator = RootTabBarCoordinator(navigationController: navigationController)
+        let coordinator = RootTabBarCoordinator(navigationController: navigationController, currentUserPublisher: currentUserUpdates)
         return coordinator
     }()
     
@@ -43,11 +48,10 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-//        showWelcomeView()
-        
-        if (getCurrentUser() != nil) {
-            self.currentUser = getCurrentUser()
-            updateUser(currentUser!) // change this. Find another way to unwrap
+        if let currentUser = getCurrentUser() {
+            self.currentUser = currentUser
+            print("CURRENT USER SET \(currentUser)")
+            updateUser(currentUser)
             showMainFlow()
         } else {
             showWelcomeView()
@@ -89,7 +93,7 @@ class AppCoordinator: Coordinator {
     func showMainFlow(withSuccessBanner showBanner: Bool = false) {
 //        self.setupTabBarContentView()
 //        workspaceCoordinator.start()
-        let rootTabBarCoordinator = RootTabBarCoordinator(navigationController: navigationController)
+        let rootTabBarCoordinator = RootTabBarCoordinator(navigationController: navigationController, currentUserPublisher: currentUserUpdates)
         rootTabBarCoordinator.parentCoordinator = self
         childCoordinators.append(rootTabBarCoordinator)
         rootTabBarCoordinator.start()
@@ -101,9 +105,9 @@ class AppCoordinator: Coordinator {
         }
     }
     
-    func setupTabBarContentView() {
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: rootTabBarController)
-    }
+//    func setupTabBarContentView() {
+//        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: rootTabBarController)
+//    }
     
 }
 

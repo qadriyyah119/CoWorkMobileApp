@@ -25,21 +25,7 @@ class AuthManager {
     static let shared = AuthManager()
     
     private(set) var currentUser: User?
-    
-//    func login(withEmail email: String, password: String, completion: @escaping(Result<User, AuthError>) -> Void) {
-//        let realm = try? Realm()
-//        let users = realm?.objects(User.self)
-//        
-//        guard let isValidUser = users?.first(where: {
-//            $0.email == email && $0.password == password
-//        }) else {
-//            completion(.failure(.invalidRequest))
-//            return
-//        }
-//        setLoggedInUser(user: isValidUser)
-//        completion(.success(isValidUser))
-//    }
-    
+        
     func login(withEmail email: String, password: String, completion: @escaping(Result<User, AuthError>) -> Void) {
         do {
             let realm = try Realm()
@@ -62,7 +48,7 @@ class AuthManager {
     func verifyPassword(inputPassword: String, storedHash: String, storedSalt: String) -> Bool {
         let saltedPassword = inputPassword + storedSalt
         guard let passwordData = saltedPassword.data(using: .utf8) else {
-            return false // Handle error appropriately
+            return false
         }
         let hashedPassword = SHA256.hash(data: passwordData)
         let hashedPasswordString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()

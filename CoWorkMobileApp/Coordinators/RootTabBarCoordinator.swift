@@ -69,28 +69,37 @@ class RootTabBarCoordinator: NSObject, Coordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     weak var parentCoordinator: AppCoordinator?
     var currentUser: User?
+    var currentUserPublisher: AnyPublisher<User?, Never>
     var subscriptons = Set<AnyCancellable>()
     
-    required init(navigationController: UINavigationController) {
+    required init(navigationController: UINavigationController, currentUserPublisher: AnyPublisher<User?, Never>) {
         self.navigationController = navigationController
+        self.currentUserPublisher = currentUserPublisher
         self.tabBarController = .init()
     }
     
     func start() {
+        subscribeToCurrentUser()
+        
         let pages: [TabBarPage] = [.workspace, .collections, .userProfile].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
         
         let controllers: [UINavigationController] = pages.map({ getTabController($0) })
         
         setupTabBarController(withTabControllers: controllers)
         
-        subscribeToCurrentUser()
     }
     
     func subscribeToCurrentUser() {
-        self.parentCoordinator?.currentUserPublisher.sink { [weak self] user in
+        currentUserPublisher.sink { [weak self] user in
             self?.currentUser = user
         }.store(in: &subscriptons)
     }
+    
+//    func subscribeToCurrentUser() {
+//        self.parentCoordinator?.currentUserPublisher.sink { [weak self] user in
+//            self?.currentUser = user
+//        }.store(in: &subscriptons)
+//    }
     
     private func setupTabBarController(withTabControllers tabControllers: [UIViewController]) {
         let appearance = UITabBarAppearance()
@@ -114,13 +123,16 @@ class RootTabBarCoordinator: NSObject, Coordinator {
         switch page {
         case .workspace:
             let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
+            childCoordinators.append(workspaceCoordinator)
             workspaceCoordinator.start()
             return workspaceCoordinator.navigationController
         case .collections:
             let collectionsVC = CollectionsViewController()
             navController.pushViewController(collectionsVC, animated: true)
         case .userProfile:
-            let userProfileCoordinator = UserProfileCoordinator(navigationController: UINavigationController())
+            let userProfileCoordinator = UserProfileCoordinator(navigationController: UINavigationController(), currentUserPublisher: currentUserPublisher)
+            userProfileCoordinator.parentCoordinator = self
+            childCoordinators.append(userProfileCoordinator)
             userProfileCoordinator.start()
             return userProfileCoordinator.navigationController
         }

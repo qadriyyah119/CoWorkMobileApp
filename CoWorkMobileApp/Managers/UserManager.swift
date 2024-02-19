@@ -35,11 +35,9 @@ class UserManager {
             user.email = email
             user.username = username
             
-            let passwordResult = hashPassword(password)
+            let passwordResult = try hashPassword(password)
             user.password = passwordResult.hashedPassword
             user.salt = passwordResult.salt
-            
-//            user.password = hashPassword(password)
             
             try realm?.write {
                 realm?.add(user)
@@ -53,29 +51,18 @@ class UserManager {
         }
     }
     
-    func hashPassword(_ password: String) -> (hashedPassword: String, salt: String) {
+    private func hashPassword(_ password: String) throws -> (hashedPassword: String, salt: String) {
         let salt = randomSaltString(10)
         let saltedPassword = password + salt
         
-        guard let passwordData = saltedPassword.data(using: .utf8) else { fatalError(UserError.invalidPasswordData.description) } // change to throw error instead of fatelError that will cause crash
+        guard let passwordData = saltedPassword.data(using: .utf8) else { throw UserError.invalidPasswordData }
         
         let hashedPassword  = SHA256.hash(data: passwordData)
         let hashedPasswordString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
         return (hashedPasswordString, salt)
     }
     
-//    func hashPassword(_ password: String) -> String {
-//        let salt = randomSaltString(10)
-//        let saltedPassword = password + salt
-//        
-//        guard let passwordData = saltedPassword.data(using: .utf8) else { return UserError.invalidPasswordData.description }
-//        
-//        let hashedPassword  = SHA256.hash(data: passwordData)
-//        let hashedPasswordString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
-//        return hashedPasswordString
-//    }
-    
-    func randomSaltString(_ length: Int) -> String {
+    private func randomSaltString(_ length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyz0123456789"
         let saltString = (0..<length).map{ _ in String(letters.randomElement()!) }.reduce("", +)
         return saltString
