@@ -17,7 +17,6 @@ class UserProfileCoordinator: Coordinator {
     var currentUserPublisher: AnyPublisher<User?, Never>
     var subscriptons = Set<AnyCancellable>()
     var userId: String = ""
-    var isLoggedIn: Bool = false
     
     private lazy var userProfileVC: UserProfileViewController = {
         let userProfileVC = UserProfileViewController(userId: userId)
@@ -42,10 +41,6 @@ class UserProfileCoordinator: Coordinator {
             .sink { [weak self] user in
                 self?.userId = user.id
             }.store(in: &subscriptons)
-    }
-    
-    func checkLogIn(completion: (() -> Void)?) {
-        isLoggedIn = parentCoordinator?.currentUser != nil ? true : false
     }
     
 }

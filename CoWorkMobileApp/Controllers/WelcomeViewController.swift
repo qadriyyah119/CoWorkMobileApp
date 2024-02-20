@@ -8,6 +8,12 @@
 import UIKit
 import Cartography
 
+protocol WelcomeViewControllerDelegate: AnyObject {
+    func welcomeViewController(userSelectedLoginFrom controller: WelcomeViewController)
+    func welcomeViewController(userSelectedRegisterFrom controller: WelcomeViewController)
+    func welcomeViewController(userSelectedSkipFrom controller: WelcomeViewController)
+}
+
 class WelcomeViewController: UIViewController {
     
     private(set) lazy var logoImageView: UIImageView = {
@@ -82,6 +88,7 @@ class WelcomeViewController: UIViewController {
     }()
     
     let viewModel: WelcomeViewModel
+    weak var delegate: WelcomeViewControllerDelegate?
     
     init(viewModel: WelcomeViewModel) {
         self.viewModel = viewModel
@@ -112,14 +119,14 @@ class WelcomeViewController: UIViewController {
     }
     
     @objc func registerButtonSelected() {
-        viewModel.showRegistrationView()
+        self.delegate?.welcomeViewController(userSelectedRegisterFrom: self)
     }
     
     @objc func loginButtonSelected() {
-        viewModel.showLoginView()
+        self.delegate?.welcomeViewController(userSelectedLoginFrom: self)
     }
     
     @objc func skipButtonSelected() {
-        viewModel.showMainFlow()
+        self.delegate?.welcomeViewController(userSelectedSkipFrom: self)
     }
 }

@@ -21,18 +21,6 @@ class WelcomeViewModel {
     let registerButtonText: String = LoginStrings.registerText
     let skipButtonText: String = LoginStrings.skipText
     let logo = UIImage(imageLiteralResourceName: "Logo")
-    
-    func showLoginView() {
-        coordinator?.showLoginView()
-    }
-    
-    func showRegistrationView() {
-        coordinator?.showRegistrationView()
-    }
-    
-    func showMainFlow() {
-        coordinator?.showMainFlow()
-    }
 
 }
 

@@ -27,6 +27,7 @@ class AppCoordinator: Coordinator {
         let welcomeViewModel = WelcomeViewModel()
         welcomeViewModel.coordinator = self
         let viewController = WelcomeViewController(viewModel: welcomeViewModel)
+        viewController.delegate = self
         return viewController
     }()
     
@@ -59,7 +60,7 @@ class AppCoordinator: Coordinator {
         
     }
     
-    func updateUser(_ user: User) {
+    func updateUser(_ user: User?) {
         currentUserPublisher.send(user)
     }
     
@@ -114,6 +115,21 @@ class AppCoordinator: Coordinator {
 //    func setupTabBarContentView() {
 //        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: rootTabBarController)
 //    }
+    
+}
+
+extension AppCoordinator: WelcomeViewControllerDelegate {
+    func welcomeViewController(userSelectedLoginFrom controller: WelcomeViewController) {
+        showLoginView(withSuccessBanner: false)
+    }
+    
+    func welcomeViewController(userSelectedRegisterFrom controller: WelcomeViewController) {
+        showRegistrationView()
+    }
+    
+    func welcomeViewController(userSelectedSkipFrom controller: WelcomeViewController) {
+        showMainFlow(withSuccessBanner: false)
+    }
     
 }
 
