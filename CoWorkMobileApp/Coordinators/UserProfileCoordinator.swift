@@ -15,11 +15,12 @@ class UserProfileCoordinator: Coordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     weak var parentCoordinator: RootTabBarCoordinator?
     var currentUserPublisher: AnyPublisher<User?, Never>
-    var subscriptons = Set<AnyCancellable>()
-    var userId: String = ""
+    var userSubscriptions = Set<AnyCancellable>()
+//    var userId: String = ""
     
     private lazy var userProfileVC: UserProfileViewController = {
-        let userProfileVC = UserProfileViewController(userId: userId)
+        let userProfileViewModel = UserProfileViewModel(currentUserPublisher: currentUserPublisher)
+        let userProfileVC = UserProfileViewController(viewModel: userProfileViewModel)
         userProfileVC.delegate = self
         userProfileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
         return userProfileVC
@@ -28,20 +29,20 @@ class UserProfileCoordinator: Coordinator {
     init(navigationController: UINavigationController, currentUserPublisher: AnyPublisher<User?, Never>) {
         self.navigationController = navigationController
         self.currentUserPublisher = currentUserPublisher
-        updateUser()
+//        updateUser()
     }
     
     func start() {
         self.navigationController.pushViewController(self.userProfileVC, animated: true)
     }
     
-    func updateUser() {
-        currentUserPublisher
-            .compactMap { $0 } 
-            .sink { [weak self] user in
-                self?.userId = user.id
-            }.store(in: &subscriptons)
-    }
+//    func updateUser() {
+//        currentUserPublisher
+//            .compactMap { $0 } 
+//            .sink { [weak self] user in
+//                self?.userId = user.id
+//            }.store(in: &userSubscriptions)
+//    }
     
 }
 

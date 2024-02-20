@@ -70,7 +70,7 @@ class RootTabBarCoordinator: NSObject, Coordinator {
     weak var parentCoordinator: AppCoordinator?
     var currentUser: User?
     var currentUserPublisher: AnyPublisher<User?, Never>
-    var subscriptons = Set<AnyCancellable>()
+    var userSubscriptions = Set<AnyCancellable>()
     
     required init(navigationController: UINavigationController, currentUserPublisher: AnyPublisher<User?, Never>) {
         self.navigationController = navigationController
@@ -92,7 +92,7 @@ class RootTabBarCoordinator: NSObject, Coordinator {
     func subscribeToCurrentUser() {
         currentUserPublisher.sink { [weak self] user in
             self?.currentUser = user
-        }.store(in: &subscriptons)
+        }.store(in: &userSubscriptions)
     }
     
 //    func subscribeToCurrentUser() {
@@ -159,6 +159,7 @@ extension RootTabBarCoordinator: CoordinatorFinishDelegate {
         switch childCoordinator.type {
         case .userProfile:
             navigationController.viewControllers.removeAll()
+            parentCoordinator?.subscribeToUserStatusChange()
             parentCoordinator?.showWelcomeView()
         default:
             break

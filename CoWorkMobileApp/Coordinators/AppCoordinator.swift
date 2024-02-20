@@ -21,7 +21,7 @@ class AppCoordinator: Coordinator {
     var currentUserUpdates: AnyPublisher<User?, Never> {
         return currentUserPublisher.eraseToAnyPublisher()
     }
-    
+    private var userStatusSubscriptions: Set<AnyCancellable> = []
     
     private lazy var welcomeViewController: WelcomeViewController = {
         let welcomeViewModel = WelcomeViewModel()
@@ -30,12 +30,6 @@ class AppCoordinator: Coordinator {
         viewController.delegate = self
         return viewController
     }()
-    
-//    private lazy var rootTabBarController: RootTabBarController = {
-//        let rootTabBarViewModel = RootTabBarViewModel()
-//        let viewController = RootTabBarController(viewModel: rootTabBarViewModel)
-//        return viewController
-//    }()
     
     private lazy var rootTabBarCoordinator: RootTabBarCoordinator = {
         let coordinator = RootTabBarCoordinator(navigationController: navigationController, currentUserPublisher: currentUserUpdates)
@@ -58,6 +52,13 @@ class AppCoordinator: Coordinator {
             showWelcomeView()
         }
         
+    }
+    
+    func subscribeToUserStatusChange() {
+        AuthManager.shared.currentUserStatusPublisher
+            .sink { [weak self] currentUser in
+                self?.updateUser(currentUser)
+            }.store(in: &userStatusSubscriptions)
     }
     
     func updateUser(_ user: User?) {

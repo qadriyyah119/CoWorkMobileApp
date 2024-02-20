@@ -92,16 +92,12 @@ class UserProfileViewController: UIViewController {
     
     let viewModel: UserProfileViewModel
     weak var delegate: UserProfileViewControllerDelegate?
+    private var cancellables: Set<AnyCancellable> = []
     
-    var userId: String = "" {
-        didSet {
-            viewModel.userId = userId
-        }
-    }
+    var userId: String = ""
     
-    init(userId: String) {
-        self.userId = userId
-        self.viewModel = UserProfileViewModel(userId: self.userId)
+    init(viewModel: UserProfileViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -112,7 +108,10 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        populateView()
+        viewModel.$userNameText
+            .sink { [weak self] userName in
+                self?.userProfileNameLabel.text = userName
+            }.store(in: &cancellables)
     }
     
     private func setupView() {
@@ -129,12 +128,7 @@ class UserProfileViewController: UIViewController {
         }
     }
     
-    private func populateView() {
-        userProfileNameLabel.text = viewModel.userNameText
-    }
-    
     @objc func didTapLogout() {
-        print("Logout tapped")
         viewModel.didTapLogOut(userId: userId) {
             self.delegate?.userProfileViewController(controller: self, userLoggedOutSuccessfully: self.userId)
         }

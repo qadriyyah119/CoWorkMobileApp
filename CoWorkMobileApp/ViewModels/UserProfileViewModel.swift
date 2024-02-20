@@ -9,30 +9,44 @@ import UIKit
 import Combine
 import RealmSwift
 
-class UserProfileViewModel {
+class UserProfileViewModel: ObservableObject {
     
-    var currentUser: User? {
-        didSet {
-            if let user = currentUser {
-                print("User: \(user.username)")
-                userNameText = user.username
-
-            }
-        }
-    }
+    var currentUser: User?
+    
+    var currentUserPublisher: AnyPublisher<User?, Never>
+    var userSubscriptions = Set<AnyCancellable>()
     
     var userId: String = ""
     
-    init(userId: String){
-        self.userId = userId
-        getUser(withUserId: userId)
+    init(currentUserPublisher: AnyPublisher<User?, Never>){
+        self.currentUserPublisher = currentUserPublisher
+        subscribeToUserStatusChange()
     }
     
-    var userNameText: String? = ""
+    @Published var userNameText: String = ""
     let logoutText: String = "Log Out"
     let deleteText: String = "Delete Account"
     var userImage: String = "person.fill"
     var userImageCompletion: ((UIImage?) -> Void)?
+    
+    func subscribeToUserStatusChange() {
+        currentUserPublisher
+            .sink { [weak self] currentUser in
+                self?.updateUI(forUser: currentUser)
+            }.store(in: &userSubscriptions)
+    }
+    
+    private func updateUI(forUser user: User?) {
+        if user == nil {
+            self.userNameText = ""
+        } else {
+            if let user = user {
+                self.userId = user.id
+                getUser(withUserId: userId)
+                self.userNameText = user.username
+            }
+        }
+    }
     
     func getUser(withUserId id: String) {
         let realm = try? Realm()

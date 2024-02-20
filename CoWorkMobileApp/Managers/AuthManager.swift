@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import RealmSwift
+import Combine
 import CryptoKit
 
 let passwordPattern = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[$@#!%*?&]).{8,}$")
@@ -25,6 +26,7 @@ class AuthManager {
     
     static let shared = AuthManager()
     
+    var currentUserStatusPublisher = CurrentValueSubject<User?, Never>(nil)
     private(set) var currentUser: User?
         
     func login(withEmail email: String, password: String, completion: @escaping(Result<User, AuthError>) -> Void) {
@@ -63,7 +65,8 @@ class AuthManager {
     }
     
     func logUserOut(userId: String, completion: @escaping(Bool) -> Void) {
-            UserDefaults.standard.removeObject(forKey: "currentUserId")
+        UserDefaults.standard.removeObject(forKey: "currentUserId")
+        currentUserStatusPublisher.send(nil)
             completion(true)
     }
     
