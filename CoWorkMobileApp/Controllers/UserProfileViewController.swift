@@ -9,6 +9,10 @@ import UIKit
 import Cartography
 import Combine
 
+protocol UserProfileViewControllerDelegate: AnyObject {
+    func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully withUser: String)
+}
+
 class UserProfileViewController: UIViewController {
     
     private lazy var userProfileImage: UIImageView = {
@@ -87,6 +91,7 @@ class UserProfileViewController: UIViewController {
     }()
     
     let viewModel: UserProfileViewModel
+    weak var delegate: UserProfileViewControllerDelegate?
     
     var userId: String = "" {
         didSet {
@@ -130,6 +135,9 @@ class UserProfileViewController: UIViewController {
     
     @objc func didTapLogout() {
         print("Logout tapped")
+        viewModel.didTapLogOut(userId: userId) {
+            self.delegate?.userProfileViewController(controller: self, userLoggedOutSuccessfully: self.userId)
+        }
     }
     
     @objc func deleteButtonSelected() {

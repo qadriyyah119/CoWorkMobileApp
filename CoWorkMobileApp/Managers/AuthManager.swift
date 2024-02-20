@@ -19,6 +19,7 @@ class AuthManager {
         case invalidData
         case userNotFound
         case wrongPassword
+        case logOutError
         case unknownError
     }
     
@@ -61,8 +62,9 @@ class AuthManager {
         UserDefaults.standard.set(user.id, forKey: "currentUserId")
     }
     
-    func loggedInUserLoggedOut(user: User) {
-        
+    func logUserOut(userId: String, completion: @escaping(Bool) -> Void) {
+            UserDefaults.standard.removeObject(forKey: "currentUserId")
+            completion(true)
     }
     
 }

@@ -132,6 +132,7 @@ class RootTabBarCoordinator: NSObject, Coordinator {
         case .userProfile:
             let userProfileCoordinator = UserProfileCoordinator(navigationController: UINavigationController(), currentUserPublisher: currentUserPublisher)
             userProfileCoordinator.parentCoordinator = self
+            userProfileCoordinator.finishDelegate = self
             childCoordinators.append(userProfileCoordinator)
             userProfileCoordinator.start()
             return userProfileCoordinator.navigationController
@@ -149,6 +150,21 @@ class RootTabBarCoordinator: NSObject, Coordinator {
         guard let page = TabBarPage.init(index: index) else { return }
         tabBarController.selectedIndex = page.pageOrderNumber()
     }
+}
+
+extension RootTabBarCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter({ $0.type != childCoordinator.type })
+        
+        switch childCoordinator.type {
+        case .userProfile:
+            navigationController.viewControllers.removeAll()
+            parentCoordinator?.showWelcomeView()
+        default:
+            break
+        }
+    }
+    
 }
 
 extension RootTabBarCoordinator: UITabBarControllerDelegate {

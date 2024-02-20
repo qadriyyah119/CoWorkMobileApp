@@ -21,6 +21,7 @@ class UserProfileCoordinator: Coordinator {
     
     private lazy var userProfileVC: UserProfileViewController = {
         let userProfileVC = UserProfileViewController(userId: userId)
+        userProfileVC.delegate = self
         userProfileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
         return userProfileVC
     }()
@@ -49,4 +50,9 @@ class UserProfileCoordinator: Coordinator {
     
 }
 
-
+extension UserProfileCoordinator: UserProfileViewControllerDelegate {
+    func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully withUser: String) {
+        self.finish()
+    }
+    
+}

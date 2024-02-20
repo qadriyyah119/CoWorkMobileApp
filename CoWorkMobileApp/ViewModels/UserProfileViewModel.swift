@@ -39,4 +39,11 @@ class UserProfileViewModel {
         self.currentUser = realm?.object(ofType: User.self, forPrimaryKey: id)
     }
     
+    func didTapLogOut(userId: String, completion: @escaping () -> Void) {
+        AuthManager.shared.logUserOut(userId: userId) { success in
+            print("Logged User Out Successfully!")
+            }
+        completion()
+        }
+    
 }
