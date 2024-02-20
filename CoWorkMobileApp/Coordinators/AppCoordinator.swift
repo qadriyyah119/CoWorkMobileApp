@@ -75,11 +75,17 @@ class AppCoordinator: Coordinator {
         self.navigationController.pushViewController(welcomeViewController, animated: true)
     }
     
-    func showLoginView() {
+    func showLoginView(withSuccessBanner showBanner: Bool = false) {
         let authCoordinator = AuthCoordinator(navigationController: navigationController)
         authCoordinator.finishDelegate = self
         childCoordinators.append(authCoordinator)
         authCoordinator.start()
+        
+        if showBanner {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                Banner.showBanner(withTitle: "Success!", subtitle: "You successfully registered. Please Login!", style: .success)
+            }
+        }
 
     }
     
@@ -100,7 +106,7 @@ class AppCoordinator: Coordinator {
        
         if showBanner {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                Banner.showBanner(withTitle: "Success!", subtitle: "Welcome! You have successfull registered with CoWork!", style: .success)
+                Banner.showBanner(withTitle: "Success!", subtitle: "Welcome \(self.currentUser?.username ?? "")!", style: .success)
             }
         }
     }
@@ -119,10 +125,14 @@ extension AppCoordinator: CoordinatorFinishDelegate {
         switch childCoordinator.type {
         case .auth:
             navigationController.viewControllers.removeAll()
-            showMainFlow(withSuccessBanner: false)
+            if let currentUser = getCurrentUser() {
+                self.currentUser = currentUser
+                updateUser(currentUser)
+                showMainFlow(withSuccessBanner: false)
+            }
         case .onboarding:
             navigationController.viewControllers.removeAll()
-            showMainFlow(withSuccessBanner: true)
+            showLoginView(withSuccessBanner: true)
         default:
             break
         }
