@@ -15,13 +15,24 @@ let passwordPattern = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z])(?=.*[
 
 class AuthManager {
     
-    enum AuthError: Error {
+    enum AuthError: Error, CaseIterable, CustomStringConvertible {
         case invalidRequest
         case invalidData
         case userNotFound
         case wrongPassword
         case logOutError
         case unknownError
+        
+        var description: String {
+            switch self {
+            case .invalidRequest: return "Invalid Request"
+            case .invalidData: return "Invalid Data"
+            case .userNotFound: return "User Not Found"
+            case .wrongPassword: return "Wrong Password"
+            case .logOutError: return "Log Out Error"
+            case .unknownError: return "Unknown Error"
+            }
+        }
     }
     
     static let shared = AuthManager()

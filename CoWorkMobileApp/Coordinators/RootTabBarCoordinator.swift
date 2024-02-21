@@ -81,7 +81,7 @@ class RootTabBarCoordinator: NSObject, Coordinator {
     func start() {
         subscribeToCurrentUser()
         
-        let pages: [TabBarPage] = [.workspace, .collections, .userProfile].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
+        let pages: [TabBarPage] = [.workspace, .userProfile].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() }) // add collection page
         
         let controllers: [UINavigationController] = pages.map({ getTabController($0) })
         
@@ -94,13 +94,7 @@ class RootTabBarCoordinator: NSObject, Coordinator {
             self?.currentUser = user
         }.store(in: &userSubscriptions)
     }
-    
-//    func subscribeToCurrentUser() {
-//        self.parentCoordinator?.currentUserPublisher.sink { [weak self] user in
-//            self?.currentUser = user
-//        }.store(in: &subscriptons)
-//    }
-    
+        
     private func setupTabBarController(withTabControllers tabControllers: [UIViewController]) {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()

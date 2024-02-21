@@ -26,16 +26,17 @@ class LoginViewModel {
     let sigingInText: String = LoginStrings.signingInText
     
     
-    func didTapLogin(withEmail email: String, password: String, completion: @escaping () -> Void) {
+    func didTapLogin(withEmail email: String, password: String, completion: @escaping(Result<String, AuthManager.AuthError>) -> Void) {
         AuthManager.shared.login(withEmail: email, password: password) { result in
             switch result {
             case .success(let user):
                 print("User: \(user.username)")
                 self.user = user.username
+                completion(.success(self.user))
             case.failure(let error):
                 print(error)
+                completion(.failure(error))
             }
-            completion()
         }
     }
     

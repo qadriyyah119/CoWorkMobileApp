@@ -130,13 +130,19 @@ class LoginViewController: UIViewController {
         guard self.validateForm() else { return }
         self.signingIn = true
         
-        viewModel.didTapLogin(withEmail: emailTextField.text ?? "", password: passwordTextField.text ?? "") {
+        viewModel.didTapLogin(withEmail: emailTextField.text ?? "", password: passwordTextField.text ?? "") { result in
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-                Banner.showBanner(withTitle: "Success!", subtitle: "Welcome \(self.viewModel.user)", style: .success)
-                self.signingIn = false
+                switch result {
+                case .success(let user):
+                        Banner.showBanner(withTitle: "Success!", subtitle: "Welcome \(user)", style: .success)
+                        self.signingIn = false
+                    
+                    self.delegate?.loginViewController(controller: self, didLoginSuccessfully: self.viewModel.user)
+                case .failure(let error):
+                    Banner.showBanner(withTitle: "Error", subtitle: "\(error.description). Please try again", style: .danger)
+                        self.signingIn = false
+                }
             }
-            
-            self.delegate?.loginViewController(controller: self, didLoginSuccessfully: self.viewModel.user)
         }
     }
     
