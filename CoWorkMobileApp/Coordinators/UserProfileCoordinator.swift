@@ -47,14 +47,15 @@ class UserProfileCoordinator: Coordinator {
 }
 
 extension UserProfileCoordinator: UserProfileViewControllerDelegate {
-    func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully withUser: String) {
+    func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully userId: String) {
         self.finish()
     }
     
-    func userProfileViewController(userTappedDeleteAccountButton controller: UserProfileViewController) {
+    func userProfileViewController(controller: UserProfileViewController, userTappedDeleteAccountButton userId: String) {
         
-        let viewModel = DeleteAccountViewModel()
+        let viewModel = DeleteAccountViewModel(userId: userId)
         let viewController = DeleteAccountModalViewController(viewModel: viewModel)
+        viewController.delegate = self
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.isToolbarHidden = true
         navigationController.modalPresentationStyle = .pageSheet
@@ -67,4 +68,10 @@ extension UserProfileCoordinator: UserProfileViewControllerDelegate {
         self.navigationController.present(navigationController, animated: true)
     }
     
+}
+
+extension UserProfileCoordinator: DeleteAccountModalViewControllerDelegate {
+    func deleteAccountModalViewController(controller: DeleteAccountModalViewController, userDeletedAccountSuccessfully withUser: String) {
+        self.finish()
+    }
 }

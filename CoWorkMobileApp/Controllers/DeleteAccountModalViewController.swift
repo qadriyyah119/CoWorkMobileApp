@@ -8,6 +8,10 @@
 import UIKit
 import Cartography
 
+protocol DeleteAccountModalViewControllerDelegate: AnyObject {
+    func deleteAccountModalViewController(controller: DeleteAccountModalViewController, userDeletedAccountSuccessfully withUser: String)
+}
+
 class DeleteAccountModalViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
@@ -122,6 +126,7 @@ class DeleteAccountModalViewController: UIViewController {
     }
     
     var viewModel: DeleteAccountViewModel
+    weak var delegate: DeleteAccountModalViewControllerDelegate?
     
     init(viewModel: DeleteAccountViewModel) {
         self.viewModel = viewModel
@@ -136,7 +141,6 @@ class DeleteAccountModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
-        
     }
     
     private func setupView() {
@@ -146,7 +150,6 @@ class DeleteAccountModalViewController: UIViewController {
         constrain(contentStackView) { contentStackView in
             contentStackView.top == contentStackView.superview!.top + 80
             contentStackView.centerX == contentStackView.superview!.centerX
-
         }
     }
     
@@ -155,7 +158,15 @@ class DeleteAccountModalViewController: UIViewController {
     }
     
     @objc func didSelectDelete() {
-        
+        guard let password = passwordTextField.text, !password.isEmpty else {
+            Banner.showBanner(withTitle: "Error!", subtitle: "Please enter a valid password", style: .danger)
+            return
+        }
+        viewModel.didTapDeleteAccount(userId: viewModel.userId, password: password) {
+            self.dismiss(animated: true) {
+                self.delegate?.deleteAccountModalViewController(controller: self, userDeletedAccountSuccessfully: self.viewModel.userId)
+            }
+        }
     }
     
 }

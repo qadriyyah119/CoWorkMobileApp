@@ -10,8 +10,8 @@ import Cartography
 import Combine
 
 protocol UserProfileViewControllerDelegate: AnyObject {
-    func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully withUser: String)
-    func userProfileViewController(userTappedDeleteAccountButton controller: UserProfileViewController)
+    func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully userId: String)
+    func userProfileViewController(controller: UserProfileViewController, userTappedDeleteAccountButton  userId: String)
 //    func userProfileViewController(controller: UserProfileViewController, userDeleteAccountSuccessfully withUser: String)
 }
 
@@ -137,7 +137,7 @@ class UserProfileViewController: UIViewController {
     }
     
     @objc func deleteButtonSelected() {
-        self.delegate?.userProfileViewController(userTappedDeleteAccountButton: self)
+        self.delegate?.userProfileViewController(controller: self, userTappedDeleteAccountButton: viewModel.userId)
     }
 
 }

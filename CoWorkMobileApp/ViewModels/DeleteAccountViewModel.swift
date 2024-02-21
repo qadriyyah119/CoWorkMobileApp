@@ -14,4 +14,21 @@ class DeleteAccountViewModel {
     let passwordPlaceholderText: String = "Enter Password"
     let cancelButtonText: String = "Cancel"
     let deleteButtonText: String = "Delete Account"
+    var userId: String = ""
+    
+    init(userId: String){
+        self.userId = userId
+    }
+    
+    func didTapDeleteAccount(userId: String, password: String, completion: @escaping () -> Void) {
+        AuthManager.shared.deleteUserAccount(userId: userId, password: password) { result in
+            switch result {
+            case .success(let success):
+                print("Account Successfully Deleted \(success)")
+            case .failure(let error):
+                print(error)
+            }
+        }
+        completion()
+    }
 }

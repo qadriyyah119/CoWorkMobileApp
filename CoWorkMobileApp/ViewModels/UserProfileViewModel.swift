@@ -60,8 +60,4 @@ class UserProfileViewModel: ObservableObject {
         completion()
         }
     
-    func didTapDeleteAccount(userId: String, completion: @escaping () -> Void) {
-        
-    }
-    
 }
