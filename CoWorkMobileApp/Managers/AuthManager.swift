@@ -48,7 +48,7 @@ class AuthManager {
         }
     }
     
-    func verifyPassword(inputPassword: String, storedHash: String, storedSalt: String) -> Bool {
+    private func verifyPassword(inputPassword: String, storedHash: String, storedSalt: String) -> Bool {
         let saltedPassword = inputPassword + storedSalt
         guard let passwordData = saltedPassword.data(using: .utf8) else {
             return false
@@ -67,7 +67,36 @@ class AuthManager {
     func logUserOut(userId: String, completion: @escaping(Bool) -> Void) {
         UserDefaults.standard.removeObject(forKey: "currentUserId")
         currentUserStatusPublisher.send(nil)
+        self.currentUser = nil
             completion(true)
+    }
+    
+    func deleteUserAccount(userId id: String, password: String, completion: @escaping(Result<Bool, AuthError>) -> Void) {
+        
+        do {
+            let realm = try Realm()
+            if let user = realm.object(ofType: User.self, forPrimaryKey: id) {
+                guard self.currentUser == user else { return completion(.failure(.userNotFound)) }
+                
+                if verifyPassword(inputPassword: password, storedHash: user.password, storedSalt: user.salt) {
+                    try? realm.write {
+                        realm.delete(user)
+                    }
+                    UserDefaults.standard.removeObject(forKey: "currentUserId")
+                    self.currentUser = nil
+                    currentUserStatusPublisher.send(nil)
+                    completion(.success(true))
+                } else {
+                    completion(.failure(.wrongPassword))
+                }
+            } else {
+                completion(.failure(.userNotFound))
+            }
+            
+        } catch {
+            completion(.failure(.unknownError))
+        }
+        
     }
     
 }

@@ -14,6 +14,8 @@
 		278B0E8E2B7BD2AC00BAFFEB /* UserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E8D2B7BD2AC00BAFFEB /* UserProfileCoordinator.swift */; };
 		278B0E902B7BD39300BAFFEB /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E8F2B7BD39300BAFFEB /* UserProfileViewModel.swift */; };
 		278B0E922B7C136100BAFFEB /* RootTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E912B7C136100BAFFEB /* RootTabBarCoordinator.swift */; };
+		278B0E952B85642500BAFFEB /* DeleteAccountModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E942B85642500BAFFEB /* DeleteAccountModalViewController.swift */; };
+		278B0E972B85695B00BAFFEB /* DeleteAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E962B85695B00BAFFEB /* DeleteAccountViewModel.swift */; };
 		27B153282B4DF0BF001CA0A8 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */; };
 		27B153292B4DF0BF001CA0A8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */; };
 		27B1532A2B4DF0BF001CA0A8 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */; };
@@ -123,6 +125,8 @@
 		278B0E8F2B7BD39300BAFFEB /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		278B0E912B7C136100BAFFEB /* RootTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarCoordinator.swift; sourceTree = "<group>"; };
 		278B0E932B7E7DEC00BAFFEB /* CoWorkMobileApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoWorkMobileApp.entitlements; sourceTree = "<group>"; };
+		278B0E942B85642500BAFFEB /* DeleteAccountModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountModalViewController.swift; sourceTree = "<group>"; };
+		278B0E962B85695B00BAFFEB /* DeleteAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewModel.swift; sourceTree = "<group>"; };
 		27B153232B4DF0BF001CA0A8 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		27B153242B4DF0BF001CA0A8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		27B153252B4DF0BF001CA0A8 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Thin.ttf"; path = "../../../../../Documents - BrooklynAfro's MacBook Pro/iOS/CoWorkMobileApp/CoWorkMobileApp/Shared/Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 				2DABF5B428DBB4C0007D660E /* MapViewController.swift */,
 				2DC810A12983206600666610 /* WorkspaceDetailViewController.swift */,
 				2D738B852A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift */,
+				278B0E942B85642500BAFFEB /* DeleteAccountModalViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 				2DA5079029F06722008C53D2 /* WorkspaceDetailReviewContentViewViewModel.swift */,
 				278B0E8B2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift */,
 				278B0E8F2B7BD39300BAFFEB /* UserProfileViewModel.swift */,
+				278B0E962B85695B00BAFFEB /* DeleteAccountViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -769,6 +775,7 @@
 				2DC810AA2984511C00666610 /* WorkspaceDetailViewModel.swift in Sources */,
 				2DA5078B29EDF6DF008C53D2 /* WorkspaceDetailReviewContentConfiguration.swift in Sources */,
 				2DC810B0298990F800666610 /* WorkspaceDetailCell.swift in Sources */,
+				278B0E952B85642500BAFFEB /* DeleteAccountModalViewController.swift in Sources */,
 				2D66087428A4107600C76819 /* RootTabBarController.swift in Sources */,
 				278B0E922B7C136100BAFFEB /* RootTabBarCoordinator.swift in Sources */,
 				2DA5078D29EE0EF1008C53D2 /* WorkspaceDetailReviewCell.swift in Sources */,
@@ -820,6 +827,7 @@
 				2D66087028A40D1100C76819 /* CollectionsViewController.swift in Sources */,
 				2DC810A22983206600666610 /* WorkspaceDetailViewController.swift in Sources */,
 				2D4207C4289B146700F82B1F /* AccountRegistrationViewModel.swift in Sources */,
+				278B0E972B85695B00BAFFEB /* DeleteAccountViewModel.swift in Sources */,
 				2DC9246729280AF8000DF340 /* MapAnnotation.swift in Sources */,
 				2D66088328A6AED200C76819 /* Workspace.swift in Sources */,
 				2D66089028B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift in Sources */,

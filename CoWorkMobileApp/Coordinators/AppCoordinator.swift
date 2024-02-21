@@ -45,7 +45,6 @@ class AppCoordinator: Coordinator {
     func start() {
         if let currentUser = getCurrentUser() {
             self.currentUser = currentUser
-            print("CURRENT USER SET \(currentUser)")
             updateUser(currentUser)
             showMainFlow()
         } else {
@@ -61,11 +60,11 @@ class AppCoordinator: Coordinator {
             }.store(in: &userStatusSubscriptions)
     }
     
-    func updateUser(_ user: User?) {
+    private func updateUser(_ user: User?) {
         currentUserPublisher.send(user)
     }
     
-    func getCurrentUser() -> User? {
+    private func getCurrentUser() -> User? {
         guard let id = UserDefaults.standard.string(forKey: "currentUserId") else { return nil }
         
         let realm = try? Realm()

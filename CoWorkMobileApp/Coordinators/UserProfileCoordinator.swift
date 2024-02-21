@@ -51,4 +51,20 @@ extension UserProfileCoordinator: UserProfileViewControllerDelegate {
         self.finish()
     }
     
+    func userProfileViewController(userTappedDeleteAccountButton controller: UserProfileViewController) {
+        
+        let viewModel = DeleteAccountViewModel()
+        let viewController = DeleteAccountModalViewController(viewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isToolbarHidden = true
+        navigationController.modalPresentationStyle = .pageSheet
+        navigationController.isModalInPresentation = true
+        if let sheet = navigationController.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+            sheet.preferredCornerRadius = 50
+        }
+        self.navigationController.present(navigationController, animated: true)
+    }
+    
 }

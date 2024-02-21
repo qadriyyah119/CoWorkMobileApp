@@ -11,6 +11,8 @@ import Combine
 
 protocol UserProfileViewControllerDelegate: AnyObject {
     func userProfileViewController(controller: UserProfileViewController, userLoggedOutSuccessfully withUser: String)
+    func userProfileViewController(userTappedDeleteAccountButton controller: UserProfileViewController)
+//    func userProfileViewController(controller: UserProfileViewController, userDeleteAccountSuccessfully withUser: String)
 }
 
 class UserProfileViewController: UIViewController {
@@ -135,7 +137,7 @@ class UserProfileViewController: UIViewController {
     }
     
     @objc func deleteButtonSelected() {
-        print("Delete Account tapped")
+        self.delegate?.userProfileViewController(userTappedDeleteAccountButton: self)
     }
 
 }
