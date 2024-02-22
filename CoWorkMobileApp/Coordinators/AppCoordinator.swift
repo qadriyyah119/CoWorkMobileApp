@@ -79,6 +79,7 @@ class AppCoordinator: Coordinator {
     func showLoginView(withSuccessBanner showBanner: Bool = false) {
         let authCoordinator = AuthCoordinator(navigationController: navigationController)
         authCoordinator.finishDelegate = self
+        authCoordinator.parentCoordinator = self
         childCoordinators.append(authCoordinator)
         authCoordinator.start()
         

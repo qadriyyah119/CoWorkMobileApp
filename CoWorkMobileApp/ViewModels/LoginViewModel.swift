@@ -12,11 +12,14 @@ class LoginViewModel {
     var user: String = ""
     
     enum LoginStrings {
-        static let titleText = "Log In"
-        static let emailTextfieldText = "email"
-        static let passwordTextfieldText = "password"
+        static let titleText = "Enter your email and password to log in"
+        static let emailTextfieldText = "Email"
+        static let passwordTextfieldText = "Password"
         static let signInText = "SIGN IN"
         static let signingInText = "SIGNING IN..."
+        static let orText = "OR"
+        static let registerText = "New to CoWork?"
+        static let registerButtonText = "Register"
     }
     
     let titleText: String = LoginStrings.titleText
@@ -24,6 +27,9 @@ class LoginViewModel {
     let passwordPlaceholderText: String = LoginStrings.passwordTextfieldText
     let signInButtonText: String = LoginStrings.signInText
     let sigingInText: String = LoginStrings.signingInText
+    let orText: String = LoginStrings.orText
+    let registerText: String = LoginStrings.registerText
+    let registerButtonText: String = LoginStrings.registerButtonText
     
     
     func didTapLogin(withEmail email: String, password: String, completion: @escaping(Result<String, AuthManager.AuthError>) -> Void) {

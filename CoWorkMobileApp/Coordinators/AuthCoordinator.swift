@@ -13,7 +13,7 @@ class AuthCoordinator: Coordinator {
     var navigationController: UINavigationController
     var type: CoordinatorType { .auth }
     weak var finishDelegate: CoordinatorFinishDelegate?
-    
+    weak var parentCoordinator: AppCoordinator?
     private lazy var loginViewController: LoginViewController = {
         let loginViewModel = LoginViewModel()
         let loginVC = LoginViewController(viewModel: loginViewModel)
@@ -34,6 +34,10 @@ class AuthCoordinator: Coordinator {
 extension AuthCoordinator: LoginViewControllerDelegate {
     func loginViewController(controller: LoginViewController, didLoginSuccessfully withUser: String) {
         self.finish()
+    }
+    
+    func loginViewController(didSelectRegisterFromController: LoginViewController) {
+        parentCoordinator?.showRegistrationView()
     }
     
 }
