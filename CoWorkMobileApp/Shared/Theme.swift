@@ -22,4 +22,5 @@ struct ThemeColors {
     static let secondaryColor = UIColor(named: "secondaryColor")
     static let mainBackgroundColor = UIColor(named: "mainBackgroundColor")
     static let tintColor = UIColor(named: "tintColor")
+    static let buttonBorder = UIColor(named: "buttonBorder")
 }

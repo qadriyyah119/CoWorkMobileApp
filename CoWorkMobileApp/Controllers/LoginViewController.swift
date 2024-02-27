@@ -22,13 +22,15 @@ class LoginViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
         label.textAlignment = .left
-        label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 16)
+        label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 20)
+        label.textColor = .label
         return label
     }()
     
     private lazy var emailTextField: TextFieldWithPadding = {
         let textField = makeStyledInputField()
         textField.placeholder = viewModel.emailPlaceholderText
+        
         textField.clearButtonMode = .whileEditing
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
@@ -52,7 +54,7 @@ class LoginViewController: UIViewController {
         config.buttonSize = .medium
         config.cornerStyle = .small
         config.background.strokeWidth = 1
-        config.background.strokeColor = .black
+        config.background.strokeColor = ThemeColors.buttonBorder
         config.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 20, bottom: 15, trailing: 20)
         config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
         
@@ -78,13 +80,15 @@ class LoginViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.orText
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 14, weight: .light)
         return label
     }()
     
     private lazy var appleSignInButton: ASAuthorizationAppleIDButton = {
-        let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+        var authButtonStyle: Int = UITraitCollection.current.userInterfaceStyle == .dark ? 0 : 2
+        let style = ASAuthorizationAppleIDButton.Style.init(rawValue: authButtonStyle) ?? .black
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: style)
         button.addTarget(self, action: #selector(loginWithAppleId), for: .touchUpInside)
         return button
     }()
@@ -94,13 +98,14 @@ class LoginViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.registerText
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
     private(set) lazy var registerButton: UIButton = {
         var config = UIButton.Configuration.plain()
         config.title = viewModel.registerButtonText
-        config.baseForegroundColor = UIColor.black
+        config.baseForegroundColor = .label
         config.attributedTitle?.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 16)
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         let button = UIButton()
@@ -177,7 +182,7 @@ class LoginViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = ThemeColors.mainBackgroundColor
+        self.view.backgroundColor = .systemBackground
         self.view.addSubview(contentStackView)
         self.view.addSubview(registerHorizontalStackView)
         
@@ -263,22 +268,27 @@ class LoginViewController: UIViewController {
 extension LoginViewController: ASAuthorizationControllerDelegate {
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print(error.localizedDescription)
         print("ERROR: Apple ID Sign In Error!")
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             // Create an account in your system
-            let userIdentifier = appleIDCredential.user
+            let userId = appleIDCredential.user
             let userFirstName = appleIDCredential.fullName?.givenName
             let userLastName = appleIDCredential.fullName?.familyName
             let userEmail = appleIDCredential.email
+            print("User ID: \(userId)")
+            print("User First Name: \(userFirstName ?? "")")
+            print("User Last Name: \(userLastName ?? "")")
+            print("User Email: \(userEmail ?? "")")
             
             // Navigate to other view controller. Call delegate to go to WorkspaceListVC
         } else if let passwordCredential = authorization.credential as? ASPasswordCredential {
             // Sign in using an existing iCloud Keychain credential
-            let username = passwordCredential.user
-            let password = passwordCredential.password
+            let appleUsername = passwordCredential.user
+            let applePassword = passwordCredential.password
             
             // Navigate to other view controller. Call delegate to go to WorkspaceListVC
         }

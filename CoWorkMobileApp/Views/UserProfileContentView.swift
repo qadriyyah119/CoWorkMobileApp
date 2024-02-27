@@ -22,6 +22,7 @@ class UserProfileContentView: UIView, UIContentView {
         label.textAlignment = .center
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 16)
+        label.textColor = .label
         return label
     }()
     

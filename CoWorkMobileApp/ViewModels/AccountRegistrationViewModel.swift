@@ -12,7 +12,7 @@ class AccountRegistrationViewModel {
     var user: String = ""
     
     enum RegisterStrings {
-        static let titleText = "Register"
+        static let titleText = "Create Account"
         static let emailTextfieldText = "email"
         static let usernameTextfieldText = "username"
         static let passwordTextfieldText = "password"

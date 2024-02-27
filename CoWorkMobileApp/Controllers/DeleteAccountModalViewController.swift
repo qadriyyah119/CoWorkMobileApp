@@ -18,7 +18,7 @@ class DeleteAccountModalViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
-        label.textColor = .red
+        label.textColor = .systemRed
         label.textAlignment = .center
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.headerFont, size: 25)
@@ -31,6 +31,7 @@ class DeleteAccountModalViewController: UIViewController {
         label.text = viewModel.messageText
         label.textAlignment = .center
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        label.textColor = .label
         label.numberOfLines = 0
         return label
     }()
@@ -144,7 +145,7 @@ class DeleteAccountModalViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = ThemeColors.mainBackgroundColor
+        self.view.backgroundColor = .systemBackground
         self.view.addSubview(contentStackView)
         
         constrain(contentStackView) { contentStackView in

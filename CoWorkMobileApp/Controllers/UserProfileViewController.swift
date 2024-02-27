@@ -28,7 +28,7 @@ class UserProfileViewController: UIViewController {
     
     private lazy var userProfileNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.black
+        label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 18)
@@ -55,6 +55,8 @@ class UserProfileViewController: UIViewController {
         config.buttonSize = .medium
         config.baseBackgroundColor = ThemeColors.secondaryColor
         config.baseForegroundColor = UIColor.white
+        config.background.strokeWidth = 1
+        config.background.strokeColor = ThemeColors.buttonBorder
         config.title = viewModel.logoutText
         config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
         
@@ -117,7 +119,7 @@ class UserProfileViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = ThemeColors.mainBackgroundColor
+        self.view.backgroundColor = .systemBackground
         [userProfileImage, userProfileNameLabel, accountActionsStackView].forEach {self.view.addSubview($0)}
         
         constrain(userProfileImage, userProfileNameLabel, accountActionsStackView) { userProfileImage, userProfileNameLabel, accountActionsStackView in

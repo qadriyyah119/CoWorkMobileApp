@@ -51,7 +51,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "Search for Workspaces"
         searchController.searchBar.searchBarStyle = .default
-        searchController.searchBar.searchTextField.backgroundColor = .white
+        searchController.searchBar.searchTextField.backgroundColor = .systemBackground
         searchController.obscuresBackgroundDuringPresentation = false
         return searchController
     }()
@@ -114,7 +114,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
     private func setupView() {
         mapViewHeader.mapView.register(WorkplaceAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
-        collectionView.backgroundColor = ThemeColors.mainBackgroundColor
+        collectionView.backgroundColor = .systemBackground
         self.collectionView = collectionView
         self.collectionView.delegate = self
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -131,7 +131,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
             collectionView.bottom == collectionView.superview!.bottom
         }
         
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.label]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         self.navigationItem.searchController = searchController
