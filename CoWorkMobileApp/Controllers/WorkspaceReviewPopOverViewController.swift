@@ -45,6 +45,7 @@ class WorkspaceReviewPopoverViewController: UIViewController {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -53,6 +54,7 @@ class WorkspaceReviewPopoverViewController: UIViewController {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -74,6 +76,7 @@ class WorkspaceReviewPopoverViewController: UIViewController {
     private lazy var reviewLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         label.numberOfLines = 0
         return label
     }()
@@ -146,7 +149,7 @@ class WorkspaceReviewPopoverViewController: UIViewController {
     }
     
     private func setupView() {
-        view.backgroundColor = ThemeColors.mainBackgroundColor
+        view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 30
         
         view.translatesAutoresizingMaskIntoConstraints = false

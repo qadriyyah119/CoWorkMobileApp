@@ -20,6 +20,7 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -28,6 +29,7 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -49,6 +51,7 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
     private lazy var reviewLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         label.numberOfLines = 4
         label.lineBreakMode = .byTruncatingTail
         return label

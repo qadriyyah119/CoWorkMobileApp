@@ -203,6 +203,9 @@ public:
             m_root->bp_set_parent(parent, ndx_in_parent);
     }
 
+    virtual void erase(size_t) = 0;
+    virtual void clear() = 0;
+
     void create();
     void destroy();
     void verify() const
@@ -271,6 +274,7 @@ template <class T>
 class BPlusTree : public BPlusTreeBase {
 public:
     using LeafArray = typename LeafTypeTrait<T>::type;
+    using value_type = T;
 
     /**
      * Actual class for the leaves. Maps the abstract interface defined
@@ -452,7 +456,7 @@ public:
         }
     }
 
-    void erase(size_t n)
+    void erase(size_t n) override
     {
         auto func = [](BPlusTreeNode* node, size_t ndx) {
             LeafNode* leaf = static_cast<LeafNode*>(node);
@@ -464,7 +468,7 @@ public:
         m_size--;
     }
 
-    void clear()
+    void clear() override
     {
         if (m_root->is_leaf()) {
             LeafNode* leaf = static_cast<LeafNode*>(m_root.get());
@@ -522,20 +526,24 @@ public:
         m_root->bptree_traverse(func);
     }
 
-    void dump_values(std::ostream& o, int level) const
+    template <typename Func>
+    void for_all(Func&& callback) const
     {
-        std::string indent(" ", level * 2);
-
-        auto func = [&o, indent](BPlusTreeNode* node, size_t) {
+        using Ret = std::invoke_result_t<Func, T>;
+        m_root->bptree_traverse([&callback](BPlusTreeNode* node, size_t) {
             LeafNode* leaf = static_cast<LeafNode*>(node);
             size_t sz = leaf->size();
             for (size_t i = 0; i < sz; i++) {
-                o << indent << leaf->get(i) << std::endl;
+                if constexpr (std::is_same_v<Ret, void>) {
+                    callback(leaf->get(i));
+                }
+                else {
+                    if (!callback(leaf->get(i)))
+                        return IteratorControl::Stop;
+                }
             }
             return IteratorControl::AdvanceToNext;
-        };
-
-        m_root->bptree_traverse(func);
+        });
     }
 
 protected:

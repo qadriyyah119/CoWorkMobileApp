@@ -18,6 +18,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 22)
+        label.textColor = .label
         return label
     }()
     
@@ -36,6 +37,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -44,6 +46,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -53,6 +56,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -91,6 +95,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -111,6 +116,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -146,6 +152,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -181,6 +188,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.text = "Business Hours"
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -238,6 +246,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         label.text = "Reviews"
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyBoldFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -336,12 +345,14 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         dayLabel.textAlignment = .left
         dayLabel.numberOfLines = 1
         dayLabel.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        dayLabel.textColor = .label
         dayLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let hoursLabel = UILabel()
         hoursLabel.textAlignment = .right
         hoursLabel.numberOfLines = 1
         hoursLabel.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        hoursLabel.textColor = .label
         hoursLabel.translatesAutoresizingMaskIntoConstraints = false
         
         [dayLabel, hoursLabel].forEach { hoursView.addSubview($0) }

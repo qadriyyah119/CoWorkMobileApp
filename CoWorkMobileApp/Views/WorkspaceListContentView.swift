@@ -19,6 +19,7 @@ class WorkspaceListContentView: UIView, UIContentView {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -61,6 +62,7 @@ class WorkspaceListContentView: UIView, UIContentView {
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 16)
+        label.textColor = .label
         return label
     }()
     
@@ -70,6 +72,7 @@ class WorkspaceListContentView: UIView, UIContentView {
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -102,6 +105,7 @@ class WorkspaceListContentView: UIView, UIContentView {
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 14)
+        label.textColor = .label
         return label
     }()
     
@@ -111,6 +115,7 @@ class WorkspaceListContentView: UIView, UIContentView {
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 14)
+        label.textColor = .label
         return label
     }()
     

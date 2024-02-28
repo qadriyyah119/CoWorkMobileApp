@@ -24,7 +24,7 @@ public struct WorkspaceDetailReviewContentConfiguration: UIContentConfiguration 
         view.layer.shadowColor = ThemeColors.secondaryColor?.cgColor
         view.layer.shadowOpacity = 0.2
         view.layer.shadowRadius = 5
-        view.backgroundColor = ThemeColors.mainBackgroundColor
+        view.backgroundColor = .systemBackground
         
         view.didSelectViewMoreButton = { id, sender in
             guard let id = reviewId else { return }

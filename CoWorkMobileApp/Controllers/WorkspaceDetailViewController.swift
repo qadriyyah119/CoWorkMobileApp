@@ -104,7 +104,7 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
     
     private func setupView() {
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
-        collectionView.backgroundColor = ThemeColors.mainBackgroundColor
+        collectionView.backgroundColor = .systemBackground
         collectionView.contentInsetAdjustmentBehavior = .never
         self.collectionView = collectionView
         self.collectionView.delegate = self

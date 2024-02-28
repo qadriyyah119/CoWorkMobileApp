@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 import Cartography
 import NotificationBannerSwift
+
+protocol AccountRegistrationViewControllerDelegate: AnyObject {
+    func accountRegistrationViewController(controller: AccountRegistrationViewController, didRegisterSuccessfully withUser: String)
+}
 
 class AccountRegistrationViewController: UIViewController, AlertingViewController {
     
@@ -16,7 +21,8 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
         label.textAlignment = .left
-        label.font = UIFont(name: ThemeFonts.headerFont, size: 37)
+        label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 20)
+        label.textColor = .label
         return label
     }()
     
@@ -56,6 +62,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         let label = UILabel()
         label.numberOfLines = 0
         label.attributedText = viewModel.passwordValidationText
+        label.textColor = .label
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -64,9 +71,15 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
     private(set) lazy var completeButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.title = viewModel.completeButtonText
+        config.baseBackgroundColor = ThemeColors.secondaryColor
+        config.buttonSize = .medium
+        config.cornerStyle = .small
+        config.background.strokeWidth = 1
+        config.background.strokeColor = ThemeColors.buttonBorder
+        config.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 20, bottom: 15, trailing: 20)
         config.attributedTitle?.font = UIFont(name: ThemeFonts.buttonFont, size: 16)
         
-        let button = OutlinedButton(configuration: config, primaryAction: nil)
+        let button = UIButton(configuration: config, primaryAction: nil)
         button.configurationUpdateHandler = { [weak self] button in
             guard let self = self else { return }
             var config = button.configuration
@@ -109,8 +122,12 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         }
     }
     
+    var email: String = ""
+    var password: String = ""
+    var username: String = ""
     var isPasswordValid = false
     let viewModel: AccountRegistrationViewModel
+    weak var delegate: AccountRegistrationViewControllerDelegate?
     
     init(viewModel: AccountRegistrationViewModel) {
         self.viewModel = viewModel
@@ -128,7 +145,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
     }
     
     private func setupView() {
-        self.view.backgroundColor = ThemeColors.mainBackgroundColor
+        self.view.backgroundColor = .systemBackground
         self.view.addSubview(contentStackView)
         
         constrain(contentStackView) { contentStackView in
@@ -186,15 +203,32 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         }
         
         guard emailTextField.isEmailValid else {
-            Banner.showBanner(withTitle: "Email Error", subtitle: "Please enter a valid email", style: .danger)
+            Banner.showBanner(withTitle: "Email Error!", subtitle: "Please enter a valid email", style: .danger)
             return false
         }
         
         guard passwordTextField.isPasswordValid else {
-            Banner.showBanner(withTitle: "Password Error", subtitle: "Please enter a valid password", style: .danger)
+            Banner.showBanner(withTitle: "Password Error!", subtitle: "Please enter a valid password", style: .danger)
             return false
         }
         
+        do {
+            try Realm().addUnique(User.self, uniqueKeyPath: "email", value: email)
+        } catch {
+            Banner.showBanner(withTitle: "Error!", subtitle: "Email already exist. Please try again", style: .danger)
+            return false
+        }
+        
+        do {
+            try Realm().addUnique(User.self, uniqueKeyPath: "username", value: username)
+        } catch {
+            Banner.showBanner(withTitle: "Error!", subtitle: "Username already exist. Please try again", style: .danger)
+            return false
+        }
+        
+        self.email = email
+        self.password = password
+        self.username = username
         return true
     }
     
@@ -210,12 +244,13 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
                 print(error)
                 Banner.showBanner(withTitle: "Error!", subtitle: "Unable to create account. Please try again.", style: .warning)
             case .success:
-                Banner.showBanner(withTitle: "Success!", subtitle: "You have successfull registered with CoWork!", style: .success)
+                    self.viewModel.userRegistered(withEmail: self.email, password: self.password) {
+                        self.delegate?.accountRegistrationViewController(controller: self, didRegisterSuccessfully: self.viewModel.user)
+                    }
+                    self.creatingAccount = false
             }
         }
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            self.creatingAccount = false
-        }
+
     }
     
     private func makeStyledInputField() -> TextFieldWithPadding {

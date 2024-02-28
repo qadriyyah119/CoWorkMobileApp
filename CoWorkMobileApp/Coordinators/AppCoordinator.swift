@@ -6,56 +6,152 @@
 //
 
 import UIKit
+import RealmSwift
+import Combine
 
 class AppCoordinator: Coordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var type: CoordinatorType { .app }
+    weak var finishDelegate: CoordinatorFinishDelegate? = nil
+    
+    var currentUser: User?
+    private let currentUserPublisher = CurrentValueSubject<User?, Never>(nil)
+    
+    var currentUserUpdates: AnyPublisher<User?, Never> {
+        return currentUserPublisher.eraseToAnyPublisher()
+    }
+    private var userStatusSubscriptions: Set<AnyCancellable> = []
     
     private lazy var welcomeViewController: WelcomeViewController = {
         let welcomeViewModel = WelcomeViewModel()
         welcomeViewModel.coordinator = self
         let viewController = WelcomeViewController(viewModel: welcomeViewModel)
+        viewController.delegate = self
         return viewController
     }()
     
-    private lazy var rootTabBarController: RootTabBarController = {
-        let rootTabBarViewModel = RootTabBarViewModel()
-        let viewController = RootTabBarController(viewModel: rootTabBarViewModel)
-        return viewController
+    private lazy var rootTabBarCoordinator: RootTabBarCoordinator = {
+        let coordinator = RootTabBarCoordinator(navigationController: navigationController, currentUserPublisher: currentUserUpdates)
+        return coordinator
     }()
+    
+    let workspaceCoordinator = WorkspaceCoordinator(navigationController: UINavigationController())
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start() {
-        showWelcomeView()
+        if let currentUser = getCurrentUser() {
+            self.currentUser = currentUser
+            updateUser(currentUser)
+            showMainFlow()
+        } else {
+            showWelcomeView()
+        }
+        
+    }
+    
+    func subscribeToUserStatusChange() {
+        AuthManager.shared.currentUserStatusPublisher
+            .sink { [weak self] currentUser in
+                self?.updateUser(currentUser)
+            }.store(in: &userStatusSubscriptions)
+    }
+    
+    private func updateUser(_ user: User?) {
+        currentUserPublisher.send(user)
+    }
+    
+    private func getCurrentUser() -> User? {
+        guard let id = UserDefaults.standard.string(forKey: "currentUserId") else { return nil }
+        
+        let realm = try? Realm()
+        let user = realm?.object(ofType: User.self, forPrimaryKey: id)
+        return user
     }
     
     func showWelcomeView() {
         self.navigationController.pushViewController(welcomeViewController, animated: true)
     }
     
-    func showLoginView() {
-        let loginViewModel = LoginViewModel()
-        loginViewModel.coordinator = self 
-        let loginViewController = LoginViewController(viewModel: loginViewModel)
-        self.navigationController.pushViewController(loginViewController, animated: true)
+    func showLoginView(withSuccessBanner showBanner: Bool = false) {
+        let authCoordinator = AuthCoordinator(navigationController: navigationController)
+        authCoordinator.finishDelegate = self
+        authCoordinator.parentCoordinator = self
+        childCoordinators.append(authCoordinator)
+        authCoordinator.start()
+        
+        if showBanner {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                Banner.showBanner(withTitle: "Success!", subtitle: "You successfully registered. Please Login!", style: .success)
+            }
+        }
+
     }
     
     func showRegistrationView() {
-        let registrationViewModel = AccountRegistrationViewModel()
-        let registrationViewController = AccountRegistrationViewController(viewModel: registrationViewModel)
-        self.navigationController.pushViewController(registrationViewController, animated: true)
+        let onboardingCoordinator = OnboardingCoordinator(navigationController: navigationController)
+        onboardingCoordinator.finishDelegate = self
+        childCoordinators.append(onboardingCoordinator)
+        onboardingCoordinator.start()
     }
     
-    func showMainFlow() {
-        self.setupTabBarContentView()
+    func showMainFlow(withSuccessBanner showBanner: Bool = false) {
+//        self.setupTabBarContentView()
+//        workspaceCoordinator.start()
+        let rootTabBarCoordinator = RootTabBarCoordinator(navigationController: navigationController, currentUserPublisher: currentUserUpdates)
+        rootTabBarCoordinator.parentCoordinator = self
+        childCoordinators.append(rootTabBarCoordinator)
+        rootTabBarCoordinator.start()
+       
+        if showBanner {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                Banner.showBanner(withTitle: "Success!", subtitle: "Welcome \(self.currentUser?.username ?? "")!", style: .success)
+            }
+        }
     }
     
-    func setupTabBarContentView() {
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: rootTabBarController)
+//    func setupTabBarContentView() {
+//        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(toNewView: rootTabBarController)
+//    }
+    
+}
+
+extension AppCoordinator: WelcomeViewControllerDelegate {
+    func welcomeViewController(userSelectedLoginFrom controller: WelcomeViewController) {
+        showLoginView(withSuccessBanner: false)
+    }
+    
+    func welcomeViewController(userSelectedRegisterFrom controller: WelcomeViewController) {
+        showRegistrationView()
+    }
+    
+    func welcomeViewController(userSelectedSkipFrom controller: WelcomeViewController) {
+        showMainFlow(withSuccessBanner: false)
     }
     
 }
 
+extension AppCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        
+        childCoordinators = childCoordinators.filter({ $0.type != childCoordinator.type })
+        
+        switch childCoordinator.type {
+        case .auth:
+            navigationController.viewControllers.removeAll()
+            if let currentUser = getCurrentUser() {
+                self.currentUser = currentUser
+                updateUser(currentUser)
+                showMainFlow(withSuccessBanner: false)
+            }
+        case .onboarding:
+            navigationController.viewControllers.removeAll()
+            showLoginView(withSuccessBanner: true)
+        default:
+            break
+        }
+    }
+}
