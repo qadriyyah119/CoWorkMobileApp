@@ -313,7 +313,7 @@ extension WorkspaceListViewController: CLLocationManagerDelegate {
         guard let currentLocation = locations.first else { return }
         printCurrentLocation(location: currentLocation)
         
-        guard let locationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        let locationValue: CLLocationCoordinate2D = currentLocation.coordinate
         print("locations = \(locationValue.latitude) \(locationValue.longitude)")
 
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
