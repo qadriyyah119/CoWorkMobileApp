@@ -16,7 +16,7 @@ class UserProfileCoordinator: Coordinator {
     weak var parentCoordinator: RootTabBarCoordinator?
     var currentUserPublisher: AnyPublisher<User?, Never>
     var userSubscriptions = Set<AnyCancellable>()
-//    var userId: String = ""
+    var currentUser: User?
     
     private lazy var userProfileVC: UserProfileViewController = {
         let userProfileViewModel = UserProfileViewModel(currentUserPublisher: currentUserPublisher)
@@ -26,23 +26,34 @@ class UserProfileCoordinator: Coordinator {
         return userProfileVC
     }()
     
+    private lazy var userProfileSignInRegisterViewController: UserProfileSignInRegisterViewController = {
+        let userProfileSignInRegisterViewModel = UserProfileSiginRegisterViewModel()
+        let userProfileSiginRegisterVC = UserProfileSignInRegisterViewController(viewModel: userProfileSignInRegisterViewModel)
+        userProfileSiginRegisterVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
+        return userProfileSiginRegisterVC
+    }()
+    
     init(navigationController: UINavigationController, currentUserPublisher: AnyPublisher<User?, Never>) {
         self.navigationController = navigationController
         self.currentUserPublisher = currentUserPublisher
-//        updateUser()
     }
     
     func start() {
-        self.navigationController.pushViewController(self.userProfileVC, animated: true)
+        subscribeToCurrentUser()
+        
+        if self.currentUser == nil {
+            self.navigationController.pushViewController(userProfileSignInRegisterViewController, animated: true)
+        } else {
+            self.navigationController.pushViewController(self.userProfileVC, animated: true)
+        }
+       
     }
     
-//    func updateUser() {
-//        currentUserPublisher
-//            .compactMap { $0 } 
-//            .sink { [weak self] user in
-//                self?.userId = user.id
-//            }.store(in: &userSubscriptions)
-//    }
+    func subscribeToCurrentUser() {
+        currentUserPublisher.sink { [weak self] user in
+            self?.currentUser = user
+        }.store(in: &userSubscriptions)
+    }
     
 }
 
