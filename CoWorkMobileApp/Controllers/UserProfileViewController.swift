@@ -17,6 +17,16 @@ protocol UserProfileViewControllerDelegate: AnyObject {
 
 class UserProfileViewController: UIViewController {
     
+    private lazy var titleLabel: UILabel = {
+            let label = UILabel()
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.text = viewModel.titleText
+            label.textAlignment = .left
+            label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 20)
+            label.textColor = .label
+            return label
+        }()
+    
     private lazy var userProfileImage: UIImageView = {
         let largeFont = UIFont.systemFont(ofSize: 90)
         let configuration = UIImage.SymbolConfiguration(font: largeFont)
@@ -29,7 +39,7 @@ class UserProfileViewController: UIViewController {
     private lazy var userProfileNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 1
         label.font = UIFont(name: ThemeFonts.bodyFont, size: 18)
         return label
@@ -119,18 +129,21 @@ class UserProfileViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = .systemBackground
-        [userProfileImage, userProfileNameLabel, accountActionsStackView].forEach {self.view.addSubview($0)}
-        
-        constrain(userProfileImage, userProfileNameLabel, accountActionsStackView) { userProfileImage, userProfileNameLabel, accountActionsStackView in
-            userProfileImage.centerX == userProfileImage.superview!.centerX
-            userProfileImage.top == userProfileImage.superview!.top + 80
-            userProfileNameLabel.top == userProfileImage.bottom + 10
-            userProfileNameLabel.centerX == userProfileNameLabel.superview!.centerX
-            accountActionsStackView.centerX == accountActionsStackView.superview!.centerX
-            accountActionsStackView.bottom == accountActionsStackView.superview!.bottom - 16
+            self.view.backgroundColor = .systemBackground
+            [titleLabel, userProfileImage, userProfileNameLabel, accountActionsStackView].forEach {self.view.addSubview($0)}
+            
+            constrain(titleLabel, userProfileImage, userProfileNameLabel, accountActionsStackView) { titleLabel, userProfileImage, userProfileNameLabel, accountActionsStackView in
+                titleLabel.top == titleLabel.superview!.top + 120
+                titleLabel.leading == titleLabel.superview!.leading + 16
+                titleLabel.trailing == titleLabel.superview!.trailing - 16
+                userProfileImage.top == titleLabel.bottom + 25
+                userProfileImage.centerX == userProfileImage.superview!.centerX
+                userProfileNameLabel.top == userProfileImage.bottom + 10
+                userProfileNameLabel.centerX == userProfileNameLabel.superview!.centerX
+                accountActionsStackView.centerX == accountActionsStackView.superview!.centerX
+                accountActionsStackView.bottom == accountActionsStackView.superview!.bottom - 16
+            }
         }
-    }
     
     @objc func didTapLogout() {
         viewModel.didTapLogOut(userId: userId) {

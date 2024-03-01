@@ -24,6 +24,7 @@ class UserProfileViewModel: ObservableObject {
     }
     
     @Published var userNameText: String = ""
+    let titleText: String = "My Profile"
     let logoutText: String = "Log Out"
     let deleteText: String = "Delete Account"
     var userImage: String = "person.fill"
