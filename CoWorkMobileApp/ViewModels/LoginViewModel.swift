@@ -20,6 +20,7 @@ class LoginViewModel {
         static let orText = "OR"
         static let registerText = "New to CoWork?"
         static let registerButtonText = "Register"
+        static let cancelButtonText = "CANCEL"
     }
     
     let titleText: String = LoginStrings.titleText
@@ -30,6 +31,7 @@ class LoginViewModel {
     let orText: String = LoginStrings.orText
     let registerText: String = LoginStrings.registerText
     let registerButtonText: String = LoginStrings.registerButtonText
+    let cancelButtonText: String = LoginStrings.cancelButtonText
     
     
     func didTapLogin(withEmail email: String, password: String, completion: @escaping(Result<String, AuthManager.AuthError>) -> Void) {

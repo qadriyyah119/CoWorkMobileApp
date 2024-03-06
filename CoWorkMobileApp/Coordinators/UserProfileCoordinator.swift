@@ -29,6 +29,7 @@ class UserProfileCoordinator: Coordinator {
     private lazy var userProfileSignInRegisterViewController: UserProfileSignInRegisterViewController = {
         let userProfileSignInRegisterViewModel = UserProfileSiginRegisterViewModel()
         let userProfileSiginRegisterVC = UserProfileSignInRegisterViewController(viewModel: userProfileSignInRegisterViewModel)
+        userProfileSiginRegisterVC.delegate = self
         userProfileSiginRegisterVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
         return userProfileSiginRegisterVC
     }()
@@ -78,6 +79,18 @@ extension UserProfileCoordinator: UserProfileViewControllerDelegate {
         }
         self.navigationController.present(navigationController, animated: true)
     }
+    
+}
+
+extension UserProfileCoordinator: UserProfileSignInRegisterViewControllerDelegate {
+    func userProfileSignInRegisterViewController(didSelectRegisterFromController: UserProfileSignInRegisterViewController) {
+        parentCoordinator?.parentCoordinator?.showRegistrationView()
+    }
+    
+    func userProfileSignInRegisterViewController(didSelectSignInFromController: UserProfileSignInRegisterViewController) {
+        parentCoordinator?.parentCoordinator?.showLoginView()
+    }
+    
     
 }
 

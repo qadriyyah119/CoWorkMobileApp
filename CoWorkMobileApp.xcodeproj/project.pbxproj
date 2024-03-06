@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2706E78C2B9274680064E8DE /* UserProfileSignIn-RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2706E78B2B9274680064E8DE /* UserProfileSignIn-RegisterViewController.swift */; };
+		2706E78E2B9276C50064E8DE /* UserProfileSiginRegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2706E78D2B9276C50064E8DE /* UserProfileSiginRegisterViewModel.swift */; };
 		278B0E862B698FEF00BAFFEB /* UserProfileContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E852B698FEF00BAFFEB /* UserProfileContentConfiguration.swift */; };
 		278B0E882B6990DE00BAFFEB /* UserProfileContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E872B6990DE00BAFFEB /* UserProfileContentView.swift */; };
 		278B0E8A2B69ADA100BAFFEB /* UserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278B0E892B69ADA100BAFFEB /* UserProfileCell.swift */; };
@@ -117,6 +119,8 @@
 /* Begin PBXFileReference section */
 		0111B5FE5E9F75E66C43F388 /* Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp_CoWorkMobileAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12223D324A989B5DBA0B125D /* Pods_CoWorkMobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoWorkMobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2706E78B2B9274680064E8DE /* UserProfileSignIn-RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileSignIn-RegisterViewController.swift"; sourceTree = "<group>"; };
+		2706E78D2B9276C50064E8DE /* UserProfileSiginRegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileSiginRegisterViewModel.swift; sourceTree = "<group>"; };
 		278B0E852B698FEF00BAFFEB /* UserProfileContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileContentConfiguration.swift; sourceTree = "<group>"; };
 		278B0E872B6990DE00BAFFEB /* UserProfileContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileContentView.swift; sourceTree = "<group>"; };
 		278B0E892B69ADA100BAFFEB /* UserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCell.swift; sourceTree = "<group>"; };
@@ -348,6 +352,7 @@
 				2DC810A12983206600666610 /* WorkspaceDetailViewController.swift */,
 				2D738B852A01A37C00BD50BE /* WorkspaceReviewPopOverViewController.swift */,
 				278B0E942B85642500BAFFEB /* DeleteAccountModalViewController.swift */,
+				2706E78B2B9274680064E8DE /* UserProfileSignIn-RegisterViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -369,6 +374,7 @@
 				278B0E8B2B69B52400BAFFEB /* UserProfileContentViewViewModel.swift */,
 				278B0E8F2B7BD39300BAFFEB /* UserProfileViewModel.swift */,
 				278B0E962B85695B00BAFFEB /* DeleteAccountViewModel.swift */,
+				2706E78D2B9276C50064E8DE /* UserProfileSiginRegisterViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -766,6 +772,7 @@
 				27B153302B4E08E9001CA0A8 /* OnboardingCoordinator.swift in Sources */,
 				2DC9246B2936892D000DF340 /* LocationHelper.swift in Sources */,
 				2D4207B0289AEED400F82B1F /* User.swift in Sources */,
+				2706E78C2B9274680064E8DE /* UserProfileSignIn-RegisterViewController.swift in Sources */,
 				2DC9246D294A5971000DF340 /* WorkplaceAnnotationView.swift in Sources */,
 				278B0E902B7BD39300BAFFEB /* UserProfileViewModel.swift in Sources */,
 				2DC810A42983320500666610 /* WorkspaceDetailImageContentConfiguration.swift in Sources */,
@@ -831,6 +838,7 @@
 				2DC9246729280AF8000DF340 /* MapAnnotation.swift in Sources */,
 				2D66088328A6AED200C76819 /* Workspace.swift in Sources */,
 				2D66089028B5B4FB00C76819 /* WorkspaceListContentViewViewModel.swift in Sources */,
+				2706E78E2B9276C50064E8DE /* UserProfileSiginRegisterViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

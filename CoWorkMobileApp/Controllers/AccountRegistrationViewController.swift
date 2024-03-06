@@ -97,6 +97,21 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
         return button
     }()
     
+    private(set) lazy var cancelButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.title = viewModel.cancelButtonText
+        config.baseForegroundColor = .label
+        config.attributedTitle?.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 16)
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = config
+        button.addTarget(self,
+                         action: #selector(cancelButtonSelected),
+                         for: .primaryActionTriggered)
+        return button
+    }()
+    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
@@ -104,7 +119,8 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
             usernameTextField,
             passwordTextField,
             passwordValidationLabel,
-            completeButton
+            completeButton,
+            cancelButton
         ])
         
         stackView.axis = .vertical
@@ -251,6 +267,10 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
             }
         }
 
+    }
+    
+    @objc func cancelButtonSelected() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func makeStyledInputField() -> TextFieldWithPadding {

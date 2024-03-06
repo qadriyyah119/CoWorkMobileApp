@@ -139,11 +139,11 @@ class UserProfileSignInRegisterViewController: UIViewController {
     }
     
     @objc func registerButtonSelected() {
-        
+        self.delegate?.userProfileSignInRegisterViewController(didSelectRegisterFromController: self)
     }
     
     @objc func signInButtonSelected() {
-        
+        self.delegate?.userProfileSignInRegisterViewController(didSelectSignInFromController: self)
     }
     
 }

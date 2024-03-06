@@ -73,6 +73,7 @@ class WorkspaceDetailReviewContentView: UIView, UIContentView {
     private lazy var viewMoreButton: UIButton = {
         var config = UIButton.Configuration.plain()
         config.buttonSize = .small
+        config.baseForegroundColor = .label
         config.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
         
         let button = UIButton()

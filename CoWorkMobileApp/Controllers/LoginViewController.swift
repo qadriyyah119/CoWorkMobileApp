@@ -131,6 +131,21 @@ class LoginViewController: UIViewController {
         return stackView
     }()
     
+    private(set) lazy var cancelButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.title = viewModel.cancelButtonText
+        config.baseForegroundColor = .label
+        config.attributedTitle?.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 16)
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = config
+        button.addTarget(self,
+                         action: #selector(cancelButtonSelected),
+                         for: .primaryActionTriggered)
+        return button
+    }()
+    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
@@ -185,13 +200,16 @@ class LoginViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         self.view.addSubview(contentStackView)
         self.view.addSubview(registerHorizontalStackView)
+        self.view.addSubview(cancelButton)
         
-        constrain(contentStackView, registerHorizontalStackView) { contentStackView, registerHorizontalStackView in
+        constrain(contentStackView, registerHorizontalStackView, cancelButton) { contentStackView, registerHorizontalStackView, cancelButton in
             contentStackView.top == contentStackView.superview!.top + 120
             contentStackView.leading == contentStackView.superview!.leading + 16
             contentStackView.trailing == contentStackView.superview!.trailing - 16
             registerHorizontalStackView.top == contentStackView.bottom + 25
             registerHorizontalStackView.centerX == registerHorizontalStackView.superview!.centerX
+            cancelButton.top == registerHorizontalStackView.bottom + 25
+            cancelButton.centerX == cancelButton.superview!.centerX
         }
     }
     
@@ -229,6 +247,10 @@ class LoginViewController: UIViewController {
     
     @objc func registerButtonSelected() {
         self.delegate?.loginViewController(didSelectRegisterFromController: self)
+    }
+    
+    @objc func cancelButtonSelected() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func performExistingAccountSetupFlows() {
