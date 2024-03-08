@@ -45,7 +45,7 @@ class WorkspaceDetailReviewContentViewViewModel {
     let viewMoreText = NSAttributedString (
         string: "Show More",
         attributes: [
-            .foregroundColor: UIColor.black,
+            .foregroundColor: UIColor.label,
             .underlineStyle: NSUnderlineStyle.single.rawValue
         ])
     

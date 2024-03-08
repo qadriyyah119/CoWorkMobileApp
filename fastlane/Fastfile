@@ -16,11 +16,24 @@
 default_platform(:ios)
 
 platform :ios do
+
   desc "To build and run unit tests"
   lane :build_run_unit_tests do
     run_tests(workspace: "CoWorkMobileApp.xcworkspace",
             devices: ["iPhone 14 Pro"],
             scheme: "CoWorkMobileApp",
             only_testing: "CoWorkMobileAppTests")
+  end
+
+desc "Create ipa"
+  lane :build do
+    enable_automatic_code_signing
+    increment_build_number
+    gym
+  end
+
+  desc "Upload to App Store"
+  lane :upload do
+    deliver
   end
 end

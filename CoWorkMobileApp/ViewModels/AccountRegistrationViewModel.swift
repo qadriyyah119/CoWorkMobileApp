@@ -18,6 +18,7 @@ class AccountRegistrationViewModel {
         static let passwordTextfieldText = "password"
         static let signUpText = "SIGN UP"
         static let registeringText = "CREATING ACCOUNT..."
+        static let cancelButtonText = "CANCEL"
     }
     
     let titleText: String = RegisterStrings.titleText
@@ -26,6 +27,7 @@ class AccountRegistrationViewModel {
     let passwordPlaceholderText: String = RegisterStrings.passwordTextfieldText
     let completeButtonText: String = RegisterStrings.signUpText
     let registeringText: String = RegisterStrings.registeringText
+    let cancelButtonText: String = RegisterStrings.cancelButtonText
     let passwordValidationText = NSMutableAttributedString (
         string: "Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, one number, and a special character.",
         attributes: [

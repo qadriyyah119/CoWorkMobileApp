@@ -27,7 +27,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         let config = UIImage.SymbolConfiguration(font: imageSize)
         let image = UIImage(systemName: "star.fill", withConfiguration: config)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
+        imageView.tintColor = ratingLabel.textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -104,7 +104,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         let config = UIImage.SymbolConfiguration(font: imageSize)
         let image = UIImage(systemName: "location", withConfiguration: config)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
+        imageView.tintColor = addressLabel.textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -141,7 +141,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         let config = UIImage.SymbolConfiguration(font: imageSize)
         let image = UIImage(systemName: "phone.connection", withConfiguration: config)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
+        imageView.tintColor = phoneLabel.textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -176,7 +176,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         let config = UIImage.SymbolConfiguration(font: imageSize)
         let image = UIImage(systemName: "deskclock", withConfiguration: config)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
+        imageView.tintColor = businessHoursTitleLabel.textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -234,7 +234,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         let config = UIImage.SymbolConfiguration(font: imageSize)
         let image = UIImage(systemName: "star", withConfiguration: config)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .black
+        imageView.tintColor = reviewSectionTitleLabel.textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -286,7 +286,7 @@ class WorkspaceDetailContentView: UIView, UIContentView {
         
     private lazy var lineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = reviewSectionTitleLabel.textColor
         NSLayoutConstraint.activate([
           view.heightAnchor.constraint(equalToConstant: 1),
         ])

@@ -118,51 +118,16 @@ extension MapViewHeader {
 
     
     private func animate(to value: CGFloat) {
-        let newHeight = max(min(value, maxHeight), minHeight)
-        self.heightConstraint.constant = newHeight
-        self.superview?.layoutIfNeeded()
-        self.layoutIfNeeded()
-//        UIView.animate(withDuration: 0.2) {
-//            self.heightConstraint.constant = newHeight
-//            self.superview?.layoutIfNeeded()
-//            self.layoutIfNeeded()
-//        }
+        guard self.superview != nil else { return }
+
+        DispatchQueue.main.async {
+            let newHeight = max(min(value, self.maxHeight), self.minHeight)
+            self.heightConstraint.constant = newHeight
+            UIView.animate(withDuration: 0.1) {
+                self.superview?.layoutIfNeeded()
+                self.layoutIfNeeded()
+            }
+        }
     }
 
 }
-
-
-//func updateHeader(newY: CGFloat, oldY: CGFloat) {
-//    let scrollDiff = newY - oldY
-//
-//    let isScrollingDown = scrollDiff > 0 && newY > 0 // User is scrolling down past the first item.
-//    let isScrollingUp = scrollDiff < 0 && newY < 0 // User is pulling down at the top.
-//
-//    var newHeight = currentOffset
-//    let halfwaypoint = (maxHeight + minHeight) / 2
-//
-//
-//    if isScrollingDown {
-//        // User is scrolling down - Collapse
-//        newHeight = max(minHeight, currentOffset - abs(scrollDiff))
-//        guard newHeight < halfwaypoint && viewState != .collapsed else { return }
-//    } else if isScrollingUp {
-//        // User is pulling up - Expand
-//        newHeight = min(maxHeight, currentOffset + abs(scrollDiff))
-//        guard newHeight > halfwaypoint && viewState != .expanded else { return }
-//    }
-//
-//    // If the new height is different than the current height, update it.
-//    if newHeight != currentOffset {
-////            animate(to: newHeight)
-////            let newHeight = max(min(newHeight, maxHeight), minHeight)
-//        UIView.animate(withDuration: 0.1) {
-//            self.heightConstraint.constant = isScrollingDown ? self.minHeight : self.maxHeight
-//            self.superview?.layoutIfNeeded()
-//            self.layoutIfNeeded()
-//
-//        }
-//        viewState = isScrollingDown ? .collapsed : .expanded
-//    }
-//}
-
