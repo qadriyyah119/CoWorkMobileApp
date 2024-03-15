@@ -32,7 +32,7 @@ class AccountRegistrationViewModel {
         string: "Password must be at least 8 characters, and contain at least one upper case letter, one lower case letter, one number, and a special character.",
         attributes: [
             .font: UIFont(name: ThemeFonts.bodyFont, size: 12) ?? UIFont.systemFont(ofSize: 11),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.label
         ])
     
     func userRegistered(withEmail email: String, password: String, completion: @escaping () -> Void) {

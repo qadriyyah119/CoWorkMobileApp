@@ -21,10 +21,10 @@ public struct WorkspaceDetailReviewContentConfiguration: UIContentConfiguration 
         let view = WorkspaceDetailReviewContentView(configuration: self)
         view.layer.masksToBounds = false
         view.layer.shadowOffset = CGSize(width: 1.0, height: 2.0)
-        view.layer.shadowColor = ThemeColors.secondaryColor?.cgColor
+        view.layer.shadowColor = ThemeColors.shadowColor?.cgColor
         view.layer.shadowOpacity = 0.2
         view.layer.shadowRadius = 5
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .secondarySystemBackground
         
         view.didSelectViewMoreButton = { id, sender in
             guard let id = reviewId else { return }

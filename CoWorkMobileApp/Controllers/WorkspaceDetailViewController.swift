@@ -62,13 +62,18 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
             }
         }
 
-        let xButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissVC))
-        self.navigationItem.leftBarButtonItem = xButton
-//        self.navigationItem.leftBarButtonItem?.tintColor = .white
-//        navigationController?.navigationBar.tintColor = .white
+        self.navigationItem.leftBarButtonItem = closeButton
 
-        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: bookmarkButton), UIBarButtonItem(customView: shareButton)]
+//        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: bookmarkButton), UIBarButtonItem(customView: shareButton)]
     }
+    
+    private lazy var closeButton: UIBarButtonItem = {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24)
+        let image = UIImage(systemName: "x.circle.fill", withConfiguration: imageConfig)
+        let button = UIBarButtonItem(image: image, style: .done, target: self, action: #selector(dismissVC))
+        button.tintColor = .white
+        return button
+    }()
     
     private lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
@@ -104,7 +109,7 @@ class WorkspaceDetailViewController: UIViewController, UICollectionViewDelegate,
     
     private func setupView() {
         lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureLayout())
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.contentInsetAdjustmentBehavior = .never
         self.collectionView = collectionView
         self.collectionView.delegate = self

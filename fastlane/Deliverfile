@@ -18,3 +18,7 @@ ipa("./fastlane/builds/CoWorkMobileApp.ipa”)
 submit_for_review(true)
 
 automatic_release(true)
+
+force(true)
+
+

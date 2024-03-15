@@ -151,9 +151,9 @@ class LoginViewController: UIViewController {
             titleLabel,
             emailTextField,
             passwordTextField,
-            signInButton,
-            orLabel,
-            appleSignInButton
+            signInButton
+//            orLabel,
+//            appleSignInButton
         ])
         
         constrain(appleSignInButton) { appleSignInButton in
@@ -167,7 +167,7 @@ class LoginViewController: UIViewController {
         stackView.setCustomSpacing(25, after: titleLabel)
         stackView.setCustomSpacing(15, after: passwordTextField)
         stackView.setCustomSpacing(15, after: signInButton)
-        stackView.setCustomSpacing(15, after: orLabel)
+//        stackView.setCustomSpacing(15, after: orLabel)
         return stackView
     }()
     
@@ -193,7 +193,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
-        performExistingAccountSetupFlows()
+//        performExistingAccountSetupFlows()
     }
     
     private func setupView() {

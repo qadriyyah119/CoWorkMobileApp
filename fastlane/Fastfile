@@ -36,4 +36,11 @@ desc "Create ipa"
   lane :upload do
     deliver
   end
+
+desc "Build and run unit tests, create spa, upload to App Store"
+	lane :do_everything do
+		build_run_unit_tests
+		build
+		upload
+end
 end

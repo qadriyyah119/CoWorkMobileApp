@@ -197,7 +197,7 @@ class AccountRegistrationViewController: UIViewController, AlertingViewControlle
             return [NSAttributedString.Key.foregroundColor: UIColor.blue]
         } else {
             self.isPasswordValid = false
-            return [NSAttributedString.Key.foregroundColor: UIColor.black]
+            return [NSAttributedString.Key.foregroundColor: UIColor.label]
         }
     }
     

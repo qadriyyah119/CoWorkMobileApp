@@ -39,6 +39,14 @@ Create ipa
 
 Upload to App Store
 
+### ios do_everything
+
+```sh
+[bundle exec] fastlane ios do_everything
+```
+
+Build and run unit tests, create spa, upload to App Store
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

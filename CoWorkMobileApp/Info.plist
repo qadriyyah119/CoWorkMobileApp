@@ -33,19 +33,13 @@
 	<array>
 		<string>location</string>
 	</array>
+	<key>NSLocationUsageDescription</key>
+	<string>Allowing us to receive your location helps us search for nearby cowork spaces and give you a better experience. You can change your location settings at any time.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This application requires location services to work</string>
+	<string>Allowing us to receive your location helps us search for nearby cowork spaces and give you a better experience. You can change your location settings at any time.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This application requires location services to work</string>
-	<key>UISupportedInterfaceOrientations~iphone</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>Allowing us to receive your location helps us search for nearby cowork spaces and give you a better experience. You can change your location settings at any time.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allowing us to receive your location helps us search for nearby cowork spaces and give you a better experience. You can change your location settings at any time.</string>
 </dict>
 </plist>

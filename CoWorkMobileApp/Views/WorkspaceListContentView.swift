@@ -37,12 +37,12 @@ class WorkspaceListContentView: UIView, UIContentView {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(bookmarkButton)
+//        imageView.addSubview(bookmarkButton)
         
-        constrain(bookmarkButton) { bookmarkButton in
-            bookmarkButton.trailing == bookmarkButton.superview!.trailing - 16
-            bookmarkButton.top == bookmarkButton.superview!.top + 16
-        }
+//        constrain(bookmarkButton) { bookmarkButton in
+//            bookmarkButton.trailing == bookmarkButton.superview!.trailing - 16
+//            bookmarkButton.top == bookmarkButton.superview!.top + 16
+//        }
         return imageView
     }()
     
