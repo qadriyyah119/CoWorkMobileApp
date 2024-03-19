@@ -1022,7 +1022,7 @@
 				CODE_SIGN_ENTITLEMENTS = CoWorkMobileApp/CoWorkMobileApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = N4RBX9TSJP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CoWorkMobileApp/Info.plist;
@@ -1061,7 +1061,7 @@
 				CODE_SIGN_ENTITLEMENTS = CoWorkMobileApp/CoWorkMobileApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = N4RBX9TSJP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CoWorkMobileApp/Info.plist;

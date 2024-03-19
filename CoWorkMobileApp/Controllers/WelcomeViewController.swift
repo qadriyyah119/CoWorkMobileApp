@@ -107,14 +107,14 @@ class WelcomeViewController: UIViewController {
     
     private func setupView() {
         self.view.addSubview(logoImageView)
-        self.view.addSubview(contentStackView)
+//        self.view.addSubview(contentStackView)
         
-        constrain(logoImageView, contentStackView) { logoImageView, contentStackView in
+        constrain(logoImageView) { logoImageView in
             logoImageView.centerX == logoImageView.superview!.centerX
             logoImageView.centerY == logoImageView.superview!.centerY - 150
-            contentStackView.leading == contentStackView.superview!.leading + 16
-            contentStackView.trailing == contentStackView.superview!.trailing - 16
-            contentStackView.bottom == contentStackView.superview!.bottom - 40
+//            contentStackView.leading == contentStackView.superview!.leading + 16
+//            contentStackView.trailing == contentStackView.superview!.trailing - 16
+//            contentStackView.bottom == contentStackView.superview!.bottom - 40
         }
     }
     

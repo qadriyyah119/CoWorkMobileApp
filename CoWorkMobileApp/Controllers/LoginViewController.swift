@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = viewModel.titleText
+        label.numberOfLines = 0
         label.textAlignment = .left
         label.font = UIFont(name: ThemeFonts.bodyFontMedium, size: 20)
         label.textColor = .label

@@ -43,13 +43,15 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        if let currentUser = getCurrentUser() {
-            self.currentUser = currentUser
-            updateUser(currentUser)
-            showMainFlow()
-        } else {
-            showWelcomeView()
-        }
+//        if let currentUser = getCurrentUser() {
+//            self.currentUser = currentUser
+//            updateUser(currentUser)
+//            showMainFlow()
+//        } else {
+//            showWelcomeView()
+//        }
+        
+        showWelcomeView()
         
     }
     
@@ -74,6 +76,9 @@ class AppCoordinator: Coordinator {
     
     func showWelcomeView() {
         self.navigationController.pushViewController(welcomeViewController, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.showMainFlow()
+        }
     }
     
     func showLoginView(withSuccessBanner showBanner: Bool = false) {

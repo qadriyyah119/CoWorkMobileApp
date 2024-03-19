@@ -81,7 +81,7 @@ class RootTabBarCoordinator: NSObject, Coordinator {
     func start() {
         subscribeToCurrentUser()
         
-        let pages: [TabBarPage] = [.workspace, .userProfile].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() }) // add collection page
+        let pages: [TabBarPage] = [.workspace].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() }) // add collection page and userProfile
         
         let controllers: [UINavigationController] = pages.map({ getTabController($0) })
         
