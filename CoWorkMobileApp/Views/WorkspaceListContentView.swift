@@ -32,7 +32,6 @@ class WorkspaceListContentView: UIView, UIContentView {
     
     private(set) lazy var spaceImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
-        imageView.backgroundColor = .blue
         imageView.layer.cornerRadius = 8
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true

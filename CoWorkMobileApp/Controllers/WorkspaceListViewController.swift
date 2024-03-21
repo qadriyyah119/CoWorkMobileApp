@@ -95,7 +95,7 @@ class WorkspaceListViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         setupView()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.allowsBackgroundLocationUpdates = true
+//        locationManager.allowsBackgroundLocationUpdates = true
         startLocationService()
         locationManager.requestWhenInUseAuthorization()
         loadAnnotations()

@@ -29,10 +29,6 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-	</array>
 	<key>NSLocationUsageDescription</key>
 	<string>Allowing us to receive your location helps us search for nearby cowork spaces and give you a better experience. You can change your location settings at any time.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
